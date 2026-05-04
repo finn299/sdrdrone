@@ -273,12 +273,16 @@
             .floating-sound { top: 72px; right: 16px; padding: 8px 12px; font-size: 9px; }
         }
 
-        /* Inline sound button — sits above the title in page-header */
+        /* Sound button — sits at top-right of page-header, above the title */
+        .page-header { position: relative; }
         .header-sound {
+            position: absolute;
+            top: 32px;
+            right: 24px;
+            z-index: 5;
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            margin-bottom: 28px;
             font-family: var(--mono);
             font-size: 11px;
             font-weight: 500;
@@ -302,6 +306,9 @@
         .header-sound.is-on .label-off { display: none; }
         .header-sound.is-on .label-on { display: inline; }
         .header-sound.is-on { background: var(--accent); color: #fff; border-color: var(--accent); }
+        @media (max-width: 768px) {
+            .header-sound { top: 20px; right: 16px; padding: 8px 12px; font-size: 9.5px; }
+        }
     </style>
 </head>
 <body>
@@ -321,19 +328,6 @@
             <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
         </div>
     </nav>
-
-    <!-- Floating sound toggle — controls the MFS demo video below -->
-    <button id="floatingSound" class="floating-sound" aria-label="Sound on / off">
-        <span class="icon" aria-hidden="true">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                <line class="mute-x1" x1="23" y1="9" x2="17" y2="15"></line>
-                <line class="mute-x2" x1="17" y1="9" x2="23" y2="15"></line>
-            </svg>
-        </span>
-        <span class="label-off">Sound · Off</span>
-        <span class="label-on">Sound · On</span>
-    </button>
 
     <section class="page-header">
         <div class="container">
