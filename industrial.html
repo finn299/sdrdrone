@@ -272,6 +272,36 @@
         @media (max-width: 768px) {
             .floating-sound { top: 72px; right: 16px; padding: 8px 12px; font-size: 9px; }
         }
+
+        /* Inline sound button — sits above the title in page-header */
+        .header-sound {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 28px;
+            font-family: var(--mono);
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--text);
+            background: var(--bg);
+            border: 1px solid var(--text);
+            padding: 10px 16px;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+        .header-sound:hover { background: var(--text); color: var(--bg); }
+        .header-sound .icon {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 14px; height: 14px;
+            color: currentColor;
+        }
+        .header-sound .label-on { display: none; }
+        .header-sound.is-on .label-off { display: none; }
+        .header-sound.is-on .label-on { display: inline; }
+        .header-sound.is-on { background: var(--accent); color: #fff; border-color: var(--accent); }
     </style>
 </head>
 <body>
@@ -307,6 +337,17 @@
 
     <section class="page-header">
         <div class="container">
+            <button id="headerSound" class="header-sound" aria-label="Sound on / off">
+                <span class="icon" aria-hidden="true">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                        <line class="mute-x1" x1="23" y1="9" x2="17" y2="15"></line>
+                        <line class="mute-x2" x1="17" y1="9" x2="23" y2="15"></line>
+                    </svg>
+                </span>
+                <span class="label-off">▶ MFS Demo · Click to play with sound</span>
+                <span class="label-on">MFS Demo · Sound on · Click to mute</span>
+            </button>
             <div class="eyebrow fade-up fade-up-1"><span class="eyebrow-dot"></span>Industrial &amp; Civil Applications</div>
             <h1 class="display-lg fade-up fade-up-2">Beyond defense — drones for <em>industrial scale</em>.</h1>
             <p class="lede fade-up fade-up-3">SDR's drone platform extends from defense into industrial and civil operations: 24/7 tethered infrastructure monitoring, multi-drone agricultural smart-farms, swarm-coordinated industrial operations, and 3D-printed distributed manufacturing. The same flight control, mesh networking, and integrated avionics — adapted for the cadence of energy, utilities, agriculture, and public-safety operators.</p>
@@ -470,9 +511,9 @@
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         var ytPlayer;
-        var sBtn, pBtn, floatBtn;
+        var sBtn, pBtn, floatBtn, headerBtn;
         function setSoundButtonOn(on){
-            [sBtn, floatBtn].forEach(function(b){
+            [sBtn, floatBtn, headerBtn].forEach(function(b){
                 if (!b) return;
                 b.classList.toggle('is-on', on);
                 b.querySelectorAll('.mute-x1, .mute-x2').forEach(function(l){ l.style.display = on ? 'none' : 'inline'; });
@@ -495,6 +536,7 @@
             pBtn = document.getElementById('ytPlayToggle');
             sBtn = document.getElementById('ytSoundToggle');
             floatBtn = document.getElementById('floatingSound');
+            headerBtn = document.getElementById('headerSound');
             var isPlaying = true;
             function unmuteOnInteraction(){
                 if (!ytPlayer) return;
@@ -514,6 +556,7 @@
             });
             if (sBtn) sBtn.addEventListener('click', toggleSound);
             if (floatBtn) floatBtn.addEventListener('click', toggleSound);
+            if (headerBtn) headerBtn.addEventListener('click', toggleSound);
         })();
     </script>
 
