@@ -233,15 +233,69 @@
     <section class="video-hero">
         <div class="video-frame">
             <div class="video-plate">PLATE · H5 PLATFORM · 4K</div>
-            <iframe class="video-el"
-                src="https://www.youtube.com/embed/e49M1VehMnA?autoplay=1&amp;mute=1&amp;loop=1&amp;playlist=e49M1VehMnA&amp;controls=0&amp;rel=0&amp;modestbranding=1&amp;playsinline=1&amp;disablekb=1&amp;iv_load_policy=3&amp;fs=0"
+            <iframe id="ytPlayer" class="video-el"
+                src="https://www.youtube.com/embed/e49M1VehMnA?autoplay=1&amp;mute=1&amp;loop=1&amp;playlist=e49M1VehMnA&amp;controls=0&amp;rel=0&amp;modestbranding=1&amp;playsinline=1&amp;disablekb=1&amp;iv_load_policy=3&amp;fs=0&amp;enablejsapi=1"
                 title="SDR H5 Platform"
                 frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 referrerpolicy="strict-origin-when-cross-origin"
                 allowfullscreen></iframe>
+            <div class="video-controls" role="toolbar" aria-label="Video controls">
+                <button id="ytPlayToggle" class="video-btn play-btn is-on" aria-label="Play / pause">
+                    <span class="icon icon-play" aria-hidden="true">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"></polygon></svg>
+                    </span>
+                    <span class="icon icon-pause" aria-hidden="true">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+                    </span>
+                    <span class="label-off">Play</span>
+                    <span class="label-on">Pause</span>
+                </button>
+                <button id="ytSoundToggle" class="video-btn sound-btn" aria-label="Sound on / off">
+                    <span class="icon" aria-hidden="true">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                            <line class="mute-x1" x1="23" y1="9" x2="17" y2="15"></line>
+                            <line class="mute-x2" x1="17" y1="9" x2="23" y2="15"></line>
+                        </svg>
+                    </span>
+                    <span class="label-off">Unmute</span>
+                    <span class="label-on">Mute</span>
+                </button>
+            </div>
         </div>
     </section>
+
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+        var ytPlayer;
+        function onYouTubeIframeAPIReady(){
+            ytPlayer = new YT.Player('ytPlayer', {
+                events: { 'onReady': function(){ ytPlayer.mute(); ytPlayer.playVideo(); } }
+            });
+        }
+        (function(){
+            var pBtn = document.getElementById('ytPlayToggle');
+            var sBtn = document.getElementById('ytSoundToggle');
+            var isPlaying = true;
+            if (pBtn) pBtn.addEventListener('click', function(){
+                if (!ytPlayer) return;
+                if (isPlaying) { ytPlayer.pauseVideo(); pBtn.classList.remove('is-on'); }
+                else { ytPlayer.playVideo(); pBtn.classList.add('is-on'); }
+                isPlaying = !isPlaying;
+            });
+            if (sBtn) sBtn.addEventListener('click', function(){
+                if (!ytPlayer) return;
+                if (ytPlayer.isMuted()) {
+                    ytPlayer.unMute(); sBtn.classList.add('is-on');
+                    sBtn.querySelectorAll('.mute-x1, .mute-x2').forEach(function(l){ l.style.display = 'none'; });
+                } else {
+                    ytPlayer.mute(); sBtn.classList.remove('is-on');
+                    sBtn.querySelectorAll('.mute-x1, .mute-x2').forEach(function(l){ l.style.display = 'inline'; });
+                }
+            });
+        })();
+    </script>
 
     <section class="page-header">
         <div class="container">
