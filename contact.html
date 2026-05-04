@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact — SDR Drone Inc.</title>
+    <meta name="description" content="Engage with SDR Drone Inc. — defense procurement, industrial partnerships, technology transfer, and global program inquiries.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,300;9..144,0,400;9..144,0,500;9..144,1,300;9..144,1,400;9..144,1,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr;
+            gap: 0;
+            background: var(--border);
+            border: 1px solid var(--border);
+            margin-top: 56px;
+        }
+        .contact-info {
+            background: var(--bg);
+            padding: 64px 56px;
+        }
+        .contact-block + .contact-block {
+            margin-top: 48px;
+            padding-top: 48px;
+            border-top: 1px solid var(--border);
+        }
+        .contact-block-tag {
+            font-family: var(--mono);
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 16px;
+        }
+        .contact-block h3 {
+            font-family: var(--display);
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: -0.015em;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        .contact-block p {
+            font-size: 15px;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            font-weight: 300;
+            margin-bottom: 6px;
+        }
+        .contact-mono {
+            font-family: var(--mono);
+            font-size: 13px;
+            color: var(--text-secondary);
+            letter-spacing: 0.04em;
+            line-height: 1.8;
+        }
+        .contact-mono a { color: var(--accent); }
+        .contact-mono a:hover { color: var(--accent-bright); }
+        .contact-side {
+            background: var(--bg-deep);
+            color: var(--text-light);
+            padding: 64px 56px;
+            display: flex;
+            flex-direction: column;
+        }
+        .contact-side-tag {
+            font-family: var(--mono);
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 28px;
+        }
+        .contact-side h3 {
+            font-family: var(--display);
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 1.15;
+            margin-bottom: 20px;
+        }
+        .contact-side p {
+            font-size: 15px;
+            color: rgba(255,255,255,0.7);
+            line-height: 1.7;
+            font-weight: 300;
+            margin-bottom: 16px;
+        }
+        .contact-paths {
+            margin-top: 32px;
+            display: grid;
+            gap: 0;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .contact-path {
+            padding: 24px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .contact-path-label {
+            font-family: var(--mono);
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 6px;
+        }
+        .contact-path-name {
+            font-family: var(--display);
+            font-size: 17px;
+            font-weight: 600;
+            letter-spacing: -0.005em;
+            color: var(--text-light);
+        }
+        @media (max-width: 1024px) {
+            .contact-grid { grid-template-columns: 1fr; }
+            .contact-info, .contact-side { padding: 48px 32px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="container nav-inner">
+            <a href="index.html" class="logo"><img src="img/sdr-logo-transparent.png" alt="SDR Drone Inc." class="logo-img"></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="team.html">Team</a></li>
+                <li><a href="capabilities.html">Capabilities</a></li>
+                <li><a href="drones.html">Defense</a></li>
+                <li><a href="industrial.html">Industrial</a></li>
+                <li><a href="insights.html">Insights</a></li>
+                <li><a href="contact.html" class="nav-cta active">Contact</a></li>
+            </ul>
+            <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+
+    <section class="page-header">
+        <div class="container">
+            <div class="eyebrow fade-up fade-up-1"><span class="eyebrow-dot"></span>Engage with SDR</div>
+            <h1 class="display-lg fade-up fade-up-2">Build your <em>airborne</em> capability.</h1>
+            <p class="lede fade-up fade-up-3">For defense procurement, industrial partnerships, technology transfer, and international programs — reach the SDR team directly through the channels below. Detailed specifications and platform briefings available on request.</p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="contact-grid">
+
+                <div class="contact-info">
+                    <div class="contact-block">
+                        <div class="contact-block-tag">Headquarters · R&amp;D Center</div>
+                        <h3>SDR Drone Inc.</h3>
+                        <p>1209 Mountain Road PL NE, Suite R<br>Albuquerque, NM 87110, USA</p>
+                    </div>
+
+                    <div class="contact-block">
+                        <div class="contact-block-tag">Development Division</div>
+                        <h3>Engineering &amp; Operations</h3>
+                        <p>Korea Manufacturing Partner — Sundori Co., Ltd.<br>Hanam, Gyeonggi-do, Republic of Korea</p>
+                    </div>
+
+                    <div class="contact-block">
+                        <div class="contact-block-tag">Direct lines</div>
+                        <h3>Contact channels</h3>
+                        <div class="contact-mono">
+                            TEL &nbsp; +82-2-408-2777<br>
+                            FAX &nbsp; +82-508-945-1599<br>
+                            E-MAIL &nbsp; <a href="mailto:info@sdrdrone.com">info@sdrdrone.com</a>
+                        </div>
+                    </div>
+
+                    <div class="contact-block">
+                        <div class="contact-block-tag">Corporate</div>
+                        <h3>Entity &amp; registration</h3>
+                        <div class="contact-mono">
+                            ENTITY &nbsp; New Mexico Corporation<br>
+                            DOMICILE &nbsp; Albuquerque, New Mexico, USA<br>
+                            STATUS &nbsp; SPAC-track 2026
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-side">
+                    <div class="contact-side-tag">Engagement Paths</div>
+                    <h3>How to engage with SDR</h3>
+                    <p>SDR works across four primary engagement paths. Identify the path that fits, and reach out through the contact channels — our team will route your inquiry to the right operating lead.</p>
+
+                    <div class="contact-paths">
+                        <div class="contact-path">
+                            <div class="contact-path-label">[ 01 ]</div>
+                            <div class="contact-path-name">Defense procurement</div>
+                        </div>
+                        <div class="contact-path">
+                            <div class="contact-path-label">[ 02 ]</div>
+                            <div class="contact-path-name">Industrial partnerships</div>
+                        </div>
+                        <div class="contact-path">
+                            <div class="contact-path-label">[ 03 ]</div>
+                            <div class="contact-path-name">Technology transfer</div>
+                        </div>
+                        <div class="contact-path">
+                            <div class="contact-path-label">[ 04 ]</div>
+                            <div class="contact-path-name">Press &amp; media</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-warm">
+        <div class="container">
+            <div class="section-header">
+                <div class="eyebrow" style="margin-bottom: 28px;"><span class="eyebrow-dot"></span>Global engagements</div>
+                <h2 class="display-md">Active programs across <em>nine markets</em>.</h2>
+                <p class="lede">SDR maintains active commercial and defense engagements across the United States, Japan, India, Indonesia, Thailand, Mongolia, Bangladesh, Cambodia, and the Republic of Korea.</p>
+            </div>
+            <div class="market-grid">
+                <div class="market-cell"><div class="market-flag">KOR</div><div class="market-name">Republic of Korea</div><div class="market-detail">Defense standard platform · Public-procurement innovative product</div></div>
+                <div class="market-cell"><div class="market-flag">USA</div><div class="market-name">United States</div><div class="market-detail">Oil &amp; gas infrastructure protection · Fulton County, GA</div></div>
+                <div class="market-cell"><div class="market-flag">JPN</div><div class="market-name">Japan</div><div class="market-detail">O-WELL Corporation industrial partnership</div></div>
+                <div class="market-cell"><div class="market-flag">IND</div><div class="market-name">India</div><div class="market-detail">Vijay Sabre Safety LOI · Enhansafe defense programs</div></div>
+                <div class="market-cell"><div class="market-flag">IDN</div><div class="market-name">Indonesia</div><div class="market-detail">MOU · Sejin drone export framework</div></div>
+                <div class="market-cell"><div class="market-flag">THA</div><div class="market-name">Thailand</div><div class="market-detail">Procurement: T-dori, H5, M2K platforms</div></div>
+                <div class="market-cell"><div class="market-flag">MNG</div><div class="market-name">Mongolia</div><div class="market-detail">Technology transfer &amp; drone selection program</div></div>
+                <div class="market-cell"><div class="market-flag">BGD</div><div class="market-name">Bangladesh</div><div class="market-detail">Drone export program · 2025</div></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="quote-block">
+                <div class="eyebrow" style="margin-bottom: 40px;"><span class="eyebrow-dot"></span>Operating principle</div>
+                <p class="quote-text">Bring everything you imagine to life. Built for operators, validated in mission, deployed across continents.</p>
+                <div class="quote-attr">SDR Drone Inc. · Operating Mandate</div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand"><div class="logo"><img src="img/sdr-logo-transparent.png" alt="SDR Drone Inc." class="logo-img logo-img-dark"></div><p class="footer-tagline">Global defense and industrial — total drone solutions, engineered in Korea.</p></div>
+                <div class="footer-col"><h4>Company</h4><ul><li><a href="about.html">About</a></li><li><a href="team.html">Team</a></li><li><a href="capabilities.html">Capabilities</a></li><li><a href="drones.html">Drones</a></li><li><a href="insights.html">Insights</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+                <div class="footer-col"><h4>Domains</h4><ul><li>Defense &amp; Tactical</li><li>Public Safety &amp; SAR</li><li>Industrial &amp; Energy</li><li>Agriculture &amp; Smart Farm</li></ul></div>
+                <div class="footer-col"><h4>Headquarters</h4><ul><li>1209 Mountain Road PL NE</li><li>Suite R, Albuquerque</li><li>NM 87110, USA</li><li><a href="mailto:info@sdrdrone.com">info@sdrdrone.com</a></li></ul></div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-legal">© 2026 SDR Drone Inc. All rights reserved. Information presented on this website is for general purposes only and does not constitute an offer to sell defense materiel or solicitation of any procurement. Export of defense-related products is subject to applicable laws and licensing.</div>
+                <div class="footer-meta">New Mexico Corporation<br>Albuquerque · NM 87110</div>
+            </div>
+        </div>
+    </footer>
+    <script>const t=document.querySelector('.nav-toggle'),l=document.querySelector('.nav-links');if(t)t.addEventListener('click',()=>l.classList.toggle('is-open'));</script>
+    <a href="#top" class="back-to-top" id="backToTop" aria-label="Back to top">
+        <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"></polyline></svg>
+    </a>
+    <script>(function(){var b=document.getElementById('backToTop');if(!b)return;function t(){if(window.scrollY>320){b.classList.add('is-visible');}else{b.classList.remove('is-visible');}}window.addEventListener('scroll',t,{passive:true});t();b.addEventListener('click',function(e){e.preventDefault();window.scrollTo({top:0,behavior:'smooth'});});})();</script>
+</body>
+</html>

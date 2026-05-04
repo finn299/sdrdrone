@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team — SDR Drone Inc.</title>
+    <meta name="description" content="The team behind SDR — engineers, operators, and platform leaders building Korea's defense-standard drone system.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,300;9..144,0,400;9..144,0,500;9..144,1,300;9..144,1,400;9..144,1,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* ===== Leadership — horizontal cards, B&W portraits left ===== */
+        .leadership {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            margin-top: 56px;
+            max-width: 1080px;
+        }
+        .leader {
+            background: var(--bg);
+            display: grid;
+            grid-template-columns: 160px 1fr;
+            align-items: stretch;
+        }
+        .leader-portrait {
+            width: 160px;
+            height: 160px;
+            background: #f4f4f2;
+            position: relative;
+            overflow: hidden;
+            align-self: center;
+            margin: 28px 0 28px 28px;
+        }
+        .leader-portrait img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center center;
+            display: block;
+        }
+        .leader-index { display: none; }
+        .leader-body {
+            padding: 32px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .leader-tag {
+            font-family: var(--mono);
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 12px;
+        }
+        .leader-name {
+            font-family: var(--display);
+            font-size: 26px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            margin-bottom: 6px;
+        }
+        .leader-role {
+            font-family: var(--mono);
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 18px;
+            letter-spacing: 0.04em;
+            line-height: 1.4;
+        }
+        .leader-bio {
+            font-size: 14px;
+            line-height: 1.65;
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+        @media (max-width: 768px) {
+            .leader { grid-template-columns: 110px 1fr; }
+            .leader-portrait { width: 110px; height: 110px; margin: 20px 0 20px 20px; }
+            .leader-body { padding: 24px 24px 28px; }
+        }
+
+        /* ===== SUNDORI Co., Ltd. — engineering bench ===== */
+        .partner-banner {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 0;
+            margin-top: 56px;
+            background: var(--bg-deep);
+            color: var(--text-light);
+            border: 1px solid var(--border);
+        }
+        .partner-banner-tag {
+            padding: 32px 36px;
+            border-right: 1px solid rgba(255,255,255,0.08);
+            display: flex;
+            align-items: center;
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.6);
+        }
+        .partner-banner-body {
+            padding: 32px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .partner-banner-title {
+            font-family: var(--display);
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: -0.015em;
+            margin-bottom: 6px;
+        }
+        .partner-banner-meta {
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            color: rgba(255,255,255,0.55);
+            text-transform: uppercase;
+        }
+        @media (max-width: 768px) {
+            .partner-banner { grid-template-columns: 1fr; }
+            .partner-banner-tag { border-right: 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            border-top: 0;
+        }
+        .team-card {
+            background: var(--bg);
+            display: grid;
+            grid-template-columns: 110px 1fr;
+            align-items: stretch;
+        }
+        .team-portrait {
+            width: 110px;
+            height: 110px;
+            background: #f4f4f2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            align-self: center;
+            margin: 22px 0 22px 22px;
+        }
+        .team-portrait img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 22%;
+            display: block;
+            filter: grayscale(1) contrast(1.05);
+        }
+        .team-initials {
+            font-family: var(--display);
+            font-size: 36px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: var(--text-muted);
+        }
+        .team-body {
+            padding: 22px 26px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .team-name {
+            font-family: var(--display);
+            font-size: 17px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            line-height: 1.2;
+            margin-bottom: 4px;
+        }
+        .team-role {
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--accent);
+            margin-bottom: 10px;
+            letter-spacing: 0.06em;
+        }
+        .team-blurb {
+            font-size: 13px;
+            line-height: 1.55;
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+        @media (max-width: 880px) { .team-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="container nav-inner">
+            <a href="index.html" class="logo"><img src="img/sdr-logo-transparent.png" alt="SDR Drone Inc." class="logo-img"></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="team.html" class="active">Team</a></li>
+                <li><a href="capabilities.html">Capabilities</a></li>
+                <li><a href="drones.html">Defense</a></li>
+                <li><a href="industrial.html">Industrial</a></li>
+                <li><a href="insights.html">Insights</a></li>
+                <li><a href="contact.html" class="nav-cta">Contact</a></li>
+            </ul>
+            <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+
+    <section class="page-header">
+        <div class="container">
+            <div class="eyebrow fade-up fade-up-1"><span class="eyebrow-dot"></span>Leadership &amp; Operating Team</div>
+            <h1 class="display-lg fade-up fade-up-2">The team building the <em>platform</em>.</h1>
+            <p class="lede fade-up fade-up-3">SDR Drone Inc. is led by three principals who together carry three decades of unmanned-aviation engineering, defense procurement experience, and global commercialization expertise — supported by SUNDORI Co., Ltd., the Korean engineering and manufacturing team behind every platform.</p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <div class="eyebrow" style="margin-bottom: 24px;"><span class="eyebrow-dot"></span>Principals</div>
+                <h2 class="display-md">Three principals. <em>One platform</em>.</h2>
+                <p class="lede">Founder-engineer, international strategist, and managing partner — the leadership of SDR Drone Inc. operates as a tight, three-person command for technology, global strategy, and commercial execution.</p>
+            </div>
+
+            <div class="leadership">
+                <article class="leader">
+                    <div class="leader-portrait">
+                        <img src="img/cho-bw.png?v=3" alt="Cho Sun-sik">
+                    </div>
+                    <div class="leader-body">
+                        <div class="leader-tag">Founder · Chief Executive</div>
+                        <h3 class="leader-name">Cho Sun-sik</h3>
+                        <div class="leader-role">Founder &amp; CEO · Platform Architect</div>
+                        <p class="leader-bio">Founder of SUNDORI Co., Ltd. and SDR Drone Inc. Three decades of unmanned-aviation engineering — from Korea's first commercial unmanned airships in 1991 through the development of the SDR Multi Flight Control system, the SDR-ONE integrated avionics board, and today's defense-standard drone platform. Architect of the company's technology roadmap and platform strategy.</p>
+                    </div>
+                </article>
+                <article class="leader">
+                    <div class="leader-portrait">
+                        <img src="img/leo-bw.png?v=3" alt="Leo Chung">
+                    </div>
+                    <div class="leader-body">
+                        <div class="leader-tag">International Strategy</div>
+                        <h3 class="leader-name">Leo Chung</h3>
+                        <div class="leader-role">International Strategic Officer · Programs &amp; Partnerships</div>
+                        <p class="leader-bio">Leads SDR's international strategy, defense-program engagements, and government partnerships across nine markets — including the United States, Japan, India, Indonesia, Thailand, Mongolia, Bangladesh, Cambodia, and the Republic of Korea. Responsible for procurement pathways, technology-transfer frameworks, and long-horizon market positioning.</p>
+                    </div>
+                </article>
+                <article class="leader">
+                    <div class="leader-portrait">
+                        <img src="img/finn-bw.png?v=3" alt="Finn Gallagher">
+                    </div>
+                    <div class="leader-body">
+                        <div class="leader-tag">Managing Partner</div>
+                        <h3 class="leader-name">Finn Gallagher</h3>
+                        <div class="leader-role">Managing Partner · Capital, Corporate &amp; Commercial</div>
+                        <p class="leader-bio">Managing partner of SDR Drone Inc. Leads the U.S. corporate platform — capital strategy, SPAC-track listing, U.S. defense-channel development, and operating governance. Background in cross-border industrial transactions, technology commercialization, and U.S. corporate structuring for international defense and dual-use platforms.</p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-warm">
+        <div class="container">
+            <div class="section-header">
+                <div class="eyebrow" style="margin-bottom: 28px;"><span class="eyebrow-dot"></span>Korean Engineering Bench</div>
+                <h2 class="display-md">Built in <em>Hanam</em>. Engineered by SUNDORI.</h2>
+                <p class="lede">SDR's drone platforms are designed, built, and tested by SUNDORI Co., Ltd. — the Korean parent and manufacturing partner. Below is the engineering bench responsible for flight control, avionics, communications, and field operations.</p>
+            </div>
+
+            <div class="partner-banner">
+                <div class="partner-banner-tag">Manufacturing &amp; R&amp;D Partner</div>
+                <div class="partner-banner-body">
+                    <div class="partner-banner-title">SUNDORI Co., Ltd.</div>
+                    <div class="partner-banner-meta">Hanam, Gyeonggi-do · Republic of Korea · Est. 1991</div>
+                </div>
+            </div>
+
+            <div class="team-grid">
+                <article class="team-card">
+                    <div class="team-portrait"><span class="team-initials">JH</span></div>
+                    <div class="team-body">
+                        <h4 class="team-name">Jung Hyun-woo</h4>
+                        <div class="team-role">CTO · Flight Control &amp; Avionics</div>
+                        <p class="team-blurb">Leads core platform engineering — SDR Multi Flight Control swarm system and the SDR-ONE integrated motherboard. Real-time embedded systems, FANET mesh communications, encrypted control links.</p>
+                    </div>
+                </article>
+                <article class="team-card">
+                    <div class="team-portrait"><span class="team-initials">PM</span></div>
+                    <div class="team-body">
+                        <h4 class="team-name">Park Min-jae</h4>
+                        <div class="team-role">COO · Manufacturing &amp; Operations</div>
+                        <p class="team-blurb">Oversees Hanam production lines, supply chain, and field operations. Manufacturing scale-up to 1,000+ unit annual capacity and certified-operator training programs.</p>
+                    </div>
+                </article>
+                <article class="team-card">
+                    <div class="team-portrait"><span class="team-initials">KH</span></div>
+                    <div class="team-body">
+                        <h4 class="team-name">Kim Ha-eun</h4>
+                        <div class="team-role">Lead · Flight Control Software</div>
+                        <p class="team-blurb">Leads SDR Multi Flight Control development. Real-time embedded systems, formation algorithms, AI collision avoidance, mission planning.</p>
+                    </div>
+                </article>
+                <article class="team-card">
+                    <div class="team-portrait"><span class="team-initials">SY</span></div>
+                    <div class="team-body">
+                        <h4 class="team-name">Shin Yong-jin</h4>
+                        <div class="team-role">Lead · Hardware &amp; Avionics</div>
+                        <p class="team-blurb">Owner of the SDR-ONE integrated board program. Component sourcing under NDAA §848 / Zero-China BOM constraints, mass-production engineering, supply-chain integrity.</p>
+                    </div>
+                </article>
+                <article class="team-card">
+                    <div class="team-portrait"><span class="team-initials">CY</span></div>
+                    <div class="team-body">
+                        <h4 class="team-name">Choi Yu-jin</h4>
+                        <div class="team-role">Lead · Communications &amp; Encryption</div>
+                        <p class="team-blurb">FANET mesh networking, anti-jamming countermeasures, military-grade encrypted communications. Defense procurement-grade security and EW resilience.</p>
+                    </div>
+                </article>
+                <article class="team-card">
+                    <div class="team-portrait"><span class="team-initials">YJ</span></div>
+                    <div class="team-body">
+                        <h4 class="team-name">Yoon Joon-seok</h4>
+                        <div class="team-role">Lead · Field Operations</div>
+                        <p class="team-blurb">Operator training, certification programs, on-site deployment. Liaison with Army, Navy, Air Force, Police, and Fire programs across the Republic of Korea.</p>
+                    </div>
+                </article>
+            </div>
+
+            <p class="caption" style="margin-top:24px; font-family:var(--mono); font-size:11px; letter-spacing:0.06em; color:var(--text-muted);">
+                Engineer portraits to be added — placeholder initials shown.
+            </p>
+        </div>
+    </section>
+
+    <section class="cta-strip">
+        <div class="container">
+            <div class="cta-content">
+                <div class="eyebrow eyebrow-on-dark" style="margin-bottom: 32px;"><span class="eyebrow-dot"></span>Engage with SDR</div>
+                <h2 class="display-lg" style="color: var(--text-light);">Build the next mission <em>with us</em>.</h2>
+                <div class="cta-actions">
+                    <a href="contact.html" class="btn btn-primary">Contact the team <span class="btn-arrow" aria-hidden="true">→</span></a>
+                    <a href="capabilities.html" class="btn btn-ghost">Technical capabilities</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand"><div class="logo"><img src="img/sdr-logo-transparent.png" alt="SDR Drone Inc." class="logo-img logo-img-dark"></div><p class="footer-tagline">Global defense and industrial — total drone solutions, engineered in Korea.</p></div>
+                <div class="footer-col"><h4>Company</h4><ul><li><a href="about.html">About</a></li><li><a href="team.html">Team</a></li><li><a href="capabilities.html">Capabilities</a></li><li><a href="drones.html">Drones</a></li><li><a href="insights.html">Insights</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+                <div class="footer-col"><h4>Domains</h4><ul><li>Defense &amp; Tactical</li><li>Public Safety &amp; SAR</li><li>Industrial &amp; Energy</li><li>Agriculture &amp; Smart Farm</li></ul></div>
+                <div class="footer-col"><h4>Headquarters</h4><ul><li>1209 Mountain Road PL NE</li><li>Suite R, Albuquerque</li><li>NM 87110, USA</li><li><a href="mailto:info@sdrdrone.com">info@sdrdrone.com</a></li></ul></div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-legal">© 2026 SDR Drone Inc. All rights reserved.</div>
+                <div class="footer-meta">New Mexico Corporation<br>Albuquerque · NM 87110</div>
+            </div>
+        </div>
+    </footer>
+    <script>const t=document.querySelector('.nav-toggle'),l=document.querySelector('.nav-links');if(t)t.addEventListener('click',()=>l.classList.toggle('is-open'));</script>
+    <a href="#top" class="back-to-top" id="backToTop" aria-label="Back to top">
+        <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"></polyline></svg>
+    </a>
+    <script>(function(){var b=document.getElementById('backToTop');if(!b)return;function t(){if(window.scrollY>320){b.classList.add('is-visible');}else{b.classList.remove('is-visible');}}window.addEventListener('scroll',t,{passive:true});t();b.addEventListener('click',function(e){e.preventDefault();window.scrollTo({top:0,behavior:'smooth'});});})();</script>
+</body>
+</html>

@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Industrial — SDR Drone Inc.</title>
+    <meta name="description" content="SDR's industrial drone applications — tethered infrastructure monitoring, multi-drone agricultural smart-farms, swarm-coordinated industrial operations, and 3D-printed distributed manufacturing.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,300;9..144,0,400;9..144,0,500;9..144,1,300;9..144,1,400;9..144,1,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .ind-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+        }
+        .ind-cell {
+            background: var(--bg);
+            padding: 28px 26px;
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            color: inherit;
+            transition: background 0.2s ease;
+        }
+        .ind-cell:hover { background: var(--bg-warm); }
+        .ind-num { font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: 0.22em; color: var(--accent); margin-bottom: 16px; }
+        .ind-name { font-family: var(--display); font-size: 18px; font-weight: 600; line-height: 1.2; letter-spacing: -0.01em; margin-bottom: 8px; }
+        .ind-code { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; color: var(--text-muted); margin-bottom: 14px; }
+        .ind-detail { font-size: 12.5px; line-height: 1.55; color: var(--text-secondary); font-weight: 300; margin-top: auto; }
+        @media (max-width: 1100px) { .ind-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 560px) { .ind-grid { grid-template-columns: 1fr; } }
+
+        .showcase {
+            background: #ffffff;
+            border-bottom: 1px solid var(--border-faint);
+            padding: 96px 0;
+            position: relative;
+        }
+        .showcase-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 64px;
+            align-items: center;
+            min-height: 540px;
+        }
+        .showcase.flip .showcase-grid { grid-template-columns: 1fr 1.2fr; }
+        .showcase.flip .showcase-photo { order: 2; }
+        .showcase.flip .showcase-info { order: 1; }
+        .showcase-photo {
+            position: relative;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 480px;
+            overflow: hidden;
+        }
+        .showcase-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .showcase-plate {
+            position: absolute;
+            top: 24px;
+            left: 24px;
+            font-family: var(--mono);
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.92);
+            background: rgba(10, 14, 20, 0.55);
+            padding: 8px 14px;
+            border: 1px solid rgba(255,255,255,0.18);
+            backdrop-filter: blur(6px);
+            z-index: 2;
+            line-height: 1.4;
+        }
+        .showcase-info { padding: 24px 0; }
+        .showcase-num { font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; color: var(--accent); margin-bottom: 18px; }
+        .showcase-code { font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; color: var(--text-muted); margin-bottom: 16px; }
+        .showcase-name {
+            font-family: var(--display);
+            font-size: clamp(40px, 4.5vw, 64px);
+            font-weight: 600;
+            letter-spacing: -0.025em;
+            line-height: 1.05;
+            margin-bottom: 18px;
+        }
+        .showcase-name em { font-style: italic; font-weight: 400; color: var(--accent); }
+        .showcase-class { font-family: var(--mono); font-size: 12.5px; color: var(--text-muted); letter-spacing: 0.06em; margin-bottom: 28px; }
+        .showcase-desc { font-size: 15.5px; line-height: 1.7; color: var(--text-secondary); font-weight: 300; margin-bottom: 32px; max-width: 540px; }
+        .showcase-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 36px; }
+        .showcase-badge {
+            font-family: var(--mono);
+            font-size: 10.5px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 6px 12px;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+        .showcase-badge.is-accent { color: var(--accent); border-color: var(--accent); }
+        .showcase-specs { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); }
+        .showcase-spec { background: var(--bg); padding: 18px 20px; }
+        .showcase-spec dt { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
+        .showcase-spec dd { font-family: var(--display); font-size: 17px; font-weight: 600; letter-spacing: -0.01em; color: var(--text); margin: 0; }
+        .showcase-spec dd small { font-family: var(--mono); font-weight: 400; font-size: 11px; color: var(--text-muted); margin-left: 4px; letter-spacing: 0.04em; }
+        @media (max-width: 980px) {
+            .showcase-grid, .showcase.flip .showcase-grid { grid-template-columns: 1fr; gap: 32px; }
+            .showcase.flip .showcase-photo, .showcase.flip .showcase-info { order: initial; }
+            .showcase-photo { min-height: 360px; }
+            .showcase-specs { grid-template-columns: 1fr 1fr; }
+        }
+
+        /* MFS Multi-Control video block */
+        .mfs-video-section {
+            background: var(--bg-deep);
+            color: var(--text-light);
+            padding: 96px 0 0;
+        }
+        .mfs-video-header {
+            max-width: 880px;
+            margin: 0 auto 48px;
+            text-align: center;
+            padding: 0 24px;
+        }
+        .mfs-video-eyebrow {
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.55);
+            margin-bottom: 18px;
+        }
+        .mfs-video-title {
+            font-family: var(--display);
+            font-size: clamp(32px, 4vw, 52px);
+            font-weight: 600;
+            letter-spacing: -0.025em;
+            line-height: 1.1;
+            color: var(--text-light);
+            margin-bottom: 18px;
+        }
+        .mfs-video-title em { font-style: italic; font-weight: 400; color: rgba(255,255,255,0.7); }
+        .mfs-video-lede {
+            font-size: 15.5px;
+            line-height: 1.7;
+            color: rgba(255,255,255,0.7);
+            font-weight: 300;
+        }
+        .video-hero {
+            background: var(--bg-deep);
+            padding: 0;
+            margin: 0;
+            width: 100%;
+            display: block;
+        }
+        .video-frame {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%;
+            background: var(--bg-deep);
+            overflow: hidden;
+        }
+        .video-frame .video-el {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            display: block;
+            object-fit: cover;
+        }
+        .video-plate {
+            position: absolute;
+            top: 24px;
+            left: 32px;
+            z-index: 2;
+            font-family: var(--mono);
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.92);
+            background: rgba(10, 14, 20, 0.55);
+            padding: 8px 14px;
+            border: 1px solid rgba(255,255,255,0.18);
+            backdrop-filter: blur(8px);
+        }
+        .video-controls {
+            position: absolute;
+            bottom: 24px;
+            right: 32px;
+            z-index: 2;
+            display: inline-flex;
+            align-items: stretch;
+            background: rgba(10, 14, 20, 0.55);
+            border: 1px solid rgba(255,255,255,0.22);
+            backdrop-filter: blur(8px);
+            user-select: none;
+        }
+        .video-btn {
+            display: inline-flex; align-items: center; gap: 10px;
+            font-family: var(--mono); font-size: 10px; font-weight: 500;
+            letter-spacing: 0.22em; text-transform: uppercase;
+            color: rgba(255,255,255,0.92);
+            background: transparent; border: 0;
+            padding: 10px 16px; cursor: pointer;
+            transition: background 0.2s ease;
+        }
+        .video-btn + .video-btn { border-left: 1px solid rgba(255,255,255,0.18); }
+        .video-btn:hover { background: rgba(255,255,255,0.08); }
+        .video-btn .icon { display: inline-block; width: 14px; height: 14px; color: rgba(255,255,255,0.95); }
+        .video-btn .label-on { display: none; }
+        .video-btn.is-on .label-off { display: none; }
+        .video-btn.is-on .label-on { display: inline; }
+        .play-btn .icon-pause, .play-btn.is-on .icon-play { display: none; }
+        .play-btn.is-on .icon-pause { display: inline-block; }
+        @media (max-width: 768px) {
+            .video-plate { top: 16px; left: 16px; }
+            .video-controls { bottom: 16px; right: 16px; }
+            .video-btn { padding: 8px 12px; font-size: 9px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="container nav-inner">
+            <a href="index.html" class="logo"><img src="img/sdr-logo-transparent.png" alt="SDR Drone Inc." class="logo-img"></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="team.html">Team</a></li>
+                <li><a href="capabilities.html">Capabilities</a></li>
+                <li><a href="drones.html">Defense</a></li>
+                <li><a href="industrial.html" class="active">Industrial</a></li>
+                <li><a href="insights.html">Insights</a></li>
+                <li><a href="contact.html" class="nav-cta">Contact</a></li>
+            </ul>
+            <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+
+    <section class="page-header">
+        <div class="container">
+            <div class="eyebrow fade-up fade-up-1"><span class="eyebrow-dot"></span>Industrial &amp; Civil Applications</div>
+            <h1 class="display-lg fade-up fade-up-2">Beyond defense — drones for <em>industrial scale</em>.</h1>
+            <p class="lede fade-up fade-up-3">SDR's drone platform extends from defense into industrial and civil operations: 24/7 tethered infrastructure monitoring, multi-drone agricultural smart-farms, swarm-coordinated industrial operations, and 3D-printed distributed manufacturing. The same flight control, mesh networking, and integrated avionics — adapted for the cadence of energy, utilities, agriculture, and public-safety operators.</p>
+        </div>
+    </section>
+
+    <!-- ===== Industrial domain index ===== -->
+    <section class="section" style="padding: 56px 0 24px;">
+        <div class="container">
+            <div class="section-header" style="margin-bottom: 36px;">
+                <div class="eyebrow"><span class="eyebrow-dot"></span>Industrial Domains</div>
+                <h2 class="display-md">Five industrial <em>operating modes</em>.</h2>
+            </div>
+            <div class="ind-grid">
+                <a href="#tethered" class="ind-cell">
+                    <div class="ind-num">[ 01 ]</div>
+                    <div class="ind-name">Tethered Infrastructure Monitoring</div>
+                    <div class="ind-code">SDR · T-DORI · INDUSTRIAL</div>
+                    <div class="ind-detail">유무선복합 · 24/7 above-asset surveillance — refineries, substations, perimeters</div>
+                </a>
+                <a href="#swarm" class="ind-cell">
+                    <div class="ind-num">[ 02 ]</div>
+                    <div class="ind-name">Multi-Drone Industrial Operations</div>
+                    <div class="ind-code">SDR · MFS · CIVIL</div>
+                    <div class="ind-detail">다중제어 · single GCS coordinating fleets across wide-area industrial sites</div>
+                </a>
+                <a href="#smartfarm" class="ind-cell">
+                    <div class="ind-num">[ 03 ]</div>
+                    <div class="ind-name">Smart Farm · Agricultural</div>
+                    <div class="ind-code">SDR · AGRI</div>
+                    <div class="ind-detail">농업용 · multi-drone spraying, sensing, and yield mapping</div>
+                </a>
+                <a href="#heavylift" class="ind-cell">
+                    <div class="ind-num">[ 04 ]</div>
+                    <div class="ind-name">Industrial Heavy-Lift &amp; Inspection</div>
+                    <div class="ind-code">SDR · H5</div>
+                    <div class="ind-detail">장시간체공 · oil &amp; gas, transmission lines, mapping, surveying</div>
+                </a>
+                <a href="#manufacturing" class="ind-cell">
+                    <div class="ind-num">[ 05 ]</div>
+                    <div class="ind-name">3D-Printed Distributed Manufacturing</div>
+                    <div class="ind-code">SDR · VT-TAIL</div>
+                    <div class="ind-detail">3D프린터 · airframes printed on-site, anywhere</div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 01 — Tethered Infrastructure Monitoring ===== -->
+    <section class="showcase" id="tethered">
+        <div class="container">
+            <div class="showcase-grid">
+                <div class="showcase-photo">
+                    <div class="showcase-plate">PLATE 01<br>TETHERED · 24/7 ISR</div>
+                    <img src="img/유무선복합드론 2만루멘_랜더링 (1).jpg" alt="SDR T-dori industrial — Tethered persistent monitoring drone">
+                </div>
+                <div class="showcase-info">
+                    <div class="showcase-num">— 01 / 05 —</div>
+                    <div class="showcase-code">SDR · T-DORI · INDUSTRIAL</div>
+                    <h2 class="showcase-name">Tethered<br><em>Infrastructure ISR</em></h2>
+                    <p class="showcase-class">24/7 persistent monitoring · Refineries, substations, ports, perimeters</p>
+                    <p class="showcase-desc">SDR's T-dori platform repurposed for industrial infrastructure surveillance — a tethered drone holding station 100 meters above critical assets, transmitting continuous high-resolution imagery and thermal data over the same fiber-optic line that powers it. 24-hour endurance with a 25-minute untethered dash mode for inspecting adjacent assets. Deployed for refineries, transmission substations, port perimeters, and oil &amp; gas facilities.</p>
+                    <div class="showcase-badges">
+                        <span class="showcase-badge is-accent">24/7 Operations</span>
+                        <span class="showcase-badge">220V Tether</span>
+                        <span class="showcase-badge">Fiber-Optic Datalink</span>
+                        <span class="showcase-badge">Untether Dash</span>
+                    </div>
+                    <dl class="showcase-specs">
+                        <div class="showcase-spec"><dt>Endurance</dt><dd>24 <small>hr tethered</small></dd></div>
+                        <div class="showcase-spec"><dt>Untether</dt><dd>25 <small>min dash</small></dd></div>
+                        <div class="showcase-spec"><dt>Static ceiling</dt><dd>100 <small>m</small></dd></div>
+                        <div class="showcase-spec"><dt>Payload</dt><dd>10 — 40 <small>kg</small></dd></div>
+                        <div class="showcase-spec"><dt>Sensors</dt><dd>4K · Thermal · LiDAR</dd></div>
+                        <div class="showcase-spec"><dt>Mission</dt><dd>Persistent ISR</dd></div>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 02 — Multi-Drone Industrial Operations ===== -->
+    <section class="showcase flip" id="swarm">
+        <div class="container">
+            <div class="showcase-grid">
+                <div class="showcase-photo">
+                    <div class="showcase-plate">PLATE 02<br>MFS · GCS INTERFACE</div>
+                    <img src="img/mfs-still.jpg" alt="SDR MFS — One pilot controlling a group of drones via GCS">
+                </div>
+                <div class="showcase-info">
+                    <div class="showcase-num">— 02 / 05 —</div>
+                    <div class="showcase-code">SDR · MFS · CIVIL OPERATIONS</div>
+                    <h2 class="showcase-name">Multi-Drone<br><em>Civil Swarm</em></h2>
+                    <p class="showcase-class">1 GCS, unlimited airframes · Wide-area industrial coordination</p>
+                    <p class="showcase-desc"><strong>One pilot easily controls a group of drones.</strong> SDR's flagship Multi Flight Software (MFS) — the same swarm-control architecture used in Korean defense — adapted for industrial wide-area operations. A single ground-control station commands heterogeneous drone fleets via FANET mesh networking, with real-time satellite telemetry, formation grouping, AI path deconfliction, and one-click formation flight.</p>
+                    <div class="showcase-badges">
+                        <span class="showcase-badge is-accent">FANET Mesh · 10km/hop</span>
+                        <span class="showcase-badge">1 → ∞ Airframes</span>
+                        <span class="showcase-badge">AI Deconfliction</span>
+                        <span class="showcase-badge">Real-Time Telemetry</span>
+                        <span class="showcase-badge">KBS-Featured</span>
+                    </div>
+                    <dl class="showcase-specs">
+                        <div class="showcase-spec"><dt>Operators</dt><dd>1 → ∞ <small>airframes</small></dd></div>
+                        <div class="showcase-spec"><dt>Mesh range</dt><dd>10 <small>km / hop</small></dd></div>
+                        <div class="showcase-spec"><dt>Formations</dt><dd>W · V · I · custom</dd></div>
+                        <div class="showcase-spec"><dt>Path planning</dt><dd>AI-assisted</dd></div>
+                        <div class="showcase-spec"><dt>Updates</dt><dd>Encrypted OTA</dd></div>
+                        <div class="showcase-spec"><dt>Domains</dt><dd>Agri · Energy · SAR</dd></div>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== MFS Demo Video — full-bleed cinematic ===== -->
+    <section class="mfs-video-section">
+        <div class="mfs-video-header">
+            <div class="mfs-video-eyebrow"><span style="display:inline-block; width:6px; height:6px; background: rgba(255,255,255,0.55); margin-right:10px; vertical-align: middle;"></span>MFS DEMO · 다중제어</div>
+            <h2 class="mfs-video-title">One pilot. <em>A group of drones</em>.</h2>
+            <p class="mfs-video-lede">Live demonstration of SDR's Multi Flight Software (MFS) — group formation, one-click commands, real-time satellite telemetry, and FANET-meshed coordination across an entire fleet from a single ground-control station.</p>
+        </div>
+
+        <section class="video-hero">
+            <div class="video-frame">
+                <div class="video-plate">PLATE · MFS DEMO · 4K</div>
+                <video id="mfsVideo" class="video-el" autoplay muted loop playsinline preload="auto">
+                    <source src="Video/mfs-multicontrol.mp4" type="video/mp4">
+                </video>
+                <div class="video-controls" role="toolbar" aria-label="Video controls">
+                    <button id="mfsPlayToggle" class="video-btn play-btn is-on" aria-label="Play / pause">
+                        <span class="icon icon-play" aria-hidden="true">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"></polygon></svg>
+                        </span>
+                        <span class="icon icon-pause" aria-hidden="true">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+                        </span>
+                        <span class="label-off">Play</span>
+                        <span class="label-on">Pause</span>
+                    </button>
+                    <button id="mfsSoundToggle" class="video-btn sound-btn" aria-label="Sound on / off">
+                        <span class="icon" aria-hidden="true">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                                <line class="mute-x1" x1="23" y1="9" x2="17" y2="15"></line>
+                                <line class="mute-x2" x1="17" y1="9" x2="23" y2="15"></line>
+                            </svg>
+                        </span>
+                        <span class="label-off">Unmute</span>
+                        <span class="label-on">Mute</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </section>
+
+    <script>
+        (function(){
+            var v = document.getElementById('mfsVideo');
+            var s = document.getElementById('mfsSoundToggle');
+            var p = document.getElementById('mfsPlayToggle');
+            if (!v) return;
+            if (s) s.addEventListener('click', function(){
+                v.muted = !v.muted;
+                if (!v.muted && v.paused) v.play();
+                s.classList.toggle('is-on', !v.muted);
+                s.querySelectorAll('.mute-x1, .mute-x2').forEach(function(l){ l.style.display = v.muted ? 'inline' : 'none'; });
+            });
+            if (p) {
+                p.addEventListener('click', function(){ v.paused ? v.play() : v.pause(); });
+                v.addEventListener('play',  function(){ p.classList.add('is-on'); });
+                v.addEventListener('pause', function(){ p.classList.remove('is-on'); });
+            }
+        })();
+    </script>
+
+    <!-- ===== 03 — Smart Farm ===== -->
+    <section class="showcase" id="smartfarm">
+        <div class="container">
+            <div class="showcase-grid">
+                <div class="showcase-photo">
+                    <div class="showcase-plate">PLATE 03<br>SMART FARM · AGRI</div>
+                    <img src="img/장시간드론_03.jpg" alt="SDR Smart Farm — Multi-drone agricultural operations">
+                </div>
+                <div class="showcase-info">
+                    <div class="showcase-num">— 03 / 05 —</div>
+                    <div class="showcase-code">SDR · AGRI · SMART FARM</div>
+                    <h2 class="showcase-name">Smart Farm<br><em>Agri Platform</em></h2>
+                    <p class="showcase-class">Multi-drone field operations · Spraying, sensing, surveying</p>
+                    <p class="showcase-desc">SDR's smart-farm system extends the multi-drone control platform into agricultural operations — coordinated multi-airframe spraying, multispectral crop sensing, and yield mapping over wide field areas. Operated by single-pilot ground-control, scaling from individual farm parcels to regional agricultural cooperatives. Featured by Korean public broadcaster KBS (6시 내고향) for multi-drone formation farming.</p>
+                    <div class="showcase-badges">
+                        <span class="showcase-badge is-accent">Field-Validated</span>
+                        <span class="showcase-badge">Multi-Drone Spray</span>
+                        <span class="showcase-badge">Multispectral</span>
+                        <span class="showcase-badge">KBS-Featured</span>
+                    </div>
+                    <dl class="showcase-specs">
+                        <div class="showcase-spec"><dt>Operation</dt><dd>Multi-drone</dd></div>
+                        <div class="showcase-spec"><dt>Mission</dt><dd>Spray · Sense · Survey</dd></div>
+                        <div class="showcase-spec"><dt>Control</dt><dd>1 GCS, multi-airframe</dd></div>
+                        <div class="showcase-spec"><dt>Sensors</dt><dd>Multispectral · RGB</dd></div>
+                        <div class="showcase-spec"><dt>Operators</dt><dd>Farms · co-ops</dd></div>
+                        <div class="showcase-spec"><dt>Reference</dt><dd>Korea · Jeungpyeong</dd></div>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 04 — Industrial Heavy-Lift H5 ===== -->
+    <section class="showcase flip" id="heavylift">
+        <div class="container">
+            <div class="showcase-grid">
+                <div class="showcase-photo">
+                    <div class="showcase-plate">PLATE 04<br>HEAVY-LIFT · INSPECTION</div>
+                    <img src="img/장시간드론_01.jpg" alt="SDR H5 industrial — Heavy-lift inspection drone">
+                </div>
+                <div class="showcase-info">
+                    <div class="showcase-num">— 04 / 05 —</div>
+                    <div class="showcase-code">SDR · H5 · INDUSTRIAL</div>
+                    <h2 class="showcase-name">H5<br><em>Industrial Multirotor</em></h2>
+                    <p class="showcase-class">Long-endurance heavy-lift · Energy, utilities, mapping</p>
+                    <p class="showcase-desc">Carbon-fiber heavy-lift multirotor engineered for extended-duration industrial work — oil &amp; gas pipeline inspection, transmission-line surveying, large-scale photogrammetry, and mapping. Operated alongside U.S. operators in Fulton County, GA for oil &amp; gas infrastructure protection, with active programs in agriculture and public safety across nine markets.</p>
+                    <div class="showcase-badges">
+                        <span class="showcase-badge is-accent">Long-Endurance</span>
+                        <span class="showcase-badge">Heavy-Lift</span>
+                        <span class="showcase-badge">Multi-Payload</span>
+                        <span class="showcase-badge">Carbon Frame</span>
+                    </div>
+                    <dl class="showcase-specs">
+                        <div class="showcase-spec"><dt>Class</dt><dd>Multirotor</dd></div>
+                        <div class="showcase-spec"><dt>Frame</dt><dd>Carbon fiber</dd></div>
+                        <div class="showcase-spec"><dt>Mission</dt><dd>Inspection · Mapping</dd></div>
+                        <div class="showcase-spec"><dt>Operators</dt><dd>USA · KOR · IDN · TH</dd></div>
+                        <div class="showcase-spec"><dt>Payloads</dt><dd>Multispectral · LiDAR</dd></div>
+                        <div class="showcase-spec"><dt>Status</dt><dd>Production</dd></div>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 05 — 3D Printed Distributed Manufacturing ===== -->
+    <section class="showcase" id="manufacturing">
+        <div class="container">
+            <div class="showcase-grid">
+                <div class="showcase-photo">
+                    <div class="showcase-plate">PLATE 05<br>3D-PRINTED · DISTRIBUTED</div>
+                    <img src="img/VTOL-3.jpg" alt="SDR VT-Tail — 3D-printed VTOL platform">
+                </div>
+                <div class="showcase-info">
+                    <div class="showcase-num">— 05 / 05 —</div>
+                    <div class="showcase-code">SDR · VT-TAIL · MANUFACTURING</div>
+                    <h2 class="showcase-name">3D-Printed<br><em>Distributed Manufacture</em></h2>
+                    <p class="showcase-class">On-site airframe printing · Field-replaceable platforms</p>
+                    <p class="showcase-desc">SDR's 3D-printed VT-Tail enables an entirely different industrial paradigm — airframes printed on-site at the customer location, anywhere in the world. Replacement components, mission-specific variants, and rapid-iteration prototypes produced from a single CAD library. Reduces logistics burden, accelerates field replacement, and enables operators to manufacture drones in-theater rather than waiting on global supply chains.</p>
+                    <div class="showcase-badges">
+                        <span class="showcase-badge is-accent">3D-Printed Frame</span>
+                        <span class="showcase-badge">On-Site Manufacture</span>
+                        <span class="showcase-badge">Field-Replaceable</span>
+                        <span class="showcase-badge">CAD-Library</span>
+                    </div>
+                    <dl class="showcase-specs">
+                        <div class="showcase-spec"><dt>Frame</dt><dd>3D-printed carbon</dd></div>
+                        <div class="showcase-spec"><dt>Manufacture</dt><dd>On-site · distributed</dd></div>
+                        <div class="showcase-spec"><dt>Setup</dt><dd>&lt; 5 <small>min</small></dd></div>
+                        <div class="showcase-spec"><dt>Variants</dt><dd>Mission-specific</dd></div>
+                        <div class="showcase-spec"><dt>Logistics</dt><dd>Reduced footprint</dd></div>
+                        <div class="showcase-spec"><dt>Output</dt><dd>Tactical squad-level</dd></div>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CTA ===== -->
+    <section class="cta-strip">
+        <div class="container">
+            <div class="cta-content">
+                <div class="eyebrow eyebrow-on-dark" style="margin-bottom: 32px;"><span class="eyebrow-dot"></span>Industrial &amp; civil engagements</div>
+                <h2 class="display-lg" style="color: var(--text-light);">Operate at <em>industrial scale</em>.</h2>
+                <p class="lede">For energy, utilities, agriculture, public safety, and infrastructure operators — request a deployment briefing for tethered persistent monitoring, multi-drone coordination, smart-farm operations, or distributed-manufacturing programs.</p>
+                <div class="cta-actions">
+                    <a href="contact.html" class="btn btn-primary">Contact the team <span class="btn-arrow" aria-hidden="true">→</span></a>
+                    <a href="capabilities.html" class="btn btn-ghost">Core capabilities</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand"><div class="logo"><img src="img/sdr-logo-transparent.png" alt="SDR Drone Inc." class="logo-img logo-img-dark"></div><p class="footer-tagline">Industrial drone operations — engineered for energy, agriculture, utilities, and public safety.</p></div>
+                <div class="footer-col"><h4>Company</h4><ul><li><a href="about.html">About</a></li><li><a href="team.html">Team</a></li><li><a href="capabilities.html">Capabilities</a></li><li><a href="drones.html">Defense</a></li><li><a href="industrial.html">Industrial</a></li><li><a href="insights.html">Insights</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+                <div class="footer-col"><h4>Industrial Domains</h4><ul><li>Energy &amp; Pipelines</li><li>Smart Farm &amp; Agriculture</li><li>Public Safety &amp; SAR</li><li>Infrastructure Monitoring</li></ul></div>
+                <div class="footer-col"><h4>Headquarters</h4><ul><li>1209 Mountain Road PL NE</li><li>Suite R, Albuquerque</li><li>NM 87110, USA</li><li><a href="mailto:info@sdrdrone.com">info@sdrdrone.com</a></li></ul></div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-legal">© 2026 SDR Drone Inc. All rights reserved. Industrial and civil drone operations are subject to applicable U.S. and international aviation regulations.</div>
+                <div class="footer-meta">New Mexico Corporation<br>Albuquerque · NM 87110</div>
+            </div>
+        </div>
+    </footer>
+    <script>const t=document.querySelector('.nav-toggle'),l=document.querySelector('.nav-links');if(t)t.addEventListener('click',()=>l.classList.toggle('is-open'));</script>
+    <a href="#top" class="back-to-top" id="backToTop" aria-label="Back to top">
+        <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"></polyline></svg>
+    </a>
+    <script>(function(){var b=document.getElementById('backToTop');if(!b)return;function t(){if(window.scrollY>320){b.classList.add('is-visible');}else{b.classList.remove('is-visible');}}window.addEventListener('scroll',t,{passive:true});t();b.addEventListener('click',function(e){e.preventDefault();window.scrollTo({top:0,behavior:'smooth'});});})();</script>
+</body>
+</html>

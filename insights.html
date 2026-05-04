@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insights — SDR Drone Inc.</title>
+    <meta name="description" content="News, certifications, deployments, and field reports from SDR Drone Inc. — Korea's defense-standard drone platform.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,300;9..144,0,400;9..144,0,500;9..144,1,300;9..144,1,400;9..144,1,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .insight-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+        }
+        .insight-row {
+            background: var(--bg);
+            display: grid;
+            grid-template-columns: 160px 140px 1fr;
+            align-items: stretch;
+            transition: background 0.2s ease;
+            cursor: pointer;
+        }
+        .insight-row:hover { background: var(--bg-alt); }
+        .insight-date {
+            padding: 36px 28px;
+            border-right: 1px solid var(--border);
+            font-family: var(--mono);
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-muted);
+            letter-spacing: 0.06em;
+            display: flex;
+            align-items: center;
+        }
+        .insight-cat {
+            padding: 36px 28px;
+            border-right: 1px solid var(--border);
+            font-family: var(--mono);
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--accent);
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+        }
+        .insight-body {
+            padding: 32px 32px;
+        }
+        .insight-title {
+            font-family: var(--display);
+            font-size: 19px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            line-height: 1.3;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+        .insight-summary {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.55;
+            font-weight: 300;
+        }
+        @media (max-width: 768px) {
+            .insight-row { grid-template-columns: 1fr; }
+            .insight-date, .insight-cat { padding: 16px 24px; border-right: none; border-bottom: 1px solid var(--border); }
+            .insight-body { padding: 24px; }
+        }
+        .feature-row {
+            display: grid;
+            grid-template-columns: 1fr 1.4fr;
+            gap: 0;
+            background: var(--border);
+            border: 1px solid var(--border);
+            margin-bottom: 56px;
+        }
+        .feature-image {
+            background: var(--bg-deep);
+            color: var(--text-light);
+            padding: 56px 48px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 360px;
+            position: relative;
+            overflow: hidden;
+        }
+        .feature-image::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(ellipse 100% 80% at 30% 50%, black 0%, transparent 70%);
+        }
+        .feature-image > * { position: relative; }
+        .feature-image-tag {
+            font-family: var(--mono);
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.16em;
+            color: rgba(255,255,255,0.7);
+            text-transform: uppercase;
+        }
+        .feature-image-num {
+            font-family: var(--display);
+            font-size: clamp(48px, 6vw, 88px);
+            font-weight: 600;
+            line-height: 1;
+            letter-spacing: -0.04em;
+            color: var(--text-light);
+        }
+        .feature-image-num small {
+            display: block;
+            font-family: var(--mono);
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.14em;
+            color: rgba(255,255,255,0.55);
+            text-transform: uppercase;
+            margin-top: 16px;
+        }
+        .feature-text {
+            background: var(--bg);
+            padding: 56px 48px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .feature-cat {
+            font-family: var(--mono);
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.16em;
+            color: var(--accent);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+        .feature-title {
+            font-family: var(--display);
+            font-size: clamp(26px, 2.6vw, 36px);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+        .feature-text p {
+            font-size: 15px;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+        @media (max-width: 1024px) {
+            .feature-row { grid-template-columns: 1fr; }
+            .feature-image, .feature-text { padding: 40px 32px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="container nav-inner">
+            <a href="index.html" class="logo"><img src="img/sdr-logo-transparent.png" alt="SDR Drone Inc." class="logo-img"></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="team.html">Team</a></li>
+                <li><a href="capabilities.html">Capabilities</a></li>
+                <li><a href="drones.html">Defense</a></li>
+                <li><a href="industrial.html">Industrial</a></li>
+                <li><a href="insights.html" class="active">Insights</a></li>
+                <li><a href="contact.html" class="nav-cta">Contact</a></li>
+            </ul>
+            <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+
+    <section class="page-header">
+        <div class="container">
+            <div class="eyebrow fade-up fade-up-1"><span class="eyebrow-dot"></span>Insights · News · Field Reports</div>
+            <h1 class="display-lg fade-up fade-up-2">Recent <em>signal</em> from the field.</h1>
+            <p class="lede fade-up fade-up-3">Government certifications, defense procurement programs, international deployments, and field-validated platform updates from SDR Drone Inc.</p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <div class="eyebrow" style="margin-bottom: 28px;"><span class="eyebrow-dot"></span>Featured</div>
+                <h2 class="display-md">Korea's $2.4B drone <em>procurement reset</em>.</h2>
+            </div>
+
+            <div class="feature-row">
+                <div class="feature-image">
+                    <div class="feature-image-tag">Defense · Korea</div>
+                    <div class="feature-image-num">USD 2.4B<small>Additional drone procurement</small></div>
+                </div>
+                <div class="feature-text">
+                    <div class="feature-cat">Defense Policy · 2025</div>
+                    <h3 class="feature-title">Korean defense budget redirected from attack helicopters to drones — SDR among two firms named to presidential TFT.</h3>
+                    <p>Following the demonstrated tactical utility of drones in the wars in Ukraine and Iran, the Republic of Korea redirected KRW 3.3 trillion of attack-helicopter budget into drone procurement, with an additional USD 2.4B authorized. SDR was selected as one of two domestic drone companies under the Task Force for Strengthening Drone Defense Capabilities, established by presidential directive — currently serving as advisory committee member for government drone policy formulation and implementation.</p>
+                </div>
+            </div>
+
+            <div class="feature-row">
+                <div class="feature-image">
+                    <div class="feature-image-tag">Market position</div>
+                    <div class="feature-image-num">70%<small>Korean Army training drones</small></div>
+                </div>
+                <div class="feature-text">
+                    <div class="feature-cat">Defense · Standard Platform</div>
+                    <h3 class="feature-title">SDR's platform is the standard training drone of the Korean armed forces.</h3>
+                    <p>Adopted across the Army, Navy, Air Force, Police, and Fire Department under government-approved curriculum, SDR holds 70% market share in Korean Army training drones. Over 10,000 cumulative pilot certifications and 500+ real operational missions validate the platform's flawless field record across all five service branches.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-warm">
+        <div class="container">
+            <div class="section-header">
+                <div class="eyebrow" style="margin-bottom: 28px;"><span class="eyebrow-dot"></span>Recent updates</div>
+                <h2 class="display-md">Certifications, deployments, and global engagements.</h2>
+            </div>
+
+            <div class="insight-list">
+                <a class="insight-row" style="text-decoration: none;">
+                    <div class="insight-date">2025 · 10</div>
+                    <div class="insight-cat">Procurement</div>
+                    <div class="insight-body">
+                        <h3 class="insight-title">Cambodia procurement offer issued — KR-CAMBODIA program advances.</h3>
+                        <p class="insight-summary">Formal offer sheet for SDR drone platforms submitted as part of the Korea–Cambodia public-sector procurement framework.</p>
+                    </div>
+                </a>
+                <a class="insight-row">
+                    <div class="insight-date">2025 · 09</div>
+                    <div class="insight-cat">MOU</div>
+                    <div class="insight-body">
+                        <h3 class="insight-title">India · Vijay Sabre Safety LOI executed for tactical drone evaluation.</h3>
+                        <p class="insight-summary">Letter of Intent signed with Vijay Sabre Safety Pvt Ltd for evaluation and procurement framework across India's domestic safety and defense markets.</p>
+                    </div>
+                </a>
+                <a class="insight-row">
+                    <div class="insight-date">2025 · 08</div>
+                    <div class="insight-cat">Procurement</div>
+                    <div class="insight-body">
+                        <h3 class="insight-title">Royal Thai delegation visits SDR — T-dori, H5, M2K procurement requirements confirmed.</h3>
+                        <p class="insight-summary">On-site evaluation of SDR's three procurement-class platforms; specifications and integration framework approved for Thai defense and public-safety operations.</p>
+                    </div>
+                </a>
+                <a class="insight-row">
+                    <div class="insight-date">2025 · 07</div>
+                    <div class="insight-cat">MOU</div>
+                    <div class="insight-body">
+                        <h3 class="insight-title">Indonesia · Sejin MOU executed for drone export framework.</h3>
+                        <p class="insight-summary">Memorandum of Understanding finalized 30 July 2025 establishing a long-term drone export and joint operations partnership in Indonesia.</p>
+                    </div>
+                </a>
+                <a class="insight-row">
+                    <div class="insight-date">2025 · 05</div>
+                    <div class="insight-cat">Recognition</div>
+                    <div class="insight-body">
+                        <h3 class="insight-title">SDR exhibits at Nara Jangteo Expo 2025 — public-procurement showcase.</h3>
+                        <p class="insight-summary">Featured exhibitor at Korea's largest public-procurement expo, presenting innovative drone platforms designated under the 2024 Innovative Product program.</p>
+                    </div>
+                </a>
+                <a class="insight-row">
+                    <div class="insight-date">2024 · Q4</div>
+                    <div class="insight-cat">Certification</div>
+                    <div class="insight-body">
+                        <h3 class="insight-title">SDR designated under Korea's 2024 Innovative Product program — Q3 cohort.</h3>
+                        <p class="insight-summary">Korean Public Procurement Service designation enabling preferred-supplier status for government procurement across SDR's drone platforms.</p>
+                    </div>
+                </a>
+                <a class="insight-row">
+                    <div class="insight-date">2024 · 06</div>
+                    <div class="insight-cat">Defense</div>
+                    <div class="insight-body">
+                        <h3 class="insight-title">Joint Drone Training Program · ROK Drone Operations Command and KDIA.</h3>
+                        <p class="insight-summary">Korea's Drone Operations Command and the Korea Drone Innovation Association launch joint drone training initiative; SDR participates as platform supplier.</p>
+                    </div>
+                </a>
+                <a class="insight-row">
+                    <div class="insight-date">2024 · 05</div>
+                    <div class="insight-cat">USA</div>
+                    <div class="insight-body">
+                        <h3 class="insight-title">Fulton County, Georgia · oil &amp; gas infrastructure protection program advances.</h3>
+                        <p class="insight-summary">SDR delegation visits Fulton County under TPI drone-technology framework for oil-infrastructure threat-detection and protection deployments.</p>
+                    </div>
+                </a>
+                <a class="insight-row">
+                    <div class="insight-date">2024 · 12</div>
+                    <div class="insight-cat">Mongolia</div>
+                    <div class="insight-body">
+                        <h3 class="insight-title">Mongolia MOU executed — technology transfer and drone selection program initiated.</h3>
+                        <p class="insight-summary">Bilateral framework for technology transfer signed; drone-platform selection underway with the Mongolian counterpart for defense and public-purpose deployments.</p>
+                    </div>
+                </a>
+                <a class="insight-row">
+                    <div class="insight-date">2023</div>
+                    <div class="insight-cat">Award</div>
+                    <div class="insight-body">
+                        <h3 class="insight-title">SDR receives top honor at the 2023 Korean Drone-bot Challenge — Defense Minister Award.</h3>
+                        <p class="insight-summary">Defense Minister Award (Grand Prize) at Korea's flagship military-drone competition, validating swarm-coordination performance and platform reliability.</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-strip">
+        <div class="container">
+            <div class="cta-content">
+                <div class="eyebrow eyebrow-on-dark" style="margin-bottom: 32px;"><span class="eyebrow-dot"></span>Press &amp; partnership inquiries</div>
+                <h2 class="display-lg" style="color: var(--text-light);">Engage with <em>SDR's</em> programs.</h2>
+                <div class="cta-actions">
+                    <a href="contact.html" class="btn btn-primary">Contact the team <span class="btn-arrow" aria-hidden="true">→</span></a>
+                    <a href="capabilities.html" class="btn btn-ghost">Technical capabilities</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand"><div class="logo"><img src="img/sdr-logo-transparent.png" alt="SDR Drone Inc." class="logo-img logo-img-dark"></div><p class="footer-tagline">Global defense and industrial — total drone solutions, engineered in Korea.</p></div>
+                <div class="footer-col"><h4>Company</h4><ul><li><a href="about.html">About</a></li><li><a href="team.html">Team</a></li><li><a href="capabilities.html">Capabilities</a></li><li><a href="drones.html">Drones</a></li><li><a href="insights.html">Insights</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+                <div class="footer-col"><h4>Domains</h4><ul><li>Defense &amp; Tactical</li><li>Public Safety &amp; SAR</li><li>Industrial &amp; Energy</li><li>Agriculture &amp; Smart Farm</li></ul></div>
+                <div class="footer-col"><h4>Headquarters</h4><ul><li>1209 Mountain Road PL NE</li><li>Suite R, Albuquerque</li><li>NM 87110, USA</li><li><a href="mailto:info@sdrdrone.com">info@sdrdrone.com</a></li></ul></div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-legal">© 2026 SDR Drone Inc. All rights reserved.</div>
+                <div class="footer-meta">New Mexico Corporation<br>Albuquerque · NM 87110</div>
+            </div>
+        </div>
+    </footer>
+    <script>const t=document.querySelector('.nav-toggle'),l=document.querySelector('.nav-links');if(t)t.addEventListener('click',()=>l.classList.toggle('is-open'));</script>
+    <a href="#top" class="back-to-top" id="backToTop" aria-label="Back to top">
+        <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"></polyline></svg>
+    </a>
+    <script>(function(){var b=document.getElementById('backToTop');if(!b)return;function t(){if(window.scrollY>320){b.classList.add('is-visible');}else{b.classList.remove('is-visible');}}window.addEventListener('scroll',t,{passive:true});t();b.addEventListener('click',function(e){e.preventDefault();window.scrollTo({top:0,behavior:'smooth'});});})();</script>
+</body>
+</html>

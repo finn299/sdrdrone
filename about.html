@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About — SDR Drone Inc.</title>
+    <meta name="description" content="SDR Drone Inc. — three decades of unmanned aerial expertise, from 1991 commercial airships to today's defense-standard drone platform.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,300;9..144,0,400;9..144,0,500;9..144,1,300;9..144,1,400;9..144,1,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .timeline {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            margin-top: 56px;
+        }
+        .timeline-cell {
+            background: var(--bg);
+            padding: 56px 40px;
+            min-height: 320px;
+            display: flex;
+            flex-direction: column;
+        }
+        .timeline-period {
+            font-family: var(--mono);
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--accent);
+            letter-spacing: 0.14em;
+            margin-bottom: 32px;
+        }
+        .timeline-title {
+            font-family: var(--display);
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: -0.015em;
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+        .timeline-body {
+            font-size: 14.5px;
+            color: var(--text-muted);
+            line-height: 1.65;
+            font-weight: 300;
+        }
+        @media (max-width: 1024px) {
+            .timeline { grid-template-columns: 1fr; }
+        }
+        .compare {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            margin-top: 56px;
+        }
+        .compare-cell {
+            background: var(--bg);
+            padding: 56px 48px;
+            min-height: 360px;
+            display: flex;
+            flex-direction: column;
+        }
+        .compare-cell.we-are {
+            background: var(--bg-deep);
+            color: var(--text-light);
+        }
+        .compare-tag {
+            font-family: var(--mono);
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 32px;
+        }
+        .compare-cell.we-are .compare-tag { color: rgba(255, 255, 255, 0.55); }
+        .compare-title {
+            font-family: var(--display);
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            margin-bottom: 24px;
+            line-height: 1.15;
+        }
+        .compare-list { list-style: none; margin-top: auto; }
+        .compare-list li {
+            padding: 14px 0;
+            border-top: 1px solid var(--border);
+            font-size: 14.5px;
+            color: var(--text-secondary);
+        }
+        .compare-cell.we-are .compare-list li {
+            border-top-color: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.85);
+        }
+        @media (max-width: 1024px) { .compare { grid-template-columns: 1fr; } }
+
+        /* Cinematic video hero — full bleed */
+        .video-hero {
+            background: var(--bg-deep);
+            padding: 0;
+            margin: 0;
+            width: 100%;
+            display: block;
+        }
+        .video-frame {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 — most compatible aspect ratio fallback */
+            background: var(--bg-deep);
+            overflow: hidden;
+        }
+        .video-frame iframe,
+        .video-frame .video-el {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            display: block;
+            object-fit: cover;
+        }
+        .video-plate {
+            position: absolute;
+            top: 24px;
+            left: 32px;
+            z-index: 2;
+            font-family: var(--mono);
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.92);
+            background: rgba(10, 14, 20, 0.55);
+            padding: 8px 14px;
+            border: 1px solid rgba(255,255,255,0.18);
+            backdrop-filter: blur(8px);
+        }
+        .video-controls {
+            position: absolute;
+            bottom: 24px;
+            right: 32px;
+            z-index: 2;
+            display: inline-flex;
+            align-items: stretch;
+            gap: 0;
+            background: rgba(10, 14, 20, 0.55);
+            border: 1px solid rgba(255,255,255,0.22);
+            backdrop-filter: blur(8px);
+            user-select: none;
+        }
+        .video-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--mono);
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.92);
+            background: transparent;
+            border: 0;
+            padding: 10px 16px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+        .video-btn + .video-btn {
+            border-left: 1px solid rgba(255,255,255,0.18);
+        }
+        .video-btn:hover {
+            background: rgba(255,255,255,0.08);
+        }
+        .video-btn .icon {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            position: relative;
+            color: rgba(255,255,255,0.95);
+        }
+        .video-btn .label-on { display: none; }
+        .video-btn.is-on .label-off { display: none; }
+        .video-btn.is-on .label-on { display: inline; }
+        .play-btn .icon-pause,
+        .play-btn.is-on .icon-play { display: none; }
+        .play-btn.is-on .icon-pause { display: inline-block; }
+        @media (max-width: 768px) {
+            .video-plate { top: 16px; left: 16px; }
+            .video-controls { bottom: 16px; right: 16px; }
+            .video-btn { padding: 8px 12px; font-size: 9px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="container nav-inner">
+            <a href="index.html" class="logo"><img src="img/sdr-logo-transparent.png" alt="SDR Drone Inc." class="logo-img"></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html" class="active">About</a></li>
+                <li><a href="team.html">Team</a></li>
+                <li><a href="capabilities.html">Capabilities</a></li>
+                <li><a href="drones.html">Defense</a></li>
+                <li><a href="industrial.html">Industrial</a></li>
+                <li><a href="insights.html">Insights</a></li>
+                <li><a href="contact.html" class="nav-cta">Contact</a></li>
+            </ul>
+            <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+
+    <!-- ===== Cinematic platform video — full bleed, above header ===== -->
+    <section class="video-hero">
+        <div class="video-frame">
+            <div class="video-plate">PLATE · PLATFORM IN OPERATION</div>
+            <video id="heroVideo" class="video-el" autoplay muted loop playsinline preload="auto">
+                <source src="Video/sdr-platform-web.mp4" type="video/mp4">
+            </video>
+            <div class="video-controls" role="toolbar" aria-label="Video controls">
+                <button id="playToggle" class="video-btn play-btn is-on" aria-label="Play / pause">
+                    <span class="icon icon-play" aria-hidden="true">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                            <polygon points="6 4 20 12 6 20 6 4"></polygon>
+                        </svg>
+                    </span>
+                    <span class="icon icon-pause" aria-hidden="true">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                            <rect x="6" y="4" width="4" height="16"></rect>
+                            <rect x="14" y="4" width="4" height="16"></rect>
+                        </svg>
+                    </span>
+                    <span class="label-off">Play</span>
+                    <span class="label-on">Pause</span>
+                </button>
+                <button id="soundToggle" class="video-btn sound-btn" aria-label="Sound on / off">
+                    <span class="icon" aria-hidden="true">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                            <line class="mute-x1" x1="23" y1="9" x2="17" y2="15"></line>
+                            <line class="mute-x2" x1="17" y1="9" x2="23" y2="15"></line>
+                        </svg>
+                    </span>
+                    <span class="label-off">Unmute</span>
+                    <span class="label-on">Mute</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        (function(){
+            var v = document.getElementById('heroVideo');
+            var sBtn = document.getElementById('soundToggle');
+            var pBtn = document.getElementById('playToggle');
+            if (!v) return;
+
+            // Sound toggle
+            if (sBtn) {
+                sBtn.addEventListener('click', function(){
+                    v.muted = !v.muted;
+                    if (!v.muted && v.paused) { v.play(); }
+                    sBtn.classList.toggle('is-on', !v.muted);
+                    var lines = sBtn.querySelectorAll('.mute-x1, .mute-x2');
+                    lines.forEach(function(l){ l.style.display = v.muted ? 'inline' : 'none'; });
+                });
+            }
+
+            // Play/pause toggle
+            if (pBtn) {
+                pBtn.addEventListener('click', function(){
+                    if (v.paused) { v.play(); } else { v.pause(); }
+                });
+                v.addEventListener('play',  function(){ pBtn.classList.add('is-on'); });
+                v.addEventListener('pause', function(){ pBtn.classList.remove('is-on'); });
+            }
+        })();
+    </script>
+
+    <section class="page-header">
+        <div class="container">
+            <div class="eyebrow fade-up fade-up-1"><span class="eyebrow-dot"></span>About SDR</div>
+            <h1 class="display-lg fade-up fade-up-2">Three decades of <em>unmanned flight</em>.</h1>
+            <p class="lede fade-up fade-up-3">SDR Drone Inc. has spent thirty years engineering unmanned aerial platforms — from the first commercial unmanned airships in Korea to today's standard defense drone for the Republic of Korea armed forces.</p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="split">
+                <div>
+                    <div class="eyebrow" style="margin-bottom: 24px;"><span class="eyebrow-dot"></span>The Thesis</div>
+                    <h2 class="display-md">Drones, built by operators — for operators.</h2>
+                </div>
+                <div class="body-text">
+                    <p>The hardest problems in unmanned aviation are not in the lab. They are in the field, in the rain, under jamming, with operators who need a platform that <strong>works the first time, every time</strong>.</p>
+                    <p>SDR was founded on a single conviction: a drone is a system, not a product. The flight controller, the communications stack, the integrated electronics, the swarm software, and the operator's training — all must be designed together, owned together, and improved together.</p>
+                    <p>Across <strong>defense, public safety, and industrial operations</strong>, SDR's platform is the result. Engineered in Korea. Validated in mission. Deployed across four continents.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-warm">
+        <div class="container">
+            <div class="section-header">
+                <div class="eyebrow" style="margin-bottom: 28px;"><span class="eyebrow-dot"></span>History</div>
+                <h2 class="display-md">From airships to the <em>defense standard</em>.</h2>
+                <p class="lede">SDR's story spans three eras of unmanned aerial development — each building the engineering, manufacturing, and operational foundation for the next.</p>
+            </div>
+            <div class="timeline">
+                <div class="timeline-cell">
+                    <div class="timeline-period">1991 — 1993</div>
+                    <h3 class="timeline-title">First Commercial Unmanned Airships</h3>
+                    <p class="timeline-body">First-to-market commercialization of unmanned airships for advertising and promotion. Over 100,000 cumulative flight hours built unparalleled operational expertise in Korean unmanned aviation.</p>
+                </div>
+                <div class="timeline-cell">
+                    <div class="timeline-period">1994 — 2009</div>
+                    <h3 class="timeline-title">Commercial Drone Platform</h3>
+                    <p class="timeline-body">Technology proven through drones supplied to TV and film production. Entry into the agricultural mid-size drone market. First-generation commercial platform prototype completed.</p>
+                </div>
+                <div class="timeline-cell">
+                    <div class="timeline-period">2010 — Present</div>
+                    <h3 class="timeline-title">Defense Standard Platform</h3>
+                    <p class="timeline-body">Established as South Korea's standard defense drone platform. Built on 30 years of in-house development, commercialization, and validated battlefield-grade engineering.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-dark">
+        <div class="container">
+            <div class="quote-block">
+                <div class="eyebrow eyebrow-on-dark" style="margin-bottom: 40px;"><span class="eyebrow-dot"></span>Recognition</div>
+                <p class="quote-text">SDR has been selected as one of two domestic drone companies under the Task Force for Strengthening Drone Defense Capabilities, established by presidential directive — currently serving as advisory committee member for government drone policy.</p>
+                <div class="quote-attr">Republic of Korea · Defense Drone TFT</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <div class="eyebrow" style="margin-bottom: 28px;"><span class="eyebrow-dot"></span>Positioning</div>
+                <h2 class="display-md">What SDR is — and what it <em>isn't</em>.</h2>
+                <p class="lede">SDR occupies a distinct position: a defense-grade manufacturer that owns its platform end-to-end, validated by the largest user base of any Korean drone company.</p>
+            </div>
+            <div class="compare">
+                <div class="compare-cell">
+                    <div class="compare-tag">Industry pattern</div>
+                    <h3 class="compare-title">What SDR isn't.</h3>
+                    <p style="font-size: 15px; color: var(--text-muted); line-height: 1.65; font-weight: 300; margin-bottom: 16px;">Conventional drone businesses cannot deliver the operational depth required for defense and critical infrastructure.</p>
+                    <ul class="compare-list">
+                        <li>A consumer drone company chasing volume</li>
+                        <li>An assembly house importing foreign electronics</li>
+                        <li>A software-only firm without manufacturing</li>
+                        <li>A reseller of off-the-shelf platforms</li>
+                        <li>A single-mission point solution</li>
+                    </ul>
+                </div>
+                <div class="compare-cell we-are">
+                    <div class="compare-tag">The SDR model</div>
+                    <h3 class="compare-title">What SDR is.</h3>
+                    <p style="font-size: 15px; color: rgba(255,255,255,0.6); line-height: 1.65; font-weight: 300; margin-bottom: 16px;">A defense-grade drone manufacturer that owns the entire platform — hardware, firmware, communications, software, and operator training.</p>
+                    <ul class="compare-list">
+                        <li>The standard training drone of the Korean armed forces</li>
+                        <li>An in-house designer of integrated flight electronics</li>
+                        <li>A government-certified innovative product supplier</li>
+                        <li>A multi-mission platform from tactical to industrial</li>
+                        <li>A 30-year operating company, not a startup</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-warm">
+        <div class="container">
+            <div class="section-header">
+                <div class="eyebrow" style="margin-bottom: 24px;"><span class="eyebrow-dot"></span>Operating Principles</div>
+                <h2 class="display-md">How we work.</h2>
+                <p class="lede">Three principles shape every drone, every deployment, and every engagement.</p>
+            </div>
+            <div class="cap-grid">
+                <div class="cap-cell">
+                    <div class="cap-num">01</div>
+                    <h3 class="cap-name">Own the platform.</h3>
+                    <p class="cap-body">Flight control, electronics, communications, and software are designed and manufactured in-house. Domestic supply chain ensures security and independence from foreign components.</p>
+                </div>
+                <div class="cap-cell">
+                    <div class="cap-num">02</div>
+                    <h3 class="cap-name">Validate in mission.</h3>
+                    <p class="cap-body">Every platform is proven in real operational environments — emergency response, defense exercises, infrastructure protection — before it ships to a new market.</p>
+                </div>
+                <div class="cap-cell">
+                    <div class="cap-num">03</div>
+                    <h3 class="cap-name">Train the operator.</h3>
+                    <p class="cap-body">10,000+ pilots trained through SDR's certified curriculum. Drones are only as capable as the operators flying them — and the platform is designed for both.</p>
+                </div>
+                <div class="cap-cell">
+                    <div class="cap-num">04</div>
+                    <h3 class="cap-name">Compound the system.</h3>
+                    <p class="cap-body">Every deployment, every operator hour, and every field iteration feeds back into the platform. The drone of 2026 is the product of three decades of compounding learning.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-strip">
+        <div class="container">
+            <div class="cta-content">
+                <div class="eyebrow eyebrow-on-dark" style="margin-bottom: 32px;"><span class="eyebrow-dot"></span>Continue exploring SDR</div>
+                <h2 class="display-lg" style="color: var(--text-light);">See the <em>technology</em> in detail.</h2>
+                <div class="cta-actions">
+                    <a href="capabilities.html" class="btn btn-primary">Capabilities <span class="btn-arrow" aria-hidden="true">→</span></a>
+                    <a href="drones.html" class="btn btn-ghost">View drone lineup</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo"><img src="img/sdr-logo-transparent.png" alt="SDR Drone Inc." class="logo-img logo-img-dark"></div>
+                    <p class="footer-tagline">Global defense and industrial — total drone solutions, engineered in Korea.</p>
+                </div>
+                <div class="footer-col"><h4>Company</h4><ul><li><a href="about.html">About</a></li><li><a href="team.html">Team</a></li><li><a href="capabilities.html">Capabilities</a></li><li><a href="drones.html">Drones</a></li><li><a href="insights.html">Insights</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+                <div class="footer-col"><h4>Domains</h4><ul><li>Defense &amp; Tactical</li><li>Public Safety &amp; SAR</li><li>Industrial &amp; Energy</li><li>Agriculture &amp; Smart Farm</li></ul></div>
+                <div class="footer-col"><h4>Headquarters</h4><ul><li>1209 Mountain Road PL NE</li><li>Suite R, Albuquerque</li><li>NM 87110, USA</li><li><a href="mailto:info@sdrdrone.com">info@sdrdrone.com</a></li></ul></div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-legal">© 2026 SDR Drone Inc. All rights reserved. Information presented on this website is for general purposes only and does not constitute an offer to sell defense materiel or solicitation of any procurement. Export of defense-related products is subject to applicable laws and licensing.</div>
+                <div class="footer-meta">New Mexico Corporation<br>Albuquerque · NM 87110</div>
+            </div>
+        </div>
+    </footer>
+    <script>const t=document.querySelector('.nav-toggle'),l=document.querySelector('.nav-links');if(t)t.addEventListener('click',()=>l.classList.toggle('is-open'));</script>
+    <a href="#top" class="back-to-top" id="backToTop" aria-label="Back to top">
+        <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"></polyline></svg>
+    </a>
+    <script>(function(){var b=document.getElementById('backToTop');if(!b)return;function t(){if(window.scrollY>320){b.classList.add('is-visible');}else{b.classList.remove('is-visible');}}window.addEventListener('scroll',t,{passive:true});t();b.addEventListener('click',function(e){e.preventDefault();window.scrollTo({top:0,behavior:'smooth'});});})();</script>
+</body>
+</html>
