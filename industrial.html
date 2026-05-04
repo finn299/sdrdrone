@@ -232,6 +232,46 @@
             .video-controls { bottom: 16px; right: 16px; }
             .video-btn { padding: 8px 12px; font-size: 9px; }
         }
+
+        /* Floating sound toggle — fixed below nav, always reachable */
+        .floating-sound {
+            position: fixed;
+            top: 80px;
+            right: 32px;
+            z-index: 50;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--mono);
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.95);
+            background: rgba(10, 14, 20, 0.78);
+            border: 1px solid rgba(255,255,255,0.22);
+            backdrop-filter: blur(8px);
+            padding: 10px 14px;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.2s ease, transform 0.2s ease;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+        }
+        .floating-sound:hover { background: rgba(10, 14, 20, 0.92); }
+        .floating-sound .icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 14px;
+            height: 14px;
+            color: rgba(255,255,255,0.95);
+        }
+        .floating-sound .label-on { display: none; }
+        .floating-sound.is-on .label-off { display: none; }
+        .floating-sound.is-on .label-on { display: inline; }
+        @media (max-width: 768px) {
+            .floating-sound { top: 72px; right: 16px; padding: 8px 12px; font-size: 9px; }
+        }
     </style>
 </head>
 <body>
@@ -251,6 +291,19 @@
             <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
         </div>
     </nav>
+
+    <!-- Floating sound toggle — controls the MFS demo video below -->
+    <button id="floatingSound" class="floating-sound" aria-label="Sound on / off">
+        <span class="icon" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                <line class="mute-x1" x1="23" y1="9" x2="17" y2="15"></line>
+                <line class="mute-x2" x1="17" y1="9" x2="23" y2="15"></line>
+            </svg>
+        </span>
+        <span class="label-off">Sound · Off</span>
+        <span class="label-on">Sound · On</span>
+    </button>
 
     <section class="page-header">
         <div class="container">
@@ -417,11 +470,18 @@
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         var ytPlayer;
-        var sBtn, pBtn;
+        var sBtn, pBtn, floatBtn;
         function setSoundButtonOn(on){
-            if (!sBtn) return;
-            sBtn.classList.toggle('is-on', on);
-            sBtn.querySelectorAll('.mute-x1, .mute-x2').forEach(function(l){ l.style.display = on ? 'none' : 'inline'; });
+            [sBtn, floatBtn].forEach(function(b){
+                if (!b) return;
+                b.classList.toggle('is-on', on);
+                b.querySelectorAll('.mute-x1, .mute-x2').forEach(function(l){ l.style.display = on ? 'none' : 'inline'; });
+            });
+        }
+        function toggleSound(){
+            if (!ytPlayer) return;
+            if (ytPlayer.isMuted()) { ytPlayer.unMute(); setSoundButtonOn(true); }
+            else { ytPlayer.mute(); setSoundButtonOn(false); }
         }
         function onYouTubeIframeAPIReady(){
             ytPlayer = new YT.Player('ytPlayer', {
@@ -434,6 +494,7 @@
         (function(){
             pBtn = document.getElementById('ytPlayToggle');
             sBtn = document.getElementById('ytSoundToggle');
+            floatBtn = document.getElementById('floatingSound');
             var isPlaying = true;
             function unmuteOnInteraction(){
                 if (!ytPlayer) return;
@@ -451,11 +512,8 @@
                 else { ytPlayer.playVideo(); pBtn.classList.add('is-on'); }
                 isPlaying = !isPlaying;
             });
-            if (sBtn) sBtn.addEventListener('click', function(){
-                if (!ytPlayer) return;
-                if (ytPlayer.isMuted()) { ytPlayer.unMute(); setSoundButtonOn(true); }
-                else { ytPlayer.mute(); setSoundButtonOn(false); }
-            });
+            if (sBtn) sBtn.addEventListener('click', toggleSound);
+            if (floatBtn) floatBtn.addEventListener('click', toggleSound);
         })();
     </script>
 
