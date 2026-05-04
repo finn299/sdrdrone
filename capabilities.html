@@ -269,15 +269,34 @@
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         var ytPlayer;
+        var sBtn, pBtn;
+        function setSoundButtonOn(on){
+            if (!sBtn) return;
+            sBtn.classList.toggle('is-on', on);
+            sBtn.querySelectorAll('.mute-x1, .mute-x2').forEach(function(l){ l.style.display = on ? 'none' : 'inline'; });
+        }
         function onYouTubeIframeAPIReady(){
             ytPlayer = new YT.Player('ytPlayer', {
-                events: { 'onReady': function(){ ytPlayer.mute(); ytPlayer.playVideo(); } }
+                events: { 'onReady': function(){
+                    ytPlayer.mute(); ytPlayer.playVideo();
+                    try { ytPlayer.unMute(); setSoundButtonOn(true); } catch(e){}
+                }}
             });
         }
         (function(){
-            var pBtn = document.getElementById('ytPlayToggle');
-            var sBtn = document.getElementById('ytSoundToggle');
+            pBtn = document.getElementById('ytPlayToggle');
+            sBtn = document.getElementById('ytSoundToggle');
             var isPlaying = true;
+            function unmuteOnInteraction(){
+                if (!ytPlayer) return;
+                try { if (ytPlayer.isMuted()) { ytPlayer.unMute(); setSoundButtonOn(true); } } catch(e){}
+                ['click','touchstart','scroll','keydown'].forEach(function(ev){
+                    document.removeEventListener(ev, unmuteOnInteraction, true);
+                });
+            }
+            ['click','touchstart','scroll','keydown'].forEach(function(ev){
+                document.addEventListener(ev, unmuteOnInteraction, { once: false, passive: true, capture: true });
+            });
             if (pBtn) pBtn.addEventListener('click', function(){
                 if (!ytPlayer) return;
                 if (isPlaying) { ytPlayer.pauseVideo(); pBtn.classList.remove('is-on'); }
@@ -286,13 +305,8 @@
             });
             if (sBtn) sBtn.addEventListener('click', function(){
                 if (!ytPlayer) return;
-                if (ytPlayer.isMuted()) {
-                    ytPlayer.unMute(); sBtn.classList.add('is-on');
-                    sBtn.querySelectorAll('.mute-x1, .mute-x2').forEach(function(l){ l.style.display = 'none'; });
-                } else {
-                    ytPlayer.mute(); sBtn.classList.remove('is-on');
-                    sBtn.querySelectorAll('.mute-x1, .mute-x2').forEach(function(l){ l.style.display = 'inline'; });
-                }
+                if (ytPlayer.isMuted()) { ytPlayer.unMute(); setSoundButtonOn(true); }
+                else { ytPlayer.mute(); setSoundButtonOn(false); }
             });
         })();
     </script>
