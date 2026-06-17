@@ -1,3 +1,10 @@
+/* Reserve scrollbar space on every page so content never shifts
+   horizontally during navigation (layout-shift fix) */
+html {
+    overflow-y: scroll;
+    scrollbar-gutter: stable;
+}
+
 /* ============================================
    SDR Sundori Drone — Site Styles
    Editorial Asymmetric · Magazine-grade typography
@@ -245,7 +252,8 @@ a:hover { color: var(--accent); }
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 132px;
+    padding: 0.2rem 0;
+    min-height: 0;
 }
 
 .logo {
@@ -260,9 +268,13 @@ a:hover { color: var(--accent); }
 }
 
 .logo-img {
-    height: 100px;
+    height: 4rem;
     width: auto;
     display: block;
+    object-fit: contain;
+}
+@media (min-width: 768px) {
+    .nav .logo-img { height: 4.5rem; }
 }
 
 footer .logo-img,
@@ -317,47 +329,42 @@ footer .logo-img-dark {
     list-style: none;
     display: flex;
     align-items: center;
-    gap: 36px;
+    gap: 2.5rem;
 }
 
 .nav-links a {
-    font-size: 14px;
-    font-weight: 400;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
     color: var(--text-secondary);
     transition: color 0.2s ease;
     position: relative;
-    letter-spacing: -0.005em;
+}
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    width: 0;
+    height: 2px;
+    background: var(--accent);
+    transition: width 0.3s ease;
 }
 
-.nav-links a:hover { color: var(--accent); }
-.nav-links a.active {
-    color: var(--accent);
-    font-style: italic;
-    font-family: var(--serif);
-    font-size: 16px;
-    font-weight: 400;
-}
+.nav-links a:hover { color: var(--text); }
+.nav-links a:hover::after,
+.nav-links a.active::after { width: 100%; }
+.nav-links a.active { color: var(--text); }
 .nav-links a.active::before { display: none; }
 
+/* Contact link: plain text like the other items (matches index nav geometry) */
 .nav-cta {
-    font-family: var(--mono) !important;
-    text-transform: uppercase;
-    letter-spacing: 0.12em !important;
-    font-size: 11px !important;
-    font-weight: 500 !important;
-    border: 1px solid var(--text) !important;
-    padding: 10px 18px !important;
-    color: var(--text) !important;
-    transition: all 0.2s ease;
+    border: none !important;
+    padding: 0 !important;
     background: transparent !important;
     border-radius: 0 !important;
-    font-style: normal !important;
-}
-
-.nav-cta:hover {
-    background: var(--text) !important;
-    color: var(--bg) !important;
-    border-color: var(--text) !important;
 }
 
 .nav-toggle {
@@ -934,20 +941,6 @@ footer .logo-img-dark {
     padding: 16px;
 }
 
-.feature-photo-caption {
-    position: absolute;
-    bottom: 16px;
-    left: 16px;
-    font-family: var(--mono);
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--text);
-    background: var(--bg-paper);
-    padding: 8px 12px;
-    border: 1px solid var(--border);
-}
 
 .feature-words {
     padding: 0 16px;
@@ -1058,20 +1051,6 @@ footer .logo-img-dark {
 
 .drone-card:hover .drone-photo img { transform: scale(1.04); }
 
-.drone-photo-overlay {
-    position: absolute;
-    top: 16px;
-    left: 16px;
-    font-family: var(--mono);
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--text);
-    background: var(--bg-paper);
-    padding: 6px 10px;
-    border: 1px solid var(--border);
-}
 
 .drone-code {
     font-family: var(--mono);
@@ -1271,7 +1250,7 @@ footer .logo-img-dark {
 footer {
     background: var(--bg-darker);
     border-top: none;
-    padding: 96px 0 40px;
+    padding: 96px 0 64px;
     color: var(--text-muted-dark);
 }
 
@@ -1332,20 +1311,35 @@ footer .logo.logo-text .logo-suffix {
     margin-left: 4px;
 }
 
+.footer-col h3,
 .footer-col h4 {
     font-family: var(--mono);
     font-size: 12px;
     font-weight: 500;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--text-light);
+    color: #60a5fa;
     margin-bottom: 24px;
 }
 
-.footer-col ul { list-style: none; display: grid; gap: 14px; }
-.footer-col a, .footer-col li {
+.footer-col ul {
+    list-style: none;
+    display: grid;
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+}
+.footer-col li {
     font-size: 14px;
+    line-height: 1.5;
     color: rgba(255, 255, 255, 0.78);
+    margin: 0;
+}
+.footer-col a {
+    font-size: 14px;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.78);
+    display: inline-block;
     transition: color 0.2s ease;
 }
 .footer-col a:hover { color: var(--accent-on-dark); }

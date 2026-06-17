@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a0a0a">
+    <title>Products — SDR Drone Inc.</title>
+    <meta name="description" content="The SDR drone lineup — thirteen production platforms across three series: Multi-Role Tactical Rotary-Wing, Tactical VTOL Platform, and Smart Farming Intelligence. Combat-validated, swarm-controlled.">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="favicon-512.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,300;9..144,0,400;9..144,0,500;9..144,1,300;9..144,1,400;9..144,1,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* ============================================
+           Series index grid
+           ============================================ */
+        .cat-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+        }
+        .cat-cell {
+            background: var(--bg);
+            padding: 28px 26px;
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            color: inherit;
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+        .cat-cell:hover {
+            background: var(--bg-warm);
+        }
+        .cat-num {
+            font-family: var(--mono);
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.22em;
+            color: var(--accent);
+            margin-bottom: 16px;
+        }
+        .cat-name {
+            font-family: var(--display);
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 1.2;
+            letter-spacing: -0.01em;
+            margin-bottom: 8px;
+        }
+        .cat-code {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 0.14em;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+        }
+        .cat-detail {
+            font-size: 12.5px;
+            line-height: 1.55;
+            color: var(--text-secondary);
+            font-weight: 300;
+            margin-top: auto;
+        }
+        @media (max-width: 1100px) {
+            .cat-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 560px) {
+            .cat-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ============================================
+           Series band — section intro
+           ============================================ */
+        .series-band {
+            padding: 96px 0 40px;
+        }
+        .series-band .lede { max-width: 720px; }
+
+        /* ============================================
+           Model cards — compact product grid
+           ============================================ */
+        .model-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+        }
+        .model-grid-2 { grid-template-columns: repeat(2, 1fr); } /* VTOL: 4 models → 2×2, no empty cells */
+        .model-card {
+            background: #ffffff;
+            padding: 40px 36px 44px;
+            display: flex;
+            flex-direction: column;
+        }
+        .model-photo {
+            height: 240px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 28px;
+            overflow: hidden;
+        }
+        .model-photo img {
+            max-width: 100%;
+            max-height: 240px;
+            object-fit: contain;
+            mix-blend-mode: multiply;
+            transition: transform 0.5s ease;
+        }
+        .model-card:hover .model-photo img { transform: scale(1.05); }
+        /* M3: source image has extra padding — scale up to match other drones' visual size */
+        #m3 .model-photo img { transform: scale(1.45); }
+        #m3.model-card:hover .model-photo img { transform: scale(1.50); }
+        .model-code {
+            font-family: var(--mono);
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+        .model-name {
+            font-family: var(--display);
+            font-size: 30px;
+            font-weight: 400;
+            letter-spacing: -0.02em;
+            line-height: 1.05;
+            margin-bottom: 6px;
+        }
+        .model-class {
+            font-family: var(--display);
+            font-style: italic;
+            font-size: 14.5px;
+            color: var(--text-muted);
+            margin-bottom: 18px;
+        }
+        .model-desc {
+            font-size: 13.5px;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            font-weight: 300;
+            margin-bottom: 24px;
+        }
+        .model-specs {
+            margin-top: auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px 16px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+        .model-spec dt {
+            font-family: var(--mono);
+            font-size: 9px;
+            font-weight: 500;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+        .model-spec dd {
+            font-family: var(--display);
+            font-size: 15px;
+            font-style: italic;
+            color: var(--text);
+            line-height: 1.2;
+        }
+        @media (max-width: 1100px) {
+            .model-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 640px) {
+            .model-grid { grid-template-columns: 1fr; }
+            .model-photo { height: 200px; }
+        }
+
+        /* ============================================
+           MFS showcase — software platform block
+           ============================================ */
+        .showcase {
+            background: #ffffff;
+            border-bottom: 1px solid var(--border-faint);
+            padding: 120px 0;
+            position: relative;
+        }
+        .showcase-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 80px;
+            align-items: center;
+        }
+        .showcase-photo {
+            position: relative;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 420px;
+        }
+        .showcase-photo img {
+            width: 100%;
+            max-width: 720px;
+            height: auto;
+            max-height: 540px;
+            object-fit: contain;
+            display: block;
+            mix-blend-mode: multiply;
+        }
+        .showcase-info { padding: 24px 0; }
+        .showcase-num {
+            font-family: var(--mono);
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+        .showcase-code {
+            font-family: var(--mono);
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.22em;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+        .showcase-name {
+            font-family: var(--display);
+            font-size: clamp(48px, 5.5vw, 84px);
+            font-weight: 400;
+            letter-spacing: -0.04em;
+            line-height: 0.96;
+            margin-bottom: 20px;
+            color: var(--text);
+        }
+        .showcase-name em {
+            font-style: italic;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+        .showcase-class {
+            font-family: var(--display);
+            font-style: italic;
+            font-size: clamp(18px, 1.6vw, 22px);
+            color: var(--text-muted);
+            margin-bottom: 32px;
+            font-weight: 400;
+            line-height: 1.4;
+        }
+        .showcase-desc {
+            font-size: 16px;
+            line-height: 1.65;
+            color: var(--text-secondary);
+            font-weight: 400;
+            margin-bottom: 36px;
+            max-width: 540px;
+        }
+        .showcase-badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 36px;
+        }
+        .showcase-badge {
+            font-family: var(--mono);
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--text);
+            padding: 8px 12px;
+            border: 1px solid var(--border-strong);
+            background: var(--bg);
+        }
+        .showcase-badge.is-accent {
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+        /* Secure Comms section — tighten heading, align image with description paragraph,
+           and break out of the column constraint so the image actually renders larger.
+           Important: the BASE `.showcase-photo img` rule limits img to max-width 720px;
+           this override raises that ceiling and lets the image extend past the grid column. */
+        #mfs.showcase {
+            overflow-x: clip;  /* keep horizontal overflow tidy but allow expansion */
+        }
+        #mfs.showcase .showcase-grid {
+            align-items: start;
+            grid-template-columns: minmax(440px, 1fr) minmax(0, 1.3fr);
+            gap: 64px;
+        }
+        #mfs.showcase .showcase-name {
+            font-size: clamp(36px, 4.2vw, 60px);
+            line-height: 1.02;
+            white-space: nowrap;
+        }
+        #mfs.showcase .showcase-photo {
+            margin-top: clamp(140px, 18vh, 220px);
+            min-height: 0;
+            align-self: start;
+            justify-content: flex-end;     /* anchor image to right side of its column */
+            overflow: visible;
+        }
+        #mfs.showcase .showcase-photo img {
+            /* base showcase-photo img has max-width:720px — escape it explicitly */
+            width: clamp(360px, 30vw, 600px) !important;
+            max-width: none !important;
+            max-height: none !important;
+            height: auto;
+            mix-blend-mode: normal;
+            box-shadow: 0 28px 80px -22px rgba(10, 14, 20, 0.30);
+        }
+        @media (max-width: 1100px) {
+            #mfs.showcase .showcase-grid { grid-template-columns: 1fr; }
+            #mfs.showcase .showcase-name { white-space: normal; }
+            #mfs.showcase .showcase-photo { margin-top: 32px; }
+            #mfs.showcase .showcase-photo img {
+                width: 100% !important;
+            }
+        }
+
+        /* descriptive feature list — used in Secure Comms section */
+        .showcase-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 36px;
+            max-width: 540px;
+        }
+        .showcase-list li {
+            position: relative;
+            padding: 8px 0 8px 22px;
+            font-size: 14.5px;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+        .showcase-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 22px;
+            width: 10px;
+            height: 1px;
+            background: var(--accent);
+        }
+        .showcase-specs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px 32px;
+            padding-top: 32px;
+            border-top: 1px solid var(--border);
+        }
+        .showcase-spec dt {
+            font-family: var(--mono);
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+        .showcase-spec dd {
+            font-family: var(--display);
+            font-size: 18px;
+            font-weight: 400;
+            color: var(--text);
+            font-style: italic;
+            line-height: 1.2;
+        }
+        .showcase-spec dd small {
+            font-family: var(--mono);
+            font-style: normal;
+            color: var(--text-muted);
+            font-size: 11px;
+            letter-spacing: 0.06em;
+            margin-left: 4px;
+        }
+        @media (max-width: 1100px) {
+            .showcase-grid { grid-template-columns: 1fr; gap: 32px; }
+            .showcase-photo { min-height: 320px; }
+        }
+        @media (max-width: 640px) {
+            .showcase { padding: 80px 0; }
+            .showcase-specs { grid-template-columns: 1fr 1fr; gap: 20px 24px; }
+        }
+
+        /* Compliance strip — bold dark band */
+        .compliance-strip {
+            background: var(--bg-deep);
+            color: var(--text-light);
+            padding: 64px 0;
+            border-top: 1px solid var(--border-dark);
+            border-bottom: 1px solid var(--border-dark);
+        }
+        .compliance-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 48px;
+        }
+        .compliance-cell {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .compliance-tag {
+            font-family: var(--mono);
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--accent-on-dark);
+        }
+        .compliance-name {
+            font-family: var(--display);
+            font-size: 22px;
+            font-weight: 400;
+            letter-spacing: -0.015em;
+            color: var(--text-light);
+        }
+        .compliance-detail {
+            font-size: 13px;
+            color: var(--text-muted-dark);
+            line-height: 1.5;
+            font-weight: 400;
+        }
+        @media (max-width: 880px) {
+            .compliance-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+        }
+        @media (max-width: 560px) {
+            .compliance-grid { grid-template-columns: 1fr; gap: 24px; }
+        }
+
+        /* MFS Multi-Drone Control video block (moved from industrial.html) */
+        .mfs-video-section {
+            background: var(--bg-deep);
+            color: var(--text-light);
+            padding: 96px 0 0;
+        }
+        .mfs-video-header {
+            max-width: 880px;
+            margin: 0 auto 48px;
+            text-align: center;
+            padding: 0 24px;
+        }
+        .mfs-video-eyebrow {
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.55);
+            margin-bottom: 18px;
+        }
+        .mfs-video-title {
+            font-family: var(--display);
+            font-size: clamp(32px, 4vw, 52px);
+            font-weight: 600;
+            letter-spacing: -0.025em;
+            line-height: 1.1;
+            color: var(--text-light);
+            margin-bottom: 18px;
+        }
+        .mfs-video-title em { font-style: italic; font-weight: 400; color: rgba(255,255,255,0.7); }
+        .mfs-video-lede {
+            font-size: 15.5px;
+            line-height: 1.7;
+            color: rgba(255,255,255,0.7);
+            font-weight: 300;
+        }
+        .video-hero {
+            background: var(--bg-deep);
+            padding: 0;
+            margin: 0;
+            width: 100%;
+            display: block;
+        }
+        .video-frame {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%;
+            background: var(--bg-deep);
+            overflow: hidden;
+        }
+        .video-frame iframe {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            display: block;
+        }
+    </style>
+    <link rel="canonical" href="https://www.sdrdrone.com/products.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="SDR Drone Inc.">
+    <meta property="og:title" content="Products — SDR Drone Inc.">
+    <meta property="og:description" content="The SDR drone lineup — thirteen production platforms across three series: Multi-Role Tactical Rotary-Wing, Tactical VTOL Platform, and Smart Farming Intelligence.">
+    <meta property="og:url" content="https://www.sdrdrone.com/products.html">
+    <meta property="og:image" content="https://www.sdrdrone.com/img/h5.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Products — SDR Drone Inc.">
+    <meta name="twitter:description" content="The SDR drone lineup — thirteen production platforms across three series: Multi-Role Tactical Rotary-Wing, Tactical VTOL Platform, and Smart Farming Intelligence.">
+</head>
+<body>
+    <nav class="nav">
+        <div class="container nav-inner">
+            <a href="index.html" class="logo"><img src="img/sdr-logo-transparent.png?v=2" alt="SDR Drone Inc." class="logo-img"></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="team.html">Team</a></li>
+                <li><a href="capabilities.html">Capabilities</a></li>
+                <li><a href="products.html" class="active">Products</a></li>
+                <li><a href="industrial.html">Applications</a></li>
+                <li><a href="insights.html">Insights</a></li>
+                <li><a href="investors.html">Investors</a></li>
+                <li><a href="contact.html" class="nav-cta">Contact</a></li>
+            </ul>
+            <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+
+    <section class="page-header">
+        <div class="container">
+            <div class="eyebrow fade-up fade-up-1"><span class="eyebrow-dot"></span>Product Lineup</div>
+            <h1 class="display-lg fade-up fade-up-2">A combat-validated <em>platform family</em>.</h1>
+            <p class="lede fade-up fade-up-3">Thirteen production platforms across three series — Multi-Role Tactical Rotary-Wing, Tactical VTOL Platform, and Smart Farming Intelligence — all sharing the SDR Multi Flight control architecture, from tactical missions to smart agriculture.</p>
+        </div>
+    </section>
+
+    <!-- ===== Series Index ===== -->
+    <section class="section" style="padding: 64px 0 24px;">
+        <div class="container">
+            <div class="section-header" style="margin-bottom: 36px;">
+                <div class="eyebrow"><span class="eyebrow-dot"></span>Three Series</div>
+                <h2 class="display-md">The lineup, by <em>series</em>.</h2>
+            </div>
+            <div class="cat-grid">
+                <a href="#rotary" class="cat-cell">
+                    <div class="cat-num">[ 01 ]</div>
+                    <div class="cat-name">Tactical Rotary-Wing</div>
+                    <div class="cat-code">T-DORI · H5 · M3 · M2k · F7P · CG-40Kg</div>
+                    <div class="cat-detail">Multi-Role Tactical Rotary-Wing Series · 6 platforms</div>
+                </a>
+                <a href="#vtol" class="cat-cell">
+                    <div class="cat-num">[ 02 ]</div>
+                    <div class="cat-name">Tactical VTOL Platform</div>
+                    <div class="cat-code">VT-100 AETHER · VT-050 ORBIT · VT-HQ · VT-TAIL</div>
+                    <div class="cat-detail">Tactical VTOL Platform Series · 4 platforms</div>
+                </a>
+                <a href="#smartfarm" class="cat-cell">
+                    <div class="cat-num">[ 03 ]</div>
+                    <div class="cat-name">Smart Farming Intelligence</div>
+                    <div class="cat-code">SQ20 · H1 · H-A20kg</div>
+                    <div class="cat-detail">Smart Farming Intelligence Series · 3 platforms</div>
+                </a>
+                <a href="#mfs-demo" class="cat-cell">
+                    <div class="cat-num">[ + ]</div>
+                    <div class="cat-name">Secure Comms &amp; Cyber Protection</div>
+                    <div class="cat-code">SDR · MFS · SECURE COMMS</div>
+                    <div class="cat-detail">Certified encryption · Multi-layer cyber defense · Anti-jamming comms</div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== Compliance strip ===== -->
+    <section class="compliance-strip">
+        <div class="container">
+            <div class="compliance-grid">
+                <div class="compliance-cell">
+                    <div class="compliance-tag">Standard 01</div>
+                    <div class="compliance-name">Blue-UAS Ready</div>
+                    <div class="compliance-detail">Eligible for U.S. DoD &amp; allied procurement pipelines</div>
+                </div>
+                <div class="compliance-cell">
+                    <div class="compliance-tag">Standard 02</div>
+                    <div class="compliance-name">NDAA §848</div>
+                    <div class="compliance-detail">Full compliance with U.S. defense authorization</div>
+                </div>
+                <div class="compliance-cell">
+                    <div class="compliance-tag">Standard 03</div>
+                    <div class="compliance-name">Zero-China BOM</div>
+                    <div class="compliance-detail">100% non-China sourcing — U.S., E.U., Korea</div>
+                </div>
+                <div class="compliance-cell">
+                    <div class="compliance-tag">Standard 04</div>
+                    <div class="compliance-name">KCMVP Secure Comms</div>
+                    <div class="compliance-detail">Korea Cryptographic Module Validation Program certified</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== Series I — Multi-Role Tactical Rotary-Wing ===== -->
+    <section class="series-band" id="rotary">
+        <div class="container">
+            <div class="eyebrow" style="margin-bottom: 24px;"><span class="eyebrow-dot"></span>Series I — 01 / 03</div>
+            <h2 class="display-md">Multi-Role Tactical <em>Rotary-Wing</em> Series.</h2>
+            <p class="lede" style="margin-top: 20px;">Six rotary-wing platforms covering the full tactical spectrum — persistent tethered surveillance, long-endurance multi-role, compact ISR, FPV strike, and heavy tactical resupply.</p>
+        </div>
+    </section>
+    <section class="section" style="padding-top: 0;">
+        <div class="container">
+            <div class="model-grid">
+                <div class="model-card" id="tdori">
+                    <div class="model-photo"><img src="img/Product_TDori01.webp" alt="SDR T-Dori — Hybrid tethered/wireless drone"></div>
+                    <div class="model-code">SDR · T-DORI</div>
+                    <h3 class="model-name">T-Dori</h3>
+                    <div class="model-class">Hybrid Tethered/Wireless Drone</div>
+                    <p class="model-desc">24/7 continuous aerial surveillance and wide-area communications relay via tethered power supply — with wireless failover for expanded mission profiles.</p>
+                    <dl class="model-specs">
+                        <div class="model-spec"><dt>Endurance</dt><dd>24h+</dd></div>
+                        <div class="model-spec"><dt>Payload</dt><dd>5 kg</dd></div>
+                        <div class="model-spec"><dt>Mission</dt><dd>Persistent ISR</dd></div>
+                    </dl>
+                </div>
+                <div class="model-card" id="h5">
+                    <div class="model-photo"><img src="img/Product_H5_01.webp" alt="SDR H5 — Long-endurance multi-purpose drone"></div>
+                    <div class="model-code">SDR · H5</div>
+                    <h3 class="model-name">H5</h3>
+                    <div class="model-class">Persistent Multi-Mission Platform</div>
+                    <p class="model-desc">High-payload multi-mission platform covering both industrial-facility patrol and precision-strike operations — one airframe, interchangeable payloads, across defense, public-safety, and industrial use.</p>
+                    <dl class="model-specs">
+                        <div class="model-spec"><dt>Endurance</dt><dd>50 min</dd></div>
+                        <div class="model-spec"><dt>Payload</dt><dd>5 kg</dd></div>
+                        <div class="model-spec"><dt>Mission</dt><dd>Multi-role</dd></div>
+                    </dl>
+                </div>
+                <div class="model-card" id="m3">
+                    <div class="model-photo"><img src="img/Product_M3_01.webp" alt="SDR M3 — Persistent multi-mission reconnaissance drone"></div>
+                    <div class="model-code">SDR · M3</div>
+                    <h3 class="model-name">M3</h3>
+                    <div class="model-class">Long-Endurance Drone</div>
+                    <p class="model-desc">Up to 100 minutes endurance. Continuous reconnaissance and attack missions via high-resolution EO/IR camera.</p>
+                    <dl class="model-specs">
+                        <div class="model-spec"><dt>Endurance</dt><dd>100 min</dd></div>
+                        <div class="model-spec"><dt>Max speed</dt><dd>70 km/h</dd></div>
+                        <div class="model-spec"><dt>Sensor</dt><dd>EO/IR</dd></div>
+                    </dl>
+                </div>
+                <div class="model-card" id="m2k">
+                    <div class="model-photo"><img src="img/Product_M2k.webp" alt="SDR M2k — Compact tactical ISR drone"></div>
+                    <div class="model-code">SDR · M2k</div>
+                    <h3 class="model-name">M2k</h3>
+                    <div class="model-class">Compact Tactical ISR Drone</div>
+                    <p class="model-desc">Compact tactical ISR drone maximizing portability. Rapid deployment capability for squad-level operations.</p>
+                    <dl class="model-specs">
+                        <div class="model-spec"><dt>Weight</dt><dd>4.5 kg</dd></div>
+                        <div class="model-spec"><dt>Max speed</dt><dd>80 km/h</dd></div>
+                        <div class="model-spec"><dt>Mission</dt><dd>Tactical ISR</dd></div>
+                    </dl>
+                </div>
+                <div class="model-card" id="f7p">
+                    <div class="model-photo"><img src="img/Product_F7P_01.webp" alt="SDR F7P — 3D-printed FPV strike platform"></div>
+                    <div class="model-code">SDR · F7P</div>
+                    <h3 class="model-name">F7P</h3>
+                    <div class="model-class">FPV Strike Platform · 3D-Printed</div>
+                    <p class="model-desc">3D printing-based low-cost, high-efficiency FPV loitering strike platform engineered for rapid mass deployment.</p>
+                    <dl class="model-specs">
+                        <div class="model-spec"><dt>Max speed</dt><dd>140 km/h</dd></div>
+                        <div class="model-spec"><dt>MTOW</dt><dd>3 kg</dd></div>
+                        <div class="model-spec"><dt>Production</dt><dd>3D-printed</dd></div>
+                    </dl>
+                </div>
+                <div class="model-card" id="cg40">
+                    <div class="model-photo"><img src="img/CG40KG_01.webp" alt="SDR CG-40Kg — Heavy-lift cargo octocopter"></div>
+                    <div class="model-code">SDR · CG-40Kg</div>
+                    <h3 class="model-name">CG-40Kg</h3>
+                    <div class="model-class">Heavy-Lift Cargo Octocopter</div>
+                    <p class="model-desc">40 kg payload capacity. Octocopter engineered for military tactical resupply and emergency relief delivery.</p>
+                    <dl class="model-specs">
+                        <div class="model-spec"><dt>Payload</dt><dd>40 kg</dd></div>
+                        <div class="model-spec"><dt>MTOW</dt><dd>95 kg</dd></div>
+                        <div class="model-spec"><dt>Mission</dt><dd>Resupply</dd></div>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== Series II — Tactical VTOL Platform ===== -->
+    <section class="series-band section-warm" id="vtol" style="margin-top: 40px;">
+        <div class="container">
+            <div class="eyebrow" style="margin-bottom: 24px;"><span class="eyebrow-dot"></span>Series II — 02 / 03</div>
+            <h2 class="display-md">Tactical <em>VTOL Platform</em> Series.</h2>
+            <p class="lede" style="margin-top: 20px;">Four fixed-wing VTOL platforms — runway-free launch with fixed-wing range and endurance, from strategic 1,000 km reconnaissance to expendable 3D-printed tail-sitters.</p>
+        </div>
+    </section>
+    <section class="section section-warm" style="padding-top: 0;">
+        <div class="container">
+            <div class="model-grid model-grid-2">
+                <div class="model-card" id="vt100">
+                    <div class="model-photo"><img src="img/Product_VT100.webp" alt="SDR VT-100 Aether — Long-range strategic VTOL"></div>
+                    <div class="model-code">SDR · VT-100</div>
+                    <h3 class="model-name">VT-100 Aether</h3>
+                    <div class="model-class">Strategic Long-Range VTOL</div>
+                    <p class="model-desc">Hybrid engine-based 1,000 km range capability. Top-tier VTOL asset for strategic long-range reconnaissance and strike missions.</p>
+                    <dl class="model-specs">
+                        <div class="model-spec"><dt>Endurance</dt><dd>10 hr</dd></div>
+                        <div class="model-spec"><dt>Radius</dt><dd>1,000 km</dd></div>
+                        <div class="model-spec"><dt>Payload</dt><dd>15 kg</dd></div>
+                    </dl>
+                </div>
+                <div class="model-card" id="vt050">
+                    <div class="model-photo"><img src="img/Product_VT50.webp" alt="SDR VT-050 Orbit — Tactical ISR VTOL"></div>
+                    <div class="model-code">SDR · VT-050</div>
+                    <h3 class="model-name">VT-050 Orbit</h3>
+                    <div class="model-class">Tactical ISR VTOL</div>
+                    <p class="model-desc">Tactical ISR collection and swarm autonomous flight support. Optimized for 24/7 coastal and mountain terrain surveillance.</p>
+                    <dl class="model-specs">
+                        <div class="model-spec"><dt>Endurance</dt><dd>5 hr</dd></div>
+                        <div class="model-spec"><dt>Radius</dt><dd>500 km</dd></div>
+                        <div class="model-spec"><dt>Payload</dt><dd>10 kg</dd></div>
+                    </dl>
+                </div>
+                <div class="model-card" id="vthq">
+                    <div class="model-photo"><img src="img/Product_VThq.webp" alt="SDR VT-HQ — Military pilot training VTOL platform"></div>
+                    <div class="model-code">SDR · VT-HQ</div>
+                    <h3 class="model-name">VT-HQ</h3>
+                    <div class="model-class">Training VTOL Platform</div>
+                    <p class="model-desc">Dedicated training platform for military pilot development. Identical flight characteristics to operational aircraft with high-speed flight.</p>
+                    <dl class="model-specs">
+                        <div class="model-spec"><dt>Endurance</dt><dd>60 min</dd></div>
+                        <div class="model-spec"><dt>Max speed</dt><dd>150 km/h</dd></div>
+                        <div class="model-spec"><dt>Mission</dt><dd>Training</dd></div>
+                    </dl>
+                </div>
+                <div class="model-card" id="vttail">
+                    <div class="model-photo"><img src="img/Product_VTail.webp" alt="SDR VT-Tail — 3D-printed tail-sitter VTOL"></div>
+                    <div class="model-code">SDR · VT-TAIL</div>
+                    <h3 class="model-name">VT-Tail</h3>
+                    <div class="model-class">3D-Printed Tail-Sitter VTOL</div>
+                    <p class="model-desc">3D-printed tail-sitter structure. Ultra-lightweight expendable design for tactical and precision strike (loitering munition) operations.</p>
+                    <dl class="model-specs">
+                        <div class="model-spec"><dt>Endurance</dt><dd>50 min</dd></div>
+                        <div class="model-spec"><dt>Weight</dt><dd>2 kg</dd></div>
+                        <div class="model-spec"><dt>Production</dt><dd>3D-printed</dd></div>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== Series III — Smart Farming Intelligence ===== -->
+    <section class="series-band" id="smartfarm" style="margin-top: 40px;">
+        <div class="container">
+            <div class="eyebrow" style="margin-bottom: 24px;"><span class="eyebrow-dot"></span>Series III — 03 / 03</div>
+            <h2 class="display-md">Smart Farming <em>Intelligence</em> Series.</h2>
+            <p class="lede" style="margin-top: 20px;">Three agricultural platforms — automated spraying, real-time crop monitoring, and heavy-duty crop protection — integrated with fully unmanned station operations.</p>
+        </div>
+    </section>
+    <section class="section" style="padding-top: 0;">
+        <div class="container">
+            <div class="model-grid">
+                <div class="model-card" id="sq20">
+                    <div class="model-photo"><img src="img/SQ20.png" alt="SDR SQ20 — Agricultural spraying drone"></div>
+                    <div class="model-code">SDR · SQ20</div>
+                    <h3 class="model-name">SQ20</h3>
+                    <div class="model-class">Agricultural Spraying Standard</div>
+                    <p class="model-desc">Agricultural drone standard. 20 L pesticide spraying with fully unmanned automated station integration.</p>
+                    <dl class="model-specs">
+                        <div class="model-spec"><dt>Spray area</dt><dd>2 ha</dd></div>
+                        <div class="model-spec"><dt>Load</dt><dd>20 L</dd></div>
+                        <div class="model-spec"><dt>Work time</dt><dd>15 min</dd></div>
+                    </dl>
+                </div>
+                <div class="model-card" id="h1">
+                    <div class="model-photo"><img src="img/H1.png" alt="SDR H1 — Multi-purpose agricultural drone"></div>
+                    <div class="model-code">SDR · H1</div>
+                    <h3 class="model-name">H1</h3>
+                    <div class="model-class">Multi-Purpose Agricultural Aircraft</div>
+                    <p class="model-desc">High-performance multi-purpose agricultural aircraft with real-time crop monitoring module support.</p>
+                    <dl class="model-specs">
+                        <div class="model-spec"><dt>Spray area</dt><dd>1 ha</dd></div>
+                        <div class="model-spec"><dt>Work time</dt><dd>10 min</dd></div>
+                        <div class="model-spec"><dt>Auto</dt><dd>Spray &amp; return</dd></div>
+                    </dl>
+                </div>
+                <div class="model-card" id="ha20">
+                    <div class="model-photo"><img src="img/H-A20Kg.png" alt="SDR H-A20kg — Heavy-duty crop protection drone"></div>
+                    <div class="model-code">SDR · H-A20kg</div>
+                    <h3 class="model-name">H-A20kg</h3>
+                    <div class="model-class">Heavy-Duty Crop Protection</div>
+                    <p class="model-desc">Maximum work efficiency with 20 kg payload capacity. Specialized heavy-duty crop protection platform.</p>
+                    <dl class="model-specs">
+                        <div class="model-spec"><dt>Spray area</dt><dd>2 ha</dd></div>
+                        <div class="model-spec"><dt>Load</dt><dd>20 kg</dd></div>
+                        <div class="model-spec"><dt>Work time</dt><dd>15 min</dd></div>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== MFS Demo Video — full-bleed cinematic (moved from industrial.html) ===== -->
+    <section class="mfs-video-section" id="mfs-demo">
+        <div class="mfs-video-header">
+            <div class="mfs-video-eyebrow"><span style="display:inline-block; width:6px; height:6px; background: rgba(255,255,255,0.55); margin-right:10px; vertical-align: middle;"></span>MFS DEMO · MULTI-DRONE CONTROL</div>
+            <h2 class="mfs-video-title">One pilot. <em>A group of drones</em>.</h2>
+            <p class="mfs-video-lede">Live demonstration of SDR's Multi Flight Software (MFS) — group formation, one-click commands, real-time satellite telemetry, and FANET-meshed coordination across an entire fleet from a single ground-control station.</p>
+        </div>
+
+        <section class="video-hero">
+            <div class="video-frame">
+                <div class="video-facade" data-vid="c1SNXgTZ8B8" role="button" tabindex="0" aria-label="Play video: SDR MFS — Multi-Drone Control Demo"
+                    style="position:absolute; inset:0; cursor:pointer; background:url('img/mfs-still.jpg') center/cover no-repeat;">
+                    <div style="position:absolute; inset:0; background:rgba(0,0,0,0.35);"></div>
+                    <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); text-align:center;">
+                        <div style="width:84px; height:84px; margin:0 auto 18px; border:1px solid rgba(255,255,255,0.85); border-radius:50%; display:flex; align-items:center; justify-content:center; background:rgba(10,14,20,0.45); backdrop-filter:blur(6px);">
+                            <svg width="30" height="30" viewBox="0 0 24 24" fill="rgba(255,255,255,0.95)" style="margin-left:4px;"><polygon points="6 4 20 12 6 20 6 4"></polygon></svg>
+                        </div>
+                        <div style="font-family:var(--mono); font-size:11px; letter-spacing:0.22em; text-transform:uppercase; color:rgba(255,255,255,0.92);">Play · MFS Multi-Drone Control</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+
+    <!-- ===== CTA strip ===== -->
+    <section class="cta-strip">
+        <div class="container">
+            <div class="cta-content">
+                <div class="eyebrow eyebrow-on-dark" style="margin-bottom: 32px;"><span class="eyebrow-dot"></span>Engage with SDR</div>
+                <h2 class="display-lg" style="color: var(--text-light);">Build the next mission <em>with us</em>.</h2>
+                <div class="cta-actions">
+                    <a href="contact.html" class="btn btn-primary">Contact the team <span class="btn-arrow" aria-hidden="true">→</span></a>
+                    <a href="capabilities.html" class="btn btn-ghost">Technical capabilities</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo"><img src="img/sdr-logo-transparent.png?v=2" alt="SDR Drone Inc." class="logo-img logo-img-dark"></div>
+                    <p class="footer-tagline">Global defense and industrial — total drone solutions, engineered in Korea.</p>
+                </div>
+                <div class="footer-col"><h3>Company</h3><ul><li><a href="about.html">About</a></li><li><a href="team.html">Team</a></li><li><a href="capabilities.html">Capabilities</a></li><li><a href="products.html">Products</a></li><li><a href="insights.html">Insights</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+                <div class="footer-col"><h3>Investors</h3><ul><li><a href="investors.html">Investor Relations</a></li><li><a href="https://www.otcmarkets.com/stock/HLLK/overview" target="_blank" rel="noopener">OTC: HLLK</a></li><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms of Use</a></li></ul></div>
+                <div class="footer-col"><h3>Headquarters</h3><ul><li>Miami, FL, USA</li><li>Tel: <a href="tel:+18776464833">(877) 646-4833</a></li><li><a href="mailto:info@sdrdrone.com">info@sdrdrone.com</a></li></ul></div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-legal">© 2026 SDR Drone Inc. All rights reserved. Information presented on this website is for general purposes only and does not constitute an offer to sell defense materiel or solicitation of any procurement. Export of defense-related products is subject to applicable laws and licensing.</div>
+                <div class="footer-meta">Florida Corporation · OTC: HLLK<br>Formerly known as Hallmark Venture Group, Inc.</div>
+            </div>
+        </div>
+    </footer>
+    <script>const t=document.querySelector('.nav-toggle'),l=document.querySelector('.nav-links');if(t)t.addEventListener('click',()=>l.classList.toggle('is-open'));</script>
+    <a href="#top" class="back-to-top" id="backToTop" aria-label="Back to top">
+        <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"></polyline></svg>
+    </a>
+    <script>(function(){var b=document.getElementById('backToTop');if(!b)return;function t(){if(window.scrollY>320){b.classList.add('is-visible');}else{b.classList.remove('is-visible');}}window.addEventListener('scroll',t,{passive:true});t();b.addEventListener('click',function(e){e.preventDefault();window.scrollTo({top:0,behavior:'smooth'});});})();</script>
+    <script>
+    /* YouTube lite facade — http(s) 에서는 in-page iframe / file:// 에서는 새 탭 (YT error 153 회피) */
+    document.querySelectorAll('.video-facade').forEach(function (fc) {
+        function play() {
+            var id = fc.dataset.vid;
+            if (location.protocol === 'file:') {
+                window.open('https://www.youtube.com/watch?v=' + id, '_blank', 'noopener');
+                return;
+            }
+            var f = document.createElement('iframe');
+            f.src = 'https://www.youtube.com/embed/' + id + '?autoplay=1&mute=1&rel=0&modestbranding=1&playsinline=1&iv_load_policy=3';
+            f.title = fc.getAttribute('aria-label') || 'Video';
+            f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+            f.allowFullscreen = true;
+            f.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:0;display:block;';
+            fc.replaceWith(f);
+        }
+        fc.addEventListener('click', play);
+        fc.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); play(); } });
+    });
+    </script>
+    <!-- Vercel Web Analytics -->
+    <script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>

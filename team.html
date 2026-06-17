@@ -3,8 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a0a0a">
     <title>Team — SDR Drone Inc.</title>
     <meta name="description" content="The team behind SDR — engineers, operators, and platform leaders building Korea's defense-standard drone system.">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="favicon-512.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,300;9..144,0,400;9..144,0,500;9..144,1,300;9..144,1,400;9..144,1,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -24,12 +31,13 @@
             background: var(--bg);
             display: grid;
             grid-template-columns: 160px 1fr;
+            column-gap: 12px;
             align-items: stretch;
         }
         .leader-portrait {
             width: 160px;
             height: 160px;
-            background: #f4f4f2;
+            background: transparent !important;   /* override styles.css line 1405 */
             position: relative;
             overflow: hidden;
             align-self: center;
@@ -85,6 +93,56 @@
             .leader-portrait { width: 110px; height: 110px; margin: 20px 0 20px 20px; }
             .leader-body { padding: 24px 24px 28px; }
         }
+        /* Phone: stack portrait above body for readability */
+        @media (max-width: 600px) {
+            .leader {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+            .leader-portrait {
+                width: 140px;
+                height: 140px;
+                margin: 28px auto 4px;
+                justify-self: center;
+            }
+            .leader-body {
+                padding: 18px 22px 28px;
+                text-align: center;
+                align-items: center;
+            }
+            .leader-name { font-size: 22px; }
+            .leader-bio { text-align: left; }
+        }
+        /* Leadership sub-group divider */
+        .leadership-subheader {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 24px;
+            margin-top: 56px;
+            margin-bottom: 18px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+            max-width: 1080px;
+        }
+        .leadership-subheader:first-child { margin-top: 56px; }
+        .leadership-sub-title {
+            font-family: var(--display);
+            font-size: clamp(18px, 1.8vw, 22px);
+            font-weight: 600;
+            letter-spacing: -0.015em;
+            color: var(--text);
+        }
+        .leadership-sub-tag {
+            font-family: var(--mono);
+            font-size: 10.5px;
+            font-weight: 500;
+            letter-spacing: 0.20em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+        .leadership + .leadership-subheader { margin-top: 64px; }
+        .leadership { margin-top: 0 !important; }
 
         /* ===== SUNDORI Co., Ltd. — engineering bench ===== */
         .partner-banner {
@@ -135,28 +193,186 @@
         .team-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
+            grid-template-rows: repeat(3, auto);
+            grid-auto-flow: column;     /* fill left column first, then right */
             gap: 1px;
             background: var(--border);
             border: 1px solid var(--border);
             border-top: 0;
+            margin-top: 0;
+        }
+        /* Single-column variant for Engineering Bench */
+        .team-grid.one-col {
+            grid-template-columns: 1fr;
+            grid-template-rows: none;
+            grid-auto-flow: row;
+        }
+        @media (max-width: 880px) { .team-grid { grid-auto-flow: row; grid-template-rows: none; grid-template-columns: 1fr; } }
+
+        /* Collapsible sub-group toggle */
+        .leadership-sub-tag-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .collapse-toggle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: transparent;
+            border: 1px solid var(--border-strong);
+            border-radius: 0;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+            padding: 0;
+        }
+        .collapse-toggle:hover {
+            background: var(--accent-soft);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        .collapse-toggle:focus-visible {
+            outline: none;
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        .collapse-chevron {
+            width: 12px;
+            height: 12px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.6;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .collapse-toggle[aria-expanded="true"] .collapse-chevron {
+            transform: rotate(-180deg);
+        }
+        .sr-only {
+            position: absolute;
+            width: 1px; height: 1px;
+            padding: 0; margin: -1px;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+            border: 0;
+        }
+        /* Collapsible panel — smooth height + opacity + slide transition */
+        .collapse-panel {
+            overflow: hidden;
+            max-height: 0;
+            opacity: 0;
+            transform: translateY(-8px);
+            transition: max-height 1.0s cubic-bezier(0.32, 0.72, 0.24, 1),
+                        opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1) 0.15s,
+                        transform 0.85s cubic-bezier(0.32, 0.72, 0.24, 1) 0.1s,
+                        margin-top 0.7s cubic-bezier(0.32, 0.72, 0.24, 1);
+            margin-top: 0;
+        }
+        .collapse-panel.is-open {
+            opacity: 1;
+            transform: translateY(0);
+            margin-top: 0;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .collapse-panel { transition: none; transform: none; }
+            .collapse-chevron { transition: none; }
+        }
+
+        /* Central Principals toggle — single button revealing Board + Operating + Engineering Bench */
+        .principals-toggle-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 28px;
+            margin: 80px 0 16px;
+        }
+        .principals-toggle-rule {
+            flex: 1;
+            height: 1px;
+            background: var(--border-soft, rgba(0,0,0,0.12));
+        }
+        .principals-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 28px;
+            background: transparent;
+            border: 1px solid var(--border-strong);
+            border-radius: 0;
+            color: var(--text-primary, #111);
+            font-family: inherit;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+            white-space: nowrap;
+        }
+        .principals-toggle:hover {
+            background: var(--accent-soft);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        .principals-toggle:focus-visible {
+            outline: none;
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        .principals-toggle-label .label-expanded { display: none; }
+        .principals-toggle[aria-expanded="true"] .label-collapsed { display: none; }
+        .principals-toggle[aria-expanded="true"] .label-expanded { display: inline; }
+        .principals-chevron {
+            width: 12px;
+            height: 12px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.6;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .principals-toggle[aria-expanded="true"] .principals-chevron {
+            transform: rotate(-180deg);
+        }
+        .principals-collapsible {
+            overflow: hidden;
+            max-height: 0;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: max-height 1.2s cubic-bezier(0.32, 0.72, 0.24, 1),
+                        opacity 0.85s cubic-bezier(0.4, 0, 0.2, 1) 0.2s,
+                        transform 1.0s cubic-bezier(0.32, 0.72, 0.24, 1) 0.15s;
+        }
+        .principals-collapsible.is-open {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .principals-collapsible { transition: none; transform: none; }
+            .principals-chevron { transition: none; }
         }
         .team-card {
             background: var(--bg);
             display: grid;
-            grid-template-columns: 110px 1fr;
+            grid-template-columns: 160px 1fr;
             align-items: stretch;
         }
         .team-portrait {
-            width: 110px;
-            height: 110px;
-            background: #f4f4f2;
+            width: 160px;
+            height: 160px;
+            background: transparent !important;   /* override styles.css line 1425 */
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
             overflow: hidden;
             align-self: center;
-            margin: 22px 0 22px 22px;
+            margin: 28px 0 28px 28px;
         }
         .team-portrait img {
             width: 100%;
@@ -201,20 +417,253 @@
             font-weight: 300;
         }
         @media (max-width: 880px) { .team-grid { grid-template-columns: 1fr; } }
+        /* Phone: team cards stack portrait above body */
+        @media (max-width: 600px) {
+            .team-card {
+                grid-template-columns: 1fr;
+            }
+            .team-portrait {
+                width: 120px;
+                height: 120px;
+                margin: 22px auto 4px;
+                justify-self: center;
+            }
+            .team-body {
+                padding: 14px 22px 22px;
+                text-align: center;
+                align-items: center;
+            }
+            .team-blurb { text-align: left; }
+        }
+        /* Phone: sub-group dividers stack vertically (was flex space-between) */
+        @media (max-width: 600px) {
+            .leadership-subheader {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+            .leadership-sub-title { font-size: 18px; }
+            .leadership-sub-tag { font-size: 9.5px; letter-spacing: 0.16em; }
+        }
+        /* Phone: central principals toggle — hide side rules, button only */
+        @media (max-width: 600px) {
+            .principals-toggle-wrap {
+                margin: 56px 0 8px;
+                gap: 0;
+            }
+            .principals-toggle-rule { display: none; }
+            .principals-toggle {
+                padding: 12px 22px;
+                font-size: 10.5px;
+                letter-spacing: 0.16em;
+            }
+        }
+        /* Phone: ops matrix — section head padding/typography */
+        @media (max-width: 600px) {
+            .ops-cards { grid-template-columns: 1fr; }
+            .ops-card { padding: 14px 16px; }
+        }
+
+        /* ===== Operating Structure — matrix diagram (5 sections, dark theme) ===== */
+        .ops-structure {
+            background: #0a0e1a;
+            color: #e8e8ec;
+            padding: clamp(80px, 10vh, 140px) 0;
+            position: relative;
+        }
+        .ops-structure .container { position: relative; }
+        .ops-header { max-width: 760px; margin-bottom: clamp(40px, 6vh, 80px); }
+        .ops-eyebrow {
+            font-family: var(--mono);
+            font-size: 10.5px;
+            font-weight: 500;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: rgba(232,232,236,0.5);
+            margin-bottom: 20px;
+        }
+        .ops-eyebrow .ops-eyebrow-sep { display: inline-block; margin: 0 14px; opacity: 0.4; }
+        .ops-title {
+            font-family: var(--display);
+            font-size: clamp(36px, 4.2vw, 56px);
+            font-weight: 600;
+            letter-spacing: -0.025em;
+            line-height: 1.05;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+        .ops-lede {
+            font-size: 14.5px;
+            line-height: 1.65;
+            color: rgba(232,232,236,0.65);
+            font-weight: 300;
+            margin-bottom: 18px;
+        }
+        .ops-legend {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            font-family: var(--mono);
+            font-size: 10.5px;
+            letter-spacing: 0.10em;
+            color: rgba(232,232,236,0.55);
+        }
+        .ops-legend-dot {
+            display: inline-block;
+            width: 10px; height: 10px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        .ops-legend-dot.exec { background: #e8a23b; }
+        .ops-legend-dot.sundori { border: 1px solid rgba(232,232,236,0.45); }
+
+        /* Vertical guide line on the left */
+        .ops-structure .container::before {
+            content: '';
+            position: absolute;
+            left: 24px;
+            top: 0; bottom: 0;
+            width: 1px;
+            background: rgba(232,232,236,0.08);
+            pointer-events: none;
+        }
+        .ops-section { margin-bottom: clamp(28px, 4vh, 48px); position: relative; padding-left: 60px; }
+        .ops-section:last-child { margin-bottom: 0; }
+        .ops-section::before {
+            content: '';
+            position: absolute;
+            left: 18px; top: 8px;
+            width: 13px; height: 13px;
+            background: #e8a23b;
+            transform: rotate(45deg);
+        }
+        .ops-section-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 24px;
+            margin-bottom: 18px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid rgba(232,232,236,0.10);
+        }
+        .ops-section-num {
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: 0.20em;
+            color: #e8a23b;
+            margin-right: 16px;
+        }
+        .ops-section-title {
+            font-family: var(--display);
+            font-size: clamp(20px, 2.4vw, 28px);
+            font-weight: 600;
+            letter-spacing: -0.015em;
+            color: #fff;
+            display: inline;
+        }
+        .ops-section-tags {
+            font-family: var(--mono);
+            font-size: 10.5px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(232,232,236,0.45);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .ops-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 12px;
+        }
+        .ops-card {
+            background: rgba(232,232,236,0.04);
+            border: 1px solid rgba(232,232,236,0.10);
+            padding: 16px 18px;
+            position: relative;
+            transition: background 0.2s ease, border-color 0.2s ease;
+        }
+        .ops-card:hover { background: rgba(232,232,236,0.06); border-color: rgba(232,232,236,0.18); }
+        .ops-card-top {
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            gap: 8px;
+            min-height: 21px; /* reserve space so name aligns across cards with/without LEAD badge */
+        }
+        .ops-badge {
+            font-family: var(--mono);
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            padding: 4px 7px;
+            white-space: nowrap;
+        }
+        .ops-badge.exec, .ops-badge.coceo, .ops-badge.governor {
+            background: #e8a23b;
+            color: #0a0e1a;
+        }
+        .ops-badge.indep {
+            color: rgba(232,232,236,0.85);
+            border: 1px solid rgba(232,232,236,0.35);
+        }
+        .ops-badge.sundori {
+            color: rgba(232,232,236,0.65);
+            border: 1px solid rgba(232,232,236,0.25);
+        }
+        .ops-card-name {
+            font-family: var(--display);
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            color: #fff;
+            margin-bottom: 4px;
+            line-height: 1.2;
+        }
+        .ops-card-role {
+            font-size: 11.5px;
+            line-height: 1.45;
+            color: rgba(232,232,236,0.6);
+            font-weight: 300;
+        }
+        @media (max-width: 768px) {
+            .ops-section { padding-left: 32px; }
+            .ops-structure .container::before { left: 12px; }
+            .ops-section::before { left: 6px; }
+            .ops-section-head { flex-direction: column; gap: 6px; }
+            .ops-section-tags { white-space: normal; }
+        }
+        /* Operating Structure content — always visible (toggle removed) */
+        .ops-structure-content {
+            margin-top: clamp(28px, 4vh, 48px);
+        }
     </style>
+    <link rel="canonical" href="https://www.sdrdrone.com/team.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="SDR Drone Inc.">
+    <meta property="og:title" content="Team — SDR Drone Inc.">
+    <meta property="og:description" content="The team behind SDR — engineers, operators, and platform leaders building Korea's defense-standard drone system.">
+    <meta property="og:url" content="https://www.sdrdrone.com/team.html">
+    <meta property="og:image" content="https://www.sdrdrone.com/img/h5.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Team — SDR Drone Inc.">
+    <meta name="twitter:description" content="The team behind SDR — engineers, operators, and platform leaders building Korea's defense-standard drone system.">
 </head>
 <body>
     <nav class="nav">
         <div class="container nav-inner">
-            <a href="index.html" class="logo"><img src="img/sdr-logo-transparent.png" alt="SDR Drone Inc." class="logo-img"></a>
+            <a href="index.html" class="logo"><img src="img/sdr-logo-transparent.png?v=2" alt="SDR Drone Inc." class="logo-img"></a>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="about.html">About</a></li>
                 <li><a href="team.html" class="active">Team</a></li>
                 <li><a href="capabilities.html">Capabilities</a></li>
-                <li><a href="drones.html">Defense</a></li>
-                <li><a href="industrial.html">Industrial</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="industrial.html">Applications</a></li>
                 <li><a href="insights.html">Insights</a></li>
+                <li><a href="investors.html">Investors</a></li>
                 <li><a href="contact.html" class="nav-cta">Contact</a></li>
             </ul>
             <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
@@ -233,118 +682,345 @@
         <div class="container">
             <div class="section-header">
                 <div class="eyebrow" style="margin-bottom: 24px;"><span class="eyebrow-dot"></span>Principals</div>
-                <h2 class="display-md">Three principals. <em>One platform</em>.</h2>
-                <p class="lede">Founder-engineer, international strategist, and managing partner — the leadership of SDR Drone Inc. operates as a tight, three-person command for technology, global strategy, and commercial execution.</p>
+                <h2 class="display-md">The principals <em>behind the platform</em>.</h2>
+                <p class="lede">Two Co-Chief Executives at the apex, an independent-director board overseeing governance, four operating leaders, and the Korean engineering bench — the leadership of SDR Drone Inc. brings together technology, programs, capital, governance, and global execution under one platform.</p>
             </div>
 
+            <!-- Group 1: Office of the Co-Chief Executives (2) -->
+            <div class="leadership-subheader">
+                <div class="leadership-sub-title">Office of the Co-Chief Executives</div>
+                <div class="leadership-sub-tag">Apex · Two Co-CEOs</div>
+            </div>
             <div class="leadership">
                 <article class="leader">
                     <div class="leader-portrait">
-                        <img src="img/cho-bw.png?v=3" alt="Cho Sun-sik">
+                        <img src="img/Team_Sunsik_Cho.png" alt="Sun-Sik Cho">
                     </div>
                     <div class="leader-body">
-                        <div class="leader-tag">Founder · Chief Executive</div>
-                        <h3 class="leader-name">Cho Sun-sik</h3>
-                        <div class="leader-role">Founder &amp; CEO · Platform Architect</div>
-                        <p class="leader-bio">Founder of SUNDORI Co., Ltd. and SDR Drone Inc. Three decades of unmanned-aviation engineering — from Korea's first commercial unmanned airships in 1991 through the development of the SDR Multi Flight Control system, the SDR-ONE integrated avionics board, and today's defense-standard drone platform. Architect of the company's technology roadmap and platform strategy.</p>
+                        <div class="leader-tag">Co-Chief Executive · Founder</div>
+                        <h3 class="leader-name">Sun-Sik Cho</h3>
+                        <div class="leader-role">Co-CEO · Founder &amp; Platform Architect</div>
+                        <p class="leader-bio">Co-Chief Executive Officer, Founder, and Platform Architect of SDR Drone Inc. and SUNDORI Co., Ltd. Three decades of unmanned-aviation engineering — from Korea's first commercial unmanned airships in 1991 through the development of the SDR Multi Flight Control system, the SDR-ONE integrated avionics board, and today's defense-standard drone platform. Shares board-level executive authority with the Co-CEO, directing the company's technology roadmap, R&amp;D, and engineering platform strategy.</p>
                     </div>
                 </article>
                 <article class="leader">
                     <div class="leader-portrait">
-                        <img src="img/leo-bw.png?v=3" alt="Leo Chung">
+                        <img src="img/Team_Leo_Jung.png" alt="Leo Chung">
                     </div>
                     <div class="leader-body">
-                        <div class="leader-tag">International Strategy</div>
+                        <div class="leader-tag">Co-Chief Executive · Founding Partner</div>
                         <h3 class="leader-name">Leo Chung</h3>
-                        <div class="leader-role">International Strategic Officer · Programs &amp; Partnerships</div>
-                        <p class="leader-bio">Leads SDR's international strategy, defense-program engagements, and government partnerships across nine markets — including the United States, Japan, India, Indonesia, Thailand, Mongolia, Bangladesh, Cambodia, and the Republic of Korea. Responsible for procurement pathways, technology-transfer frameworks, and long-horizon market positioning.</p>
-                    </div>
-                </article>
-                <article class="leader">
-                    <div class="leader-portrait">
-                        <img src="img/finn-bw.png?v=3" alt="Finn Gallagher">
-                    </div>
-                    <div class="leader-body">
-                        <div class="leader-tag">Managing Partner</div>
-                        <h3 class="leader-name">Finn Gallagher</h3>
-                        <div class="leader-role">Managing Partner · Capital, Corporate &amp; Commercial</div>
-                        <p class="leader-bio">Managing partner of SDR Drone Inc. Leads the U.S. corporate platform — capital strategy, SPAC-track listing, U.S. defense-channel development, and operating governance. Background in cross-border industrial transactions, technology commercialization, and U.S. corporate structuring for international defense and dual-use platforms.</p>
+                        <div class="leader-role">Co-CEO · Founding Partner</div>
+                        <p class="leader-bio">Co-Chief Executive Officer and Founding Partner of SDR Drone Inc. Leads global business strategy, international defense-program engagements, and government partnerships across nine markets — including the United States, Japan, India, Indonesia, Thailand, Mongolia, Bangladesh, Cambodia, and the Republic of Korea. Shares board-level executive authority with the Founder-CEO across capital strategy, public-company governance, and long-horizon commercial positioning. Responsible for procurement pathways and technology-transfer frameworks.</p>
                     </div>
                 </article>
             </div>
+
+            <!-- Central toggle — reveals Board + Operating Leadership + Engineering Bench together -->
+            <div class="principals-rest">
+            <!-- Group 2: Board & Independent Directors (3) -->
+            <div class="leadership-subheader">
+                <div class="leadership-sub-title">Board &amp; Independent Directors</div>
+                <div class="leadership-sub-tag">Oversight · Audit · Legal · Brand &amp; Capital</div>
+            </div>
+            <div class="leadership">
+                <article class="leader">
+                    <div class="leader-portrait">
+                        <img src="img/Team_David_Lee.png" alt="David Lee">
+                    </div>
+                    <div class="leader-body">
+                        <div class="leader-tag">Board Governor</div>
+                        <h3 class="leader-name">David Lee</h3>
+                        <div class="leader-role">Board Governor · Brand &amp; Capital Partnerships</div>
+                        <p class="leader-bio">Strategist and investor with 35+ years of leadership across brand management, marketing, retail, and capital partnerships. Founder and President of Wireless Republic, L.L.C. and concurrent President of United Brokers, L.L.C., with prior tenure leading brand and marketing initiatives at TGF Graphic Factory, Inc. in New York. Active investor and trustee of multiple family trusts, applying long-horizon strategic stewardship across generations of capital. Educated at Parsons School of Design and New York University — a rare professional balancing the nuance of design with the discipline of business.</p>
+                    </div>
+                </article>
+                <article class="leader">
+                    <div class="leader-portrait">
+                        <img src="img/Team_Young-Sun_Yoo.png" alt="Young-Sun Yoo">
+                    </div>
+                    <div class="leader-body">
+                        <div class="leader-tag">Independent Director · Audit</div>
+                        <h3 class="leader-name">Young-Sun Yoo</h3>
+                        <div class="leader-role">Independent Director · Audit · Finance &amp; Capital Markets</div>
+                        <p class="leader-bio">Senior finance executive with 35+ years across corporate finance, treasury, derivatives, risk management, and private equity. Currently CFO and Executive Vice President of Hapcheon Food Co., Ltd. Prior senior roles include Executive Vice President and Head of Treasury at Hana Bank, CFO and Executive Managing Director at Atinum Partners private equity firm, and Treasurer of Royal Bank of Canada's Seoul branch. M.B.A. in Finance and International Business from NYU Stern; B.A. in Economics from Sungkyunkwan University. Holds U.S. FINRA Series 3, 6, and 63 licenses.</p>
+                    </div>
+                </article>
+                <article class="leader">
+                    <div class="leader-portrait">
+                        <img src="img/Team_TongSoo_Chung.png" alt="Tong-Soo Chung">
+                    </div>
+                    <div class="leader-body">
+                        <div class="leader-tag">Independent Director · Legal</div>
+                        <h3 class="leader-name">Tong-Soo Chung</h3>
+                        <div class="leader-role">Independent Director · Legal &amp; Government Affairs</div>
+                        <p class="leader-bio">Attorney and former senior U.S. government official with deep international trade and policy experience. Served in the U.S. Department of Commerce under the Clinton administration (1994–2001) as Director of Export Promotion and Coordination in the International Trade Administration, Director of the Advocacy Center, and Acting Deputy Assistant Secretary for Service Industries and Finance. Founding partner at Kim, Chung &amp; Lim law firm in Los Angeles and founding president of the Korean American Coalition. A.B. Harvard College; M.P.A. from the Woodrow Wilson School at Princeton University; J.D. UCLA School of Law.</p>
+                    </div>
+                </article>
+            </div>
+
+            <!-- Group 3: Operating Leadership (4) -->
+            <div class="leadership-subheader">
+                <div class="leadership-sub-title">Operating Leadership</div>
+                <div class="leadership-sub-tag">Operations · Technology · Legal &amp; Government Affairs</div>
+            </div>
+            <div class="leadership">
+                <article class="leader">
+                    <div class="leader-portrait">
+                        <img src="img/Team_Jeong%20In-Chul.png" alt="Vincent Chung">
+                    </div>
+                    <div class="leader-body">
+                        <div class="leader-tag">Chief Operating Officer</div>
+                        <h3 class="leader-name">Vincent Chung</h3>
+                        <div class="leader-role">COO · Strategy &amp; Corporate Development</div>
+                        <p class="leader-bio">Senior corporate executive with three decades of experience in M&amp;A, capital markets, corporate restructuring, foreign investment, and business development. Currently Auditor of KOSDAQ-listed Biolog Device Co., Ltd. and Division Head at HANP Co., Ltd. Previously Executive Vice President of EM&amp;I Co., Ltd. with senior advisory roles at Spero Global, Next Law, and Vantage Law. Notable transactions include the Korea launches of Polaroid, Canon, and Konica; the Locus Holdings–Cinema Service stock swap; corporate-control defense for Chokwang Paint; and the acquisition of Hanwha Group's mobile handset business through Vantage Mobile Corporation. B.S. in Mechanical Engineering, Hanyang University.</p>
+                    </div>
+                </article>
+                <article class="leader">
+                    <div class="leader-portrait">
+                        <img src="img/Team_Paul_Strickland.png" alt="Paul Strickland">
+                    </div>
+                    <div class="leader-body">
+                        <div class="leader-tag">Corporate Governance</div>
+                        <h3 class="leader-name">Paul Strickland</h3>
+                        <div class="leader-role">Director · Corporate Governance &amp; SEC Compliance</div>
+                        <p class="leader-bio">Corporate administrator and restructuring specialist with two decades of international business experience across finance, private equity, manufacturing, and technology. Director and officer of Hallmark Venture Group, Inc. (HLLK) — led the company to full SEC reporting compliance, completed the FINRA reverse split, and oversaw the recovery of over $1.6 million in creditor assets. Founder of Selkirk Global Holdings, LLC, where he serves as a director and officer across multiple small-cap public companies focused on restructuring and governance. B.A. in Foreign Language &amp; International Affairs from the University of Puget Sound; fluent in Mandarin Chinese.</p>
+                    </div>
+                </article>
+                <article class="leader">
+                    <div class="leader-portrait">
+                        <img src="img/Team_Jang%20Jung-hyun.png" alt="Jung-Hyun Jang">
+                    </div>
+                    <div class="leader-body">
+                        <div class="leader-tag">Management &amp; Administration</div>
+                        <h3 class="leader-name">Jung-Hyun Jang</h3>
+                        <div class="leader-role">Director · Management &amp; Administration</div>
+                        <p class="leader-bio">Director of Management &amp; Administration at SDR Drone Inc., overseeing the full back-office function — administration, organizational design, human capital, financial controls, vendor and contract management, and internal reporting infrastructure. Translates strategic direction from the Co-CEOs and Board into day-to-day operational discipline, ensuring policies, controls, and execution rhythm scale with the company's defense and industrial programs across allied markets. Anchors the cross-border coordination between the Miami headquarters and the Korean engineering subsidiary, keeping governance, finance, and people systems aligned across two jurisdictions.</p>
+                    </div>
+                </article>
+                <article class="leader">
+                    <div class="leader-portrait">
+                        <img src="img/Team_CY_Park.png" alt="CY Park">
+                    </div>
+                    <div class="leader-body">
+                        <div class="leader-tag">Technology &amp; Programs</div>
+                        <h3 class="leader-name">CY Park</h3>
+                        <div class="leader-role">General Manager · Technology &amp; Program Management</div>
+                        <p class="leader-bio">A 21-year veteran bridging precision optical engineering and unmanned aerial platforms. Began his career in advanced optical design and high-precision inspection equipment, scaling complex hardware programs from R&amp;D through manufacturing. Today, he leads SDR's drone technology planning and cross-functional program management — translating engineering depth into commercial execution across defense and industrial drone programs. A rare operator who combines deep technical fluency with the discipline of large-scale program delivery.</p>
+                    </div>
+                </article>
+            </div>
+
+            <!-- Group 4: Engineering Leadership Bench (5) — single-column -->
+            <div class="leadership-subheader">
+                <div class="leadership-sub-title">Engineering Leadership Bench</div>
+                <div class="leadership-sub-tag">SUNDORI Co., Ltd. · TECH Division</div>
+            </div>
+            <div class="leadership">
+                <article class="leader">
+                    <div class="leader-portrait">
+                        <img src="img/Team_Kim%20Jung-hwan.png" alt="Jung-Hwan Kim">
+                    </div>
+                    <div class="leader-body">
+                        <div class="leader-tag">R&amp;D Institute</div>
+                        <h3 class="leader-name">Jung-Hwan Kim</h3>
+                        <div class="leader-role">Director · R&amp;D Institute</div>
+                        <p class="leader-bio">Directs the R&amp;D Institute — airframe design, avionics integration, and end-to-end product development. Principal authority on the technology roadmap and core platform architecture across rotary-wing and VTOL drones. Sets engineering priorities, approves design specifications for every production platform, and signs off on technical readiness before programs move from prototype to manufacturing.</p>
+                    </div>
+                </article>
+                <article class="leader">
+                    <div class="leader-portrait">
+                        <img src="img/Team_Kim%20Jong-bae.png" alt="Jong-Bae Kim">
+                    </div>
+                    <div class="leader-body">
+                        <div class="leader-tag">Development &amp; Production</div>
+                        <h3 class="leader-name">Jong-Bae Kim</h3>
+                        <div class="leader-role">Director · Development &amp; Production</div>
+                        <p class="leader-bio">Directs new-platform development and defense-program delivery at the Hanam facility. Owns design optimization — weight, payload integration, field-condition hardening — and manufacturing process control from prototype through serial production. Bridges R&amp;D outputs to manufacturing reality, ensuring designs meet production yield, cost, and field-durability targets demanded by defense customers.</p>
+                    </div>
+                </article>
+                <article class="leader">
+                    <div class="leader-portrait">
+                        <img src="img/Team_Lee%20Joon-hwan.png" alt="Joon-Hwan Lee">
+                    </div>
+                    <div class="leader-body">
+                        <div class="leader-tag">Software &amp; Autonomy</div>
+                        <h3 class="leader-name">Joon-Hwan Lee</h3>
+                        <div class="leader-role">Head of Software · Autonomy &amp; Flight Systems</div>
+                        <p class="leader-bio"><strong>Owns the entire software stack across SDR Drone Inc. and SUNDORI Co., Ltd.</strong> — from onboard flight controllers and ground-control operating programs to multi-drone coordination and AI-based autonomy. Architect of the SDR Multi-Flight Control (MFS) suite and the single point of authority for all software architecture decisions across the platform. Designs 1:N swarm-control and AI autonomous-flight algorithms covering formation flight, leader-follower tracking, FANET mesh communications, and collision avoidance. Every line of flight, control, and autonomy code shipped on an SDR drone is built, reviewed, or directly authored under his ownership.</p>
+                    </div>
+                </article>
+                <article class="leader">
+                    <div class="leader-portrait">
+                        <img src="img/Team_Sion_Jang.png" alt="Si-On Jang">
+                    </div>
+                    <div class="leader-body">
+                        <div class="leader-tag">Engineering Operations</div>
+                        <h3 class="leader-name">Si-On Jang</h3>
+                        <div class="leader-role">Manager · Engineering Operations &amp; Certification</div>
+                        <p class="leader-bio">Manages the R&amp;D Institute's design-to-build operations — 2D/3D mechanical drafting, 3D-printed airframe fabrication, BOM and inventory control, and airframe assembly with after-sales support. Handles KIAST safety certifications and Drone One-Stop registrations, and instructs SDR's drone operator training programs. Operational anchor that converts engineering drawings into deliverable hardware on tight defense-program timelines.</p>
+                    </div>
+                </article>
+                <article class="leader">
+                    <div class="leader-portrait">
+                        <img src="img/Team_Junyoung_Kim.png" alt="Jun-Young Kim">
+                    </div>
+                    <div class="leader-body">
+                        <div class="leader-tag">Production &amp; Avionics</div>
+                        <h3 class="leader-name">Jun-Young Kim</h3>
+                        <div class="leader-role">Manager · Production &amp; Avionics Assembly</div>
+                        <p class="leader-bio">Production manager focused on drone airframe assembly and onboard electronics integration. Six-plus years at SUNDORI across special-purpose drone manufacturing and R&amp;D delivery. Certified across three Korean aviation-maintenance trades — airframe, engine, and equipment — and holds an Ultralight UAV operator license. Final touchpoint between assembled platform and field deployment, responsible for quality control and acceptance testing on every unit that leaves the Hanam facility.</p>
+                    </div>
+                </article>
+            </div>
+            </div><!-- /.principals-rest -->
         </div>
     </section>
 
-    <section class="section section-warm">
+    <!-- ===== Operating Structure — matrix of who works on which function ===== -->
+    <section class="ops-structure">
         <div class="container">
-            <div class="section-header">
-                <div class="eyebrow" style="margin-bottom: 28px;"><span class="eyebrow-dot"></span>Korean Engineering Bench</div>
-                <h2 class="display-md">Built in <em>Hanam</em>. Engineered by SUNDORI.</h2>
-                <p class="lede">SDR's drone platforms are designed, built, and tested by SUNDORI Co., Ltd. — the Korean parent and manufacturing partner. Below is the engineering bench responsible for flight control, avionics, communications, and field operations.</p>
-            </div>
-
-            <div class="partner-banner">
-                <div class="partner-banner-tag">Manufacturing &amp; R&amp;D Partner</div>
-                <div class="partner-banner-body">
-                    <div class="partner-banner-title">SUNDORI Co., Ltd.</div>
-                    <div class="partner-banner-meta">Hanam, Gyeonggi-do · Republic of Korea · Est. 1991</div>
+            <div class="ops-header">
+                <div class="ops-eyebrow">SDR Drone Inc.<span class="ops-eyebrow-sep">·</span>OTC: HLLK<span class="ops-eyebrow-sep">·</span>Formerly Hallmark Venture Group</div>
+                <h2 class="ops-title">Leadership &amp; Operating Structure</h2>
+                <p class="ops-lede">Two Co-Chief Executives at the apex with the board's oversight; the full team is organized below across four operating divisions — ADM, OPS, TECH, INTL — with leaders shown in each function they direct.</p>
+                <div class="ops-legend">
+                    <span><span class="ops-legend-dot exec"></span>Also on Executive &amp; Board tier</span>
+                    <span><span class="ops-legend-dot sundori"></span>SUNDORI Co., Ltd. — Engineering &amp; Manufacturing (Korea)</span>
                 </div>
             </div>
 
-            <div class="team-grid">
-                <article class="team-card">
-                    <div class="team-portrait"><span class="team-initials">JH</span></div>
-                    <div class="team-body">
-                        <h4 class="team-name">Jung Hyun-woo</h4>
-                        <div class="team-role">CTO · Flight Control &amp; Avionics</div>
-                        <p class="team-blurb">Leads core platform engineering — SDR Multi Flight Control swarm system and the SDR-ONE integrated motherboard. Real-time embedded systems, FANET mesh communications, encrypted control links.</p>
+            <div class="ops-structure-content">
+            <!-- ADM — Administration & Governance -->
+            <div class="ops-section">
+                <div class="ops-section-head">
+                    <div><span class="ops-section-num">ADM</span><h3 class="ops-section-title">Administration &amp; Governance</h3></div>
+                    <div class="ops-section-tags">SEC Reporting · Legal · Audit · Controls</div>
+                </div>
+                <div class="ops-cards">
+                    <div class="ops-card">
+                        <div class="ops-card-top"><span class="ops-badge coceo">Lead</span></div>
+                        <div class="ops-card-name">Paul Strickland</div>
+                        <div class="ops-card-role">Governance &amp; SEC</div>
                     </div>
-                </article>
-                <article class="team-card">
-                    <div class="team-portrait"><span class="team-initials">PM</span></div>
-                    <div class="team-body">
-                        <h4 class="team-name">Park Min-jae</h4>
-                        <div class="team-role">COO · Manufacturing &amp; Operations</div>
-                        <p class="team-blurb">Oversees Hanam production lines, supply chain, and field operations. Manufacturing scale-up to 1,000+ unit annual capacity and certified-operator training programs.</p>
+                    <div class="ops-card">
+                        <div class="ops-card-top"></div>
+                        <div class="ops-card-name">CY Park</div>
+                        <div class="ops-card-role">Tech &amp; Programs</div>
                     </div>
-                </article>
-                <article class="team-card">
-                    <div class="team-portrait"><span class="team-initials">KH</span></div>
-                    <div class="team-body">
-                        <h4 class="team-name">Kim Ha-eun</h4>
-                        <div class="team-role">Lead · Flight Control Software</div>
-                        <p class="team-blurb">Leads SDR Multi Flight Control development. Real-time embedded systems, formation algorithms, AI collision avoidance, mission planning.</p>
+                    <div class="ops-card">
+                        <div class="ops-card-top"></div>
+                        <div class="ops-card-name">Tong-Soo Chung</div>
+                        <div class="ops-card-role">Legal &amp; Government</div>
                     </div>
-                </article>
-                <article class="team-card">
-                    <div class="team-portrait"><span class="team-initials">SY</span></div>
-                    <div class="team-body">
-                        <h4 class="team-name">Shin Yong-jin</h4>
-                        <div class="team-role">Lead · Hardware &amp; Avionics</div>
-                        <p class="team-blurb">Owner of the SDR-ONE integrated board program. Component sourcing under NDAA §848 / Zero-China BOM constraints, mass-production engineering, supply-chain integrity.</p>
+                    <div class="ops-card">
+                        <div class="ops-card-top"></div>
+                        <div class="ops-card-name">Young-Sun Yoo</div>
+                        <div class="ops-card-role">Audit · Finance</div>
                     </div>
-                </article>
-                <article class="team-card">
-                    <div class="team-portrait"><span class="team-initials">CY</span></div>
-                    <div class="team-body">
-                        <h4 class="team-name">Choi Yu-jin</h4>
-                        <div class="team-role">Lead · Communications &amp; Encryption</div>
-                        <p class="team-blurb">FANET mesh networking, anti-jamming countermeasures, military-grade encrypted communications. Defense procurement-grade security and EW resilience.</p>
-                    </div>
-                </article>
-                <article class="team-card">
-                    <div class="team-portrait"><span class="team-initials">YJ</span></div>
-                    <div class="team-body">
-                        <h4 class="team-name">Yoon Joon-seok</h4>
-                        <div class="team-role">Lead · Field Operations</div>
-                        <p class="team-blurb">Operator training, certification programs, on-site deployment. Liaison with Army, Navy, Air Force, Police, and Fire programs across the Republic of Korea.</p>
-                    </div>
-                </article>
+                </div>
             </div>
 
-            <p class="caption" style="margin-top:24px; font-family:var(--mono); font-size:11px; letter-spacing:0.06em; color:var(--text-muted);">
-                Engineer portraits to be added — placeholder initials shown.
-            </p>
+            <!-- OPS — Operations & Management -->
+            <div class="ops-section">
+                <div class="ops-section-head">
+                    <div><span class="ops-section-num">OPS</span><h3 class="ops-section-title">Operations &amp; Management</h3></div>
+                    <div class="ops-section-tags">Operations · M&amp;A · Org &amp; Human Capital</div>
+                </div>
+                <div class="ops-cards">
+                    <div class="ops-card">
+                        <div class="ops-card-top"><span class="ops-badge coceo">Lead</span></div>
+                        <div class="ops-card-name">Vincent Chung</div>
+                        <div class="ops-card-role">COO · Strategy &amp; Corp Dev</div>
+                    </div>
+                    <div class="ops-card">
+                        <div class="ops-card-top"></div>
+                        <div class="ops-card-name">Jung-Hyun Jang</div>
+                        <div class="ops-card-role">Management &amp; Administration</div>
+                    </div>
+                    <div class="ops-card">
+                        <div class="ops-card-top"></div>
+                        <div class="ops-card-name">CY Park</div>
+                        <div class="ops-card-role">Tech &amp; Programs</div>
+                    </div>
+                    <div class="ops-card">
+                        <div class="ops-card-top"></div>
+                        <div class="ops-card-name">David Lee</div>
+                        <div class="ops-card-role">Brand &amp; Capital</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TECH — Technology & Platform -->
+            <div class="ops-section">
+                <div class="ops-section-head">
+                    <div><span class="ops-section-num">TECH</span><h3 class="ops-section-title">Technology &amp; Platform</h3></div>
+                    <div class="ops-section-tags">Roadmap · R&amp;D · Avionics · Production</div>
+                </div>
+                <div class="ops-cards">
+                    <div class="ops-card">
+                        <div class="ops-card-top"><span class="ops-badge coceo">Lead</span></div>
+                        <div class="ops-card-name">Sun-Sik Cho</div>
+                        <div class="ops-card-role">MFS &amp; SDR-ONE Architect</div>
+                    </div>
+                    <div class="ops-card">
+                        <div class="ops-card-top"></div>
+                        <div class="ops-card-name">Joon-Hwan Lee</div>
+                        <div class="ops-card-role">Software &amp; Autonomy</div>
+                    </div>
+                    <div class="ops-card">
+                        <div class="ops-card-top"></div>
+                        <div class="ops-card-name">Jong-Bae Kim</div>
+                        <div class="ops-card-role">Development &amp; Production</div>
+                    </div>
+                    <div class="ops-card">
+                        <div class="ops-card-top"></div>
+                        <div class="ops-card-name">Jung-Hwan Kim</div>
+                        <div class="ops-card-role">R&amp;D Institute</div>
+                    </div>
+                    <div class="ops-card">
+                        <div class="ops-card-top"></div>
+                        <div class="ops-card-name">CY Park</div>
+                        <div class="ops-card-role">Tech &amp; Programs</div>
+                    </div>
+                    <div class="ops-card">
+                        <div class="ops-card-top"></div>
+                        <div class="ops-card-name">Si-On Jang</div>
+                        <div class="ops-card-role">Engineering Ops &amp; Cert</div>
+                    </div>
+                    <div class="ops-card">
+                        <div class="ops-card-top"></div>
+                        <div class="ops-card-name">Jun-Young Kim</div>
+                        <div class="ops-card-role">Production &amp; Avionics</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- INTL — International Strategic Development -->
+            <div class="ops-section">
+                <div class="ops-section-head">
+                    <div><span class="ops-section-num">INTL</span><h3 class="ops-section-title">International Strategic Dev.</h3></div>
+                    <div class="ops-section-tags">Defense Programs · Government · Tech Transfer</div>
+                </div>
+                <div class="ops-cards">
+                    <div class="ops-card">
+                        <div class="ops-card-top"><span class="ops-badge coceo">Lead</span></div>
+                        <div class="ops-card-name">Leo Chung</div>
+                        <div class="ops-card-role">Programs &amp; Partnerships</div>
+                    </div>
+                    <div class="ops-card">
+                        <div class="ops-card-top"></div>
+                        <div class="ops-card-name">Tong-Soo Chung</div>
+                        <div class="ops-card-role">Trade &amp; Policy</div>
+                    </div>
+                    <div class="ops-card">
+                        <div class="ops-card-top"></div>
+                        <div class="ops-card-name">Vincent Chung</div>
+                        <div class="ops-card-role">Foreign Investment</div>
+                    </div>
+                </div>
+            </div>
+            </div><!-- /.ops-structure-content -->
         </div>
     </section>
 
@@ -364,14 +1040,17 @@
     <footer>
         <div class="container">
             <div class="footer-grid">
-                <div class="footer-brand"><div class="logo"><img src="img/sdr-logo-transparent.png" alt="SDR Drone Inc." class="logo-img logo-img-dark"></div><p class="footer-tagline">Global defense and industrial — total drone solutions, engineered in Korea.</p></div>
-                <div class="footer-col"><h4>Company</h4><ul><li><a href="about.html">About</a></li><li><a href="team.html">Team</a></li><li><a href="capabilities.html">Capabilities</a></li><li><a href="drones.html">Drones</a></li><li><a href="insights.html">Insights</a></li><li><a href="contact.html">Contact</a></li></ul></div>
-                <div class="footer-col"><h4>Domains</h4><ul><li>Defense &amp; Tactical</li><li>Public Safety &amp; SAR</li><li>Industrial &amp; Energy</li><li>Agriculture &amp; Smart Farm</li></ul></div>
-                <div class="footer-col"><h4>Headquarters</h4><ul><li>1209 Mountain Road PL NE</li><li>Suite R, Albuquerque</li><li>NM 87110, USA</li><li><a href="mailto:info@sdrdrone.com">info@sdrdrone.com</a></li></ul></div>
+                <div class="footer-brand">
+                    <div class="logo"><img src="img/sdr-logo-transparent.png?v=2" alt="SDR Drone Inc." class="logo-img logo-img-dark"></div>
+                    <p class="footer-tagline">Global defense and industrial — total drone solutions, engineered in Korea.</p>
+                </div>
+                <div class="footer-col"><h3>Company</h3><ul><li><a href="about.html">About</a></li><li><a href="team.html">Team</a></li><li><a href="capabilities.html">Capabilities</a></li><li><a href="products.html">Products</a></li><li><a href="insights.html">Insights</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+                <div class="footer-col"><h3>Investors</h3><ul><li><a href="investors.html">Investor Relations</a></li><li><a href="https://www.otcmarkets.com/stock/HLLK/overview" target="_blank" rel="noopener">OTC: HLLK</a></li><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms of Use</a></li></ul></div>
+                <div class="footer-col"><h3>Headquarters</h3><ul><li>Miami, FL, USA</li><li>Tel: <a href="tel:+18776464833">(877) 646-4833</a></li><li><a href="mailto:info@sdrdrone.com">info@sdrdrone.com</a></li></ul></div>
             </div>
             <div class="footer-bottom">
-                <div class="footer-legal">© 2026 SDR Drone Inc. All rights reserved.</div>
-                <div class="footer-meta">New Mexico Corporation<br>Albuquerque · NM 87110</div>
+                <div class="footer-legal">© 2026 SDR Drone Inc. All rights reserved. Information presented on this website is for general purposes only and does not constitute an offer to sell defense materiel or solicitation of any procurement. Export of defense-related products is subject to applicable laws and licensing.</div>
+                <div class="footer-meta">Florida Corporation · OTC: HLLK<br>Formerly known as Hallmark Venture Group, Inc.</div>
             </div>
         </div>
     </footer>
@@ -380,5 +1059,60 @@
         <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"></polyline></svg>
     </a>
     <script>(function(){var b=document.getElementById('backToTop');if(!b)return;function t(){if(window.scrollY>320){b.classList.add('is-visible');}else{b.classList.remove('is-visible');}}window.addEventListener('scroll',t,{passive:true});t();b.addEventListener('click',function(e){e.preventDefault();window.scrollTo({top:0,behavior:'smooth'});});})();</script>
+
+    <script>
+    /* Generic collapsible — same smooth animation as Operating Structure */
+    (function(){
+        function bind(btn, panel) {
+            if (!btn || !panel) return;
+            var transitioning = false;
+            function open() {
+                if (transitioning) return;
+                transitioning = true;
+                panel.classList.add('is-open');
+                btn.setAttribute('aria-expanded', 'true');
+                var target = panel.scrollHeight;
+                panel.style.maxHeight = target + 'px';
+                var done = function (e) {
+                    if (e && e.propertyName && e.propertyName !== 'max-height') return;
+                    panel.style.maxHeight = 'none';
+                    panel.removeEventListener('transitionend', done);
+                    transitioning = false;
+                };
+                panel.addEventListener('transitionend', done);
+                setTimeout(done, 1300);
+            }
+            function close() {
+                if (transitioning) return;
+                transitioning = true;
+                panel.style.maxHeight = panel.scrollHeight + 'px';
+                void panel.offsetHeight;
+                requestAnimationFrame(function () {
+                    panel.classList.remove('is-open');
+                    btn.setAttribute('aria-expanded', 'false');
+                    panel.style.maxHeight = '0';
+                });
+                setTimeout(function () { transitioning = false; }, 1200);
+            }
+            btn.addEventListener('click', function () {
+                if (panel.classList.contains('is-open')) close(); else open();
+            });
+        }
+        // Central Principals toggle — reveals Board + Operating Leadership + Engineering Bench together
+        var pBtn = document.getElementById('principalsToggle');
+        var pPanel = document.getElementById('principalsRest');
+        if (pBtn && pPanel) bind(pBtn, pPanel);
+        // Legacy per-group toggles (if any remain)
+        document.querySelectorAll('.collapse-toggle').forEach(function (btn) {
+            var panelId = btn.getAttribute('aria-controls');
+            var panel = panelId ? document.getElementById(panelId) : null;
+            bind(btn, panel);
+        });
+    })();
+    </script>
+
+    <!-- Operating Structure toggle removed — content now always visible -->
+    <!-- Vercel Web Analytics -->
+    <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>

@@ -3,8 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a0a0a">
     <title>About — SDR Drone Inc.</title>
     <meta name="description" content="SDR Drone Inc. — three decades of unmanned aerial expertise, from 1991 commercial airships to today's defense-standard drone platform.">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="favicon-512.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,300;9..144,0,400;9..144,0,500;9..144,1,300;9..144,1,400;9..144,1,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -100,10 +107,68 @@
         }
         @media (max-width: 1024px) { .compare { grid-template-columns: 1fr; } }
 
-        /* Cinematic video hero — full bleed */
+        /* The Thesis: push the right-hand body text below the eyebrow label line,
+           so "The Thesis" reads as the section's topmost element */
+        .split > .body-text { padding-top: 44px; }
+        @media (max-width: 1024px) {
+            .split > .body-text { padding-top: 0; }
+        }
+
+        /* Page header — text left, evolution artwork right (left edge fades out) */
+        .ph-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+            gap: clamp(32px, 5vw, 72px);
+            align-items: center;
+            margin-top: clamp(48px, 7vh, 80px); /* clear space below the headline */
+        }
+        .ph-grid .lede { margin-top: 0; }
+        .ph-art {
+            position: relative;
+            min-width: 0;
+        }
+        .ph-art img {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            height: auto;
+            display: block;
+            mix-blend-mode: multiply; /* white background melts into the paper tone */
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.4) 20%, #000 52%);
+                    mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.4) 20%, #000 52%);
+        }
+        /* soften the artwork's hard line-endings at the right & bottom edges */
+        .ph-art::after {
+            content: '';
+            position: absolute;
+            top: 0; right: 0; bottom: 0;
+            width: 14%;
+            z-index: 2;
+            background: linear-gradient(to left, var(--bg-paper) 0%, rgba(255,255,255,0) 100%);
+            pointer-events: none;
+        }
+        .ph-art::before {
+            content: '';
+            position: absolute;
+            left: 0; right: 0; bottom: 0;
+            height: 16%;
+            z-index: 2;
+            background: linear-gradient(to top, var(--bg-paper) 0%, rgba(255,255,255,0) 100%);
+            pointer-events: none;
+        }
+        @media (max-width: 1024px) {
+            .ph-grid { grid-template-columns: 1fr; }
+            .ph-art { max-width: 560px; margin-top: 8px; }
+            .ph-art img {
+                -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.5) 12%, #000 40%);
+                        mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.5) 12%, #000 40%);
+            }
+        }
+
+        /* Platform video — contained, framed (sits below the page header) */
         .video-hero {
-            background: var(--bg-deep);
-            padding: 0;
+            background: transparent;
+            padding: 8px 0 56px;
             margin: 0;
             width: 100%;
             display: block;
@@ -111,213 +176,150 @@
         .video-frame {
             position: relative;
             width: 100%;
-            height: 0;
-            padding-bottom: 56.25%; /* 16:9 — most compatible aspect ratio fallback */
+            max-width: 1080px;
+            margin: 0 auto;
+            aspect-ratio: 16 / 9;
+            max-height: 64vh;
             background: var(--bg-deep);
+            border: 1px solid var(--border);
             overflow: hidden;
         }
-        .video-frame iframe,
         .video-frame .video-el {
             position: absolute;
-            top: -7.5%;
-            left: -7.5%;
-            width: 115%;
-            height: 115%;
+            inset: 0;
+            width: 100%;
+            height: 100%;
             border: 0;
             display: block;
             object-fit: cover;
+            cursor: pointer;
+        }
+        /* center play overlay — only visible when paused */
+        .video-frame .play-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(10, 14, 20, 0.20);
+            opacity: 0;
+            transition: opacity 0.25s ease;
             pointer-events: none;
         }
-        .video-plate {
-            position: absolute;
-            top: 24px;
-            left: 32px;
-            z-index: 2;
-            font-family: var(--mono);
-            font-size: 10px;
-            font-weight: 500;
-            letter-spacing: 0.22em;
-            text-transform: uppercase;
-            color: rgba(255,255,255,0.92);
-            background: rgba(10, 14, 20, 0.55);
-            padding: 8px 14px;
-            border: 1px solid rgba(255,255,255,0.18);
-            backdrop-filter: blur(8px);
-        }
-        .video-controls {
-            position: absolute;
-            bottom: 24px;
-            right: 32px;
-            z-index: 2;
-            display: inline-flex;
-            align-items: stretch;
-            gap: 0;
-            background: rgba(10, 14, 20, 0.55);
-            border: 1px solid rgba(255,255,255,0.22);
-            backdrop-filter: blur(8px);
-            user-select: none;
-        }
-        .video-btn {
-            display: inline-flex;
+        .video-frame.is-paused .play-overlay { opacity: 1; }
+        .video-frame .play-overlay-icon {
+            width: 72px;
+            height: 72px;
+            border: 1.5px solid rgba(255,255,255,0.85);
+            border-radius: 50%;
+            display: flex;
             align-items: center;
-            gap: 10px;
-            font-family: var(--mono);
-            font-size: 10px;
-            font-weight: 500;
-            letter-spacing: 0.22em;
-            text-transform: uppercase;
-            color: rgba(255,255,255,0.92);
-            background: transparent;
-            border: 0;
-            padding: 10px 16px;
-            cursor: pointer;
-            transition: background 0.2s ease;
-        }
-        .video-btn + .video-btn {
-            border-left: 1px solid rgba(255,255,255,0.18);
-        }
-        .video-btn:hover {
-            background: rgba(255,255,255,0.08);
-        }
-        .video-btn .icon {
-            display: inline-block;
-            width: 14px;
-            height: 14px;
-            position: relative;
+            justify-content: center;
+            background: rgba(10, 14, 20, 0.45);
+            backdrop-filter: blur(6px);
             color: rgba(255,255,255,0.95);
         }
-        .video-btn .label-on { display: none; }
-        .video-btn.is-on .label-off { display: none; }
-        .video-btn.is-on .label-on { display: inline; }
-        .play-btn .icon-pause,
-        .play-btn.is-on .icon-play { display: none; }
-        .play-btn.is-on .icon-pause { display: inline-block; }
+        .video-frame .play-overlay-icon svg { width: 26px; height: 26px; margin-left: 4px; }
         @media (max-width: 768px) {
-            .video-plate { top: 16px; left: 16px; }
-            .video-controls { bottom: 16px; right: 16px; }
-            .video-btn { padding: 8px 12px; font-size: 9px; }
+            .video-frame .play-overlay-icon { width: 56px; height: 56px; }
+            .video-frame .play-overlay-icon svg { width: 20px; height: 20px; }
         }
     </style>
+    <link rel="canonical" href="https://www.sdrdrone.com/about.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="SDR Drone Inc.">
+    <meta property="og:title" content="About — SDR Drone Inc.">
+    <meta property="og:description" content="SDR Drone Inc. — three decades of unmanned aerial expertise, from 1991 commercial airships to today's defense-standard drone platform.">
+    <meta property="og:url" content="https://www.sdrdrone.com/about.html">
+    <meta property="og:image" content="https://www.sdrdrone.com/img/h5.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="About — SDR Drone Inc.">
+    <meta name="twitter:description" content="SDR Drone Inc. — three decades of unmanned aerial expertise, from 1991 commercial airships to today's defense-standard drone platform.">
 </head>
 <body>
     <nav class="nav">
         <div class="container nav-inner">
-            <a href="index.html" class="logo"><img src="img/sdr-logo-transparent.png" alt="SDR Drone Inc." class="logo-img"></a>
+            <a href="index.html" class="logo"><img src="img/sdr-logo-transparent.png?v=2" alt="SDR Drone Inc." class="logo-img"></a>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="about.html" class="active">About</a></li>
                 <li><a href="team.html">Team</a></li>
                 <li><a href="capabilities.html">Capabilities</a></li>
-                <li><a href="drones.html">Defense</a></li>
-                <li><a href="industrial.html">Industrial</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="industrial.html">Applications</a></li>
                 <li><a href="insights.html">Insights</a></li>
+                <li><a href="investors.html">Investors</a></li>
                 <li><a href="contact.html" class="nav-cta">Contact</a></li>
             </ul>
             <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
         </div>
     </nav>
 
-    <!-- ===== Cinematic platform video — full bleed, above header (YouTube embed) ===== -->
-    <section class="video-hero">
-        <div class="video-frame">
-            <div class="video-plate">PLATE · PLATFORM IN OPERATION</div>
-            <iframe id="ytPlayer" class="video-el"
-                src="https://www.youtube.com/embed/0q2NQhV_8yk?autoplay=1&amp;mute=1&amp;loop=1&amp;playlist=0q2NQhV_8yk&amp;controls=0&amp;rel=0&amp;modestbranding=1&amp;playsinline=1&amp;disablekb=1&amp;iv_load_policy=3&amp;fs=0&amp;enablejsapi=1"
-                title="SDR Drone Platform"
-                frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerpolicy="strict-origin-when-cross-origin"
-                allowfullscreen></iframe>
-            <div class="video-controls" role="toolbar" aria-label="Video controls">
-                <button id="ytPlayToggle" class="video-btn play-btn is-on" aria-label="Play / pause">
-                    <span class="icon icon-play" aria-hidden="true">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"></polygon></svg>
-                    </span>
-                    <span class="icon icon-pause" aria-hidden="true">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
-                    </span>
-                    <span class="label-off">Play</span>
-                    <span class="label-on">Pause</span>
-                </button>
-                <button id="ytSoundToggle" class="video-btn sound-btn" aria-label="Sound on / off">
-                    <span class="icon" aria-hidden="true">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                            <line class="mute-x1" x1="23" y1="9" x2="17" y2="15"></line>
-                            <line class="mute-x2" x1="17" y1="9" x2="23" y2="15"></line>
-                        </svg>
-                    </span>
-                    <span class="label-off">Unmute</span>
-                    <span class="label-on">Mute</span>
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <script src="https://www.youtube.com/iframe_api"></script>
-    <script>
-        var ytPlayer;
-        var sBtn, pBtn;
-        function setSoundButtonOn(on){
-            if (!sBtn) return;
-            sBtn.classList.toggle('is-on', on);
-            sBtn.querySelectorAll('.mute-x1, .mute-x2').forEach(function(l){ l.style.display = on ? 'none' : 'inline'; });
-        }
-        function onYouTubeIframeAPIReady(){
-            ytPlayer = new YT.Player('ytPlayer', {
-                events: {
-                    'onReady': function(){
-                        ytPlayer.mute();
-                        ytPlayer.playVideo();
-                        // Try to unmute right away (works if browser allows)
-                        try { ytPlayer.unMute(); setSoundButtonOn(true); } catch(e){}
-                    }
-                }
-            });
-        }
-        (function(){
-            pBtn = document.getElementById('ytPlayToggle');
-            sBtn = document.getElementById('ytSoundToggle');
-            var isPlaying = true;
-
-            // Auto-unmute on first user interaction (click / touch / scroll / keypress)
-            function unmuteOnInteraction(){
-                if (!ytPlayer) return;
-                try {
-                    if (ytPlayer.isMuted()) {
-                        ytPlayer.unMute();
-                        setSoundButtonOn(true);
-                    }
-                } catch(e){}
-                ['click','touchstart','scroll','keydown'].forEach(function(ev){
-                    document.removeEventListener(ev, unmuteOnInteraction, true);
-                });
-            }
-            ['click','touchstart','scroll','keydown'].forEach(function(ev){
-                document.addEventListener(ev, unmuteOnInteraction, { once: false, passive: true, capture: true });
-            });
-
-            if (pBtn) pBtn.addEventListener('click', function(){
-                if (!ytPlayer) return;
-                if (isPlaying) { ytPlayer.pauseVideo(); pBtn.classList.remove('is-on'); }
-                else { ytPlayer.playVideo(); pBtn.classList.add('is-on'); }
-                isPlaying = !isPlaying;
-            });
-            if (sBtn) sBtn.addEventListener('click', function(){
-                if (!ytPlayer) return;
-                if (ytPlayer.isMuted()) { ytPlayer.unMute(); setSoundButtonOn(true); }
-                else { ytPlayer.mute(); setSoundButtonOn(false); }
-            });
-        })();
-    </script>
-
     <section class="page-header">
         <div class="container">
             <div class="eyebrow fade-up fade-up-1"><span class="eyebrow-dot"></span>About SDR</div>
             <h1 class="display-lg fade-up fade-up-2">Three decades of <em>unmanned flight</em>.</h1>
-            <p class="lede fade-up fade-up-3">SDR Drone Inc. has spent thirty years engineering unmanned aerial platforms — from the first commercial unmanned airships in Korea to today's standard defense drone for the Republic of Korea armed forces.</p>
+            <div class="ph-grid">
+                <p class="lede fade-up fade-up-3">SDR Drone Inc. has spent thirty years engineering unmanned aerial platforms — from the first commercial unmanned airships in Korea to today's standard defense drone for the Republic of Korea armed forces.</p>
+                <div class="ph-art fade-up fade-up-3">
+                    <img src="img/about_top.jpg" alt="Evolution of SDR unmanned platforms — from the 1994 commercial airship to fixed-wing UAVs and today's multirotor drones (2024)">
+                </div>
+            </div>
         </div>
     </section>
+
+    <!-- ===== Platform video — contained frame below header ===== -->
+    <section class="video-hero">
+        <div class="container">
+            <div class="video-frame" id="videoFrame">
+                <video id="platformVideo" class="video-el"
+                    src="mfs-multicontrol-web.mp4"
+                    poster="img/mfs-still.jpg"
+                    autoplay muted loop playsinline
+                    aria-label="SDR MFS — click to play or pause"
+                    title="Click to play / pause · SDR MFS Multi-Drone Control System"></video>
+                <div class="play-overlay" aria-hidden="true">
+                    <div class="play-overlay-icon">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"></polygon></svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        (function () {
+            var v = document.getElementById('platformVideo');
+            var frame = document.getElementById('videoFrame');
+            if (!v || !frame) return;
+            function sync() {
+                if (v.paused) frame.classList.add('is-paused');
+                else frame.classList.remove('is-paused');
+            }
+            /* respect reduced-motion: start paused */
+            if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                v.pause();
+            }
+            /* click anywhere on the video to toggle play/pause */
+            v.addEventListener('click', function () {
+                if (v.paused) v.play(); else v.pause();
+            });
+            /* keyboard support: Space / Enter when frame is focused */
+            frame.tabIndex = 0;
+            frame.setAttribute('role', 'button');
+            frame.setAttribute('aria-label', 'Play or pause video');
+            frame.addEventListener('keydown', function (e) {
+                if (e.key === ' ' || e.key === 'Enter') {
+                    e.preventDefault();
+                    if (v.paused) v.play(); else v.pause();
+                }
+            });
+            v.addEventListener('play', sync);
+            v.addEventListener('pause', sync);
+            sync();
+        })();
+    </script>
 
     <section class="section">
         <div class="container">
@@ -366,8 +368,8 @@
         <div class="container">
             <div class="quote-block">
                 <div class="eyebrow eyebrow-on-dark" style="margin-bottom: 40px;"><span class="eyebrow-dot"></span>Recognition</div>
-                <p class="quote-text">SDR has been selected as one of two domestic drone companies under the Task Force for Strengthening Drone Defense Capabilities, established by presidential directive — currently serving as advisory committee member for government drone policy.</p>
-                <div class="quote-attr">Republic of Korea · Defense Drone TFT</div>
+                <p class="quote-text">Recognized among Korea's core domestic contributors to defense drone development, SDR provides technical advisory input on national unmanned-systems policy and capability planning.</p>
+                <div class="quote-attr">Government &amp; Defense Engagement</div>
             </div>
         </div>
     </section>
@@ -447,7 +449,7 @@
                 <h2 class="display-lg" style="color: var(--text-light);">See the <em>technology</em> in detail.</h2>
                 <div class="cta-actions">
                     <a href="capabilities.html" class="btn btn-primary">Capabilities <span class="btn-arrow" aria-hidden="true">→</span></a>
-                    <a href="drones.html" class="btn btn-ghost">View drone lineup</a>
+                    <a href="products.html" class="btn btn-ghost">View product lineup</a>
                 </div>
             </div>
         </div>
@@ -457,16 +459,16 @@
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-brand">
-                    <div class="logo"><img src="img/sdr-logo-transparent.png" alt="SDR Drone Inc." class="logo-img logo-img-dark"></div>
+                    <div class="logo"><img src="img/sdr-logo-transparent.png?v=2" alt="SDR Drone Inc." class="logo-img logo-img-dark"></div>
                     <p class="footer-tagline">Global defense and industrial — total drone solutions, engineered in Korea.</p>
                 </div>
-                <div class="footer-col"><h4>Company</h4><ul><li><a href="about.html">About</a></li><li><a href="team.html">Team</a></li><li><a href="capabilities.html">Capabilities</a></li><li><a href="drones.html">Drones</a></li><li><a href="insights.html">Insights</a></li><li><a href="contact.html">Contact</a></li></ul></div>
-                <div class="footer-col"><h4>Domains</h4><ul><li>Defense &amp; Tactical</li><li>Public Safety &amp; SAR</li><li>Industrial &amp; Energy</li><li>Agriculture &amp; Smart Farm</li></ul></div>
-                <div class="footer-col"><h4>Headquarters</h4><ul><li>1209 Mountain Road PL NE</li><li>Suite R, Albuquerque</li><li>NM 87110, USA</li><li><a href="mailto:info@sdrdrone.com">info@sdrdrone.com</a></li></ul></div>
+                <div class="footer-col"><h3>Company</h3><ul><li><a href="about.html">About</a></li><li><a href="team.html">Team</a></li><li><a href="capabilities.html">Capabilities</a></li><li><a href="products.html">Products</a></li><li><a href="insights.html">Insights</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+                <div class="footer-col"><h3>Investors</h3><ul><li><a href="investors.html">Investor Relations</a></li><li><a href="https://www.otcmarkets.com/stock/HLLK/overview" target="_blank" rel="noopener">OTC: HLLK</a></li><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms of Use</a></li></ul></div>
+                <div class="footer-col"><h3>Headquarters</h3><ul><li>Miami, FL, USA</li><li>Tel: <a href="tel:+18776464833">(877) 646-4833</a></li><li><a href="mailto:info@sdrdrone.com">info@sdrdrone.com</a></li></ul></div>
             </div>
             <div class="footer-bottom">
                 <div class="footer-legal">© 2026 SDR Drone Inc. All rights reserved. Information presented on this website is for general purposes only and does not constitute an offer to sell defense materiel or solicitation of any procurement. Export of defense-related products is subject to applicable laws and licensing.</div>
-                <div class="footer-meta">New Mexico Corporation<br>Albuquerque · NM 87110</div>
+                <div class="footer-meta">Florida Corporation · OTC: HLLK<br>Formerly known as Hallmark Venture Group, Inc.</div>
             </div>
         </div>
     </footer>
@@ -475,5 +477,7 @@
         <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"></polyline></svg>
     </a>
     <script>(function(){var b=document.getElementById('backToTop');if(!b)return;function t(){if(window.scrollY>320){b.classList.add('is-visible');}else{b.classList.remove('is-visible');}}window.addEventListener('scroll',t,{passive:true});t();b.addEventListener('click',function(e){e.preventDefault();window.scrollTo({top:0,behavior:'smooth'});});})();</script>
+    <!-- Vercel Web Analytics -->
+    <script defer src="/_vercel/insights/script.js"></script>
 </body>
-</html>
+</html

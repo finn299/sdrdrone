@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a0a0a">
+    <title>Investor Relations — SDR Drone Inc.</title>
+    <meta name="description" content="SDR Drone Inc. investor relations — stock information (OTC: HLLK), filings and disclosures, corporate governance, press releases, and investor contact.">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="favicon-512.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,300;9..144,0,400;9..144,0,500;9..144,1,300;9..144,1,400;9..144,1,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="canonical" href="https://www.sdrdrone.com/investors.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="SDR Drone Inc.">
+    <meta property="og:title" content="Investor Relations — SDR Drone Inc.">
+    <meta property="og:description" content="Stock information (OTC: HLLK), filings and disclosures, corporate governance, and investor contact.">
+    <meta property="og:url" content="https://www.sdrdrone.com/investors.html">
+    <meta property="og:image" content="https://www.sdrdrone.com/img/h5.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Investor Relations — SDR Drone Inc.">
+    <meta name="twitter:description" content="Stock information (OTC: HLLK), filings and disclosures, corporate governance, and investor contact.">
+    <link rel="stylesheet" href="styles.css">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="SDR Drone Inc.">
+    <meta property="og:title" content="Investor Relations — SDR Drone Inc.">
+    <meta property="og:description" content="Stock information (OTC: HLLK), filings and disclosures, corporate governance, and investor contact.">
+    <style>
+        /* Stock information card */
+        .stock-card {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            margin-top: 56px;
+        }
+        .stock-main {
+            background: var(--bg-deep);
+            color: var(--text-light);
+            padding: 64px 56px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .stock-ticker-label {
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.55);
+            margin-bottom: 18px;
+        }
+        .stock-ticker {
+            font-family: var(--mono);
+            font-size: clamp(44px, 6vw, 72px);
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            line-height: 1;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+        .stock-exchange {
+            font-size: 15px;
+            font-weight: 300;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 36px;
+        }
+        .stock-facts {
+            background: var(--bg);
+            padding: 48px 56px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .stock-facts dl { margin: 0; }
+        .stock-facts div {
+            display: flex;
+            justify-content: space-between;
+            gap: 24px;
+            padding: 16px 0;
+            border-top: 1px solid var(--border);
+        }
+        .stock-facts div:first-child { border-top: none; }
+        .stock-facts dt {
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            padding-top: 3px;
+        }
+        .stock-facts dd {
+            font-size: 14.5px;
+            color: var(--text-secondary);
+            text-align: right;
+            margin: 0;
+        }
+        @media (max-width: 1024px) {
+            .stock-card { grid-template-columns: 1fr; }
+            .stock-main, .stock-facts { padding: 48px 32px; }
+        }
+
+        /* Filing / resource cards */
+        .ir-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            margin-top: 56px;
+        }
+        .ir-cell {
+            background: var(--bg);
+            padding: 48px 40px;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            color: inherit;
+            transition: background 0.25s ease;
+        }
+        a.ir-cell:hover { background: var(--bg-warm, #f7f5f1); }
+        .ir-cell-num {
+            font-family: var(--mono);
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--accent);
+            letter-spacing: 0.14em;
+            margin-bottom: 28px;
+        }
+        .ir-cell-title {
+            font-family: var(--display);
+            font-size: 21px;
+            font-weight: 600;
+            letter-spacing: -0.015em;
+            line-height: 1.2;
+            margin-bottom: 14px;
+        }
+        .ir-cell-body {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.65;
+            font-weight: 300;
+            margin-bottom: 24px;
+        }
+        .ir-cell-link {
+            margin-top: auto;
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+        @media (max-width: 1024px) { .ir-grid { grid-template-columns: 1fr; } .ir-cell { min-height: 0; } }
+
+        /* Forward-looking statements */
+        .fls {
+            font-size: 12.5px;
+            line-height: 1.75;
+            color: var(--text-muted);
+            font-weight: 300;
+            max-width: 880px;
+        }
+        .fls h3 {
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+        .fls p { margin-bottom: 14px; }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="container nav-inner">
+            <a href="index.html" class="logo"><img src="img/sdr-logo-transparent.png?v=2" alt="SDR Drone Inc." class="logo-img"></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="team.html">Team</a></li>
+                <li><a href="capabilities.html">Capabilities</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="industrial.html">Applications</a></li>
+                <li><a href="insights.html">Insights</a></li>
+                <li><a href="investors.html" class="active">Investors</a></li>
+                <li><a href="contact.html" class="nav-cta">Contact</a></li>
+            </ul>
+            <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+
+    <section class="page-header">
+        <div class="container">
+            <div class="eyebrow fade-up fade-up-1"><span class="eyebrow-dot"></span>Investor Relations</div>
+            <h1 class="display-lg fade-up fade-up-2">A public company,<br>built on <em>proven flight</em>.</h1>
+            <p class="lede fade-up fade-up-3">SDR Drone Inc. trades on the OTC Markets under the symbol HLLK. This page consolidates stock information, public filings, governance materials, and investor contact for current and prospective shareholders.</p>
+        </div>
+    </section>
+
+    <!-- ===== Stock information ===== -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <div class="eyebrow" style="margin-bottom: 28px;"><span class="eyebrow-dot"></span>Section I — Stock Information</div>
+                <h2 class="display-md">Common stock.</h2>
+            </div>
+            <div class="stock-card">
+                <div class="stock-main">
+                    <div class="stock-ticker-label">OTC Markets · Common Stock</div>
+                    <div class="stock-ticker">HLLK</div>
+                    <div class="stock-exchange">SDR Drone Inc. — formerly Hallmark Venture Group, Inc.</div>
+                    <div>
+                        <a href="https://www.otcmarkets.com/stock/HLLK/overview" target="_blank" rel="noopener" class="btn btn-ghost" style="border-color: rgba(255,255,255,0.5); color: #fff;">Live quote on OTC Markets <span class="btn-arrow" aria-hidden="true">→</span></a>
+                    </div>
+                </div>
+                <div class="stock-facts">
+                    <dl>
+                        <div><dt>Symbol</dt><dd>HLLK</dd></div>
+                        <div><dt>Market</dt><dd>OTC Markets</dd></div>
+                        <div><dt>Incorporation</dt><dd>Florida, USA</dd></div>
+                        <div><dt>Headquarters</dt><dd>Miami, FL, USA</dd></div>
+                        <div><dt>Sector</dt><dd>Aerospace &amp; Defense — UAS</dd></div>
+                        <div><dt>Former name</dt><dd>Hallmark Venture Group, Inc.</dd></div>
+                    </dl>
+                </div>
+            </div>
+            <!-- ===== Live quote module (TradingView) =====
+                 ENABLE_LIVE_QUOTE 플래그(아래 script)를 false로 바꾸면
+                 이 모듈 전체가 렌더링되지 않고 위 정적 카드만 남습니다. (원복 용이) -->
+            <div id="quoteModule" style="display: none; margin-top: 32px; border: 1px solid var(--border);">
+                <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted); padding: 14px 20px; border-bottom: 1px solid var(--border);">Market Data · Delayed · TradingView</div>
+                <div id="tvWidgetContainer" style="height: 220px;"></div>
+            </div>
+            <script>
+                var ENABLE_LIVE_QUOTE = true; /* ← false 로 바꾸면 주가 위젯 비활성(정적 카드만 표시) */
+                (function () {
+                    if (!ENABLE_LIVE_QUOTE) return;
+                    var box = document.getElementById('quoteModule');
+                    box.style.display = 'block';
+                    var s = document.createElement('script');
+                    s.src = 'https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js';
+                    s.async = true;
+                    s.innerHTML = JSON.stringify({
+                        symbol: 'OTC:HLLK',
+                        width: '100%',
+                        height: 220,
+                        locale: 'en',
+                        dateRange: '3M',
+                        colorTheme: 'light',
+                        isTransparent: true,
+                        autosize: false,
+                        largeChartUrl: 'https://www.otcmarkets.com/stock/HLLK/overview'
+                    });
+                    document.getElementById('tvWidgetContainer').appendChild(s);
+                })();
+            </script>
+            <p style="margin-top: 20px; font-size: 12.5px; color: var(--text-muted); font-weight: 300;">Quote data is provided by third-party sources (OTC Markets Group / TradingView) and may be delayed. Nothing on this page constitutes investment advice or an offer to sell securities.</p>
+        </div>
+    </section>
+
+    <!-- ===== Filings & disclosures ===== -->
+    <section class="section section-warm">
+        <div class="container">
+            <div class="section-header">
+                <div class="eyebrow" style="margin-bottom: 28px;"><span class="eyebrow-dot"></span>Section II — Filings &amp; Disclosures</div>
+                <h2 class="display-md">The public <em>record</em>.</h2>
+                <p class="lede">Company disclosures, financial reports, and corporate filings are available through the channels below.</p>
+            </div>
+            <div class="ir-grid">
+                <a class="ir-cell" href="https://www.otcmarkets.com/stock/HLLK/disclosure" target="_blank" rel="noopener">
+                    <div class="ir-cell-num">— 01 —</div>
+                    <h3 class="ir-cell-title">OTC Disclosure &amp; News</h3>
+                    <p class="ir-cell-body">Current and historical company disclosures, financial reports, and material news filed through the OTC Disclosure &amp; News Service.</p>
+                    <div class="ir-cell-link">otcmarkets.com → HLLK ↗</div>
+                </a>
+                <a class="ir-cell" href="https://www.sec.gov/edgar/search/#/q=%22Hallmark%20Venture%20Group%22" target="_blank" rel="noopener">
+                    <div class="ir-cell-num">— 02 —</div>
+                    <h3 class="ir-cell-title">SEC EDGAR</h3>
+                    <p class="ir-cell-body">Filings submitted to the U.S. Securities and Exchange Commission, searchable through the EDGAR full-text search system.</p>
+                    <div class="ir-cell-link">sec.gov → EDGAR ↗</div>
+                </a>
+                <a class="ir-cell" href="mailto:info@sdrdrone.com?subject=Investor%20materials%20request">
+                    <div class="ir-cell-num">— 03 —</div>
+                    <h3 class="ir-cell-title">Investor Materials</h3>
+                    <p class="ir-cell-body">Corporate presentations, annual reports, and additional shareholder materials are available from the company upon written request.</p>
+                    <div class="ir-cell-link">Request by email →</div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== News & governance ===== -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <div class="eyebrow" style="margin-bottom: 28px;"><span class="eyebrow-dot"></span>Section III — News &amp; Governance</div>
+                <h2 class="display-md">Leadership and <em>oversight</em>.</h2>
+            </div>
+            <div class="ir-grid">
+                <a class="ir-cell" href="insights.html">
+                    <div class="ir-cell-num">— 01 —</div>
+                    <h3 class="ir-cell-title">Company News</h3>
+                    <p class="ir-cell-body">Program milestones, procurement updates, certifications, and global engagement news from SDR's operating businesses.</p>
+                    <div class="ir-cell-link">Read Insights →</div>
+                </a>
+                <a class="ir-cell" href="team.html">
+                    <div class="ir-cell-num">— 02 —</div>
+                    <h3 class="ir-cell-title">Leadership</h3>
+                    <p class="ir-cell-body">Executive leadership and management of SDR Drone Inc. — operators and engineers with three decades of unmanned aviation experience.</p>
+                    <div class="ir-cell-link">Meet the team →</div>
+                </a>
+                <a class="ir-cell" href="mailto:info@sdrdrone.com?subject=Corporate%20governance%20inquiry">
+                    <div class="ir-cell-num">— 03 —</div>
+                    <h3 class="ir-cell-title">Corporate Governance</h3>
+                    <p class="ir-cell-body">Governance documents, charters, and policies are maintained by the company and available to shareholders upon request.</p>
+                    <div class="ir-cell-link">Governance inquiry →</div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== IR contact CTA ===== -->
+    <section class="cta-strip">
+        <div class="container">
+            <div class="cta-content">
+                <div class="eyebrow eyebrow-on-dark" style="margin-bottom: 32px;"><span class="eyebrow-dot"></span>Section IV — Investor Contact</div>
+                <h2 class="display-lg" style="color: var(--text-light);">Speak with <em>investor relations</em>.</h2>
+                <p class="lede">For shareholder questions, institutional inquiries, or to join the investor distribution list, contact the IR team directly.</p>
+                <div class="cta-actions">
+                    <a href="mailto:info@sdrdrone.com?subject=Investor%20relations%20inquiry" class="btn btn-primary">Email investor relations <span class="btn-arrow" aria-hidden="true">→</span></a>
+                    <a href="contact.html" class="btn btn-ghost">General contact</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== Forward-looking statements ===== -->
+    <section class="section section-warm">
+        <div class="container">
+            <div class="fls">
+                <h3>Forward-Looking Statements</h3>
+                <p>This website contains "forward-looking statements" within the meaning of the Private Securities Litigation Reform Act of 1995, including statements regarding the company's business strategy, market opportunity, product development, anticipated contracts, and international expansion. Forward-looking statements are identified by words such as "expects," "anticipates," "intends," "plans," "believes," "seeks," "estimates," and similar expressions.</p>
+                <p>These statements are based on current expectations and assumptions that are subject to risks and uncertainties, including the company's ability to obtain regulatory approvals and export licenses, dependence on government procurement cycles, competition in the unmanned aerial systems industry, and the company's status as a developing public company. Actual results may differ materially from those expressed or implied. The company undertakes no obligation to update any forward-looking statement except as required by law.</p>
+                <p>Securities of SDR Drone Inc. are quoted on the OTC Markets. An investment in securities quoted on the OTC Markets may involve a high degree of risk, including limited liquidity. Investors should review all publicly available disclosures and consult their own financial, legal, and tax advisers before making any investment decision.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo"><img src="img/sdr-logo-transparent.png?v=2" alt="SDR Drone Inc." class="logo-img logo-img-dark"></div>
+                    <p class="footer-tagline">Global defense and industrial — total drone solutions, engineered in Korea.</p>
+                </div>
+                <div class="footer-col"><h3>Company</h3><ul><li><a href="about.html">About</a></li><li><a href="team.html">Team</a></li><li><a href="capabilities.html">Capabilities</a></li><li><a href="products.html">Products</a></li><li><a href="insights.html">Insights</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+                <div class="footer-col"><h3>Investors</h3><ul><li><a href="investors.html">Investor Relations</a></li><li><a href="https://www.otcmarkets.com/stock/HLLK/overview" target="_blank" rel="noopener">OTC: HLLK</a></li><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms of Use</a></li></ul></div>
+                <div class="footer-col"><h3>Headquarters</h3><ul><li>Miami, FL, USA</li><li>Tel: <a href="tel:+18776464833">(877) 646-4833</a></li><li><a href="mailto:info@sdrdrone.com">info@sdrdrone.com</a></li></ul></div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-legal">© 2026 SDR Drone Inc. All rights reserved. Information presented on this website is for general purposes only and does not constitute an offer to sell defense materiel or solicitation of any procurement. Export of defense-related products is subject to applicable laws and licensing.</div>
+                <div class="footer-meta">Florida Corporation · OTC: HLLK<br>Formerly known as Hallmark Venture Group, Inc.</div>
+            </div>
+        </div>
+    </footer>
+    <script>const t=document.querySelector('.nav-toggle'),l=document.querySelector('.nav-links');if(t)t.addEventListener('click',()=>l.classList.toggle('is-open'));</script>
+    <a href="#top" class="back-to-top" id="backToTop" aria-label="Back to top">
+        <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"></polyline></svg>
+    </a>
+    <script>(function(){var b=document.getElementById('backToTop');if(!b)return;function t(){if(window.scrollY>320){b.classList.add('is-visible');}else{b.classList.remove('is-visible');}}window.addEventListener('scroll',t,{passive:true});t();b.addEventListener('click',function(e){e.preventDefault();window.scrollTo({top:0,behavior:'smooth'});});})();</script>
+    <!-- Vercel Web Analytics -->
+    <script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>
