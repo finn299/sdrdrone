@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#0a0a0a">
     <title>Capabilities — SDR Drone Inc.</title>
     <meta name="description" content="The technology behind SDR — Multi Flight Control swarm system, SDR-ONE integrated board, FANET mesh communications, and tactical control software.">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -214,7 +213,7 @@
 <body>
     <nav class="nav">
         <div class="container nav-inner">
-            <a href="index.html" class="logo"><img src="img/sdr-logo-transparent.png?v=2" alt="SDR Drone Inc." class="logo-img"></a>
+            <a href="index.html" class="logo"><img src="img/sdr-logo-transparent.png" alt="SDR Drone Inc." class="logo-img"></a>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="about.html">About</a></li>
@@ -467,7 +466,7 @@
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-brand">
-                    <div class="logo"><img src="img/sdr-logo-transparent.png?v=2" alt="SDR Drone Inc." class="logo-img logo-img-dark"></div>
+                    <div class="logo"><img src="img/sdr-logo-transparent.png" alt="SDR Drone Inc." class="logo-img logo-img-dark"></div>
                     <p class="footer-tagline">Global defense and industrial — total drone solutions, engineered in Korea.</p>
                 </div>
                 <div class="footer-col"><h3>Company</h3><ul><li><a href="about.html">About</a></li><li><a href="team.html">Team</a></li><li><a href="capabilities.html">Capabilities</a></li><li><a href="products.html">Products</a></li><li><a href="insights.html">Insights</a></li><li><a href="contact.html">Contact</a></li></ul></div>
@@ -487,7 +486,8 @@
     <script>(function(){var b=document.getElementById('backToTop');if(!b)return;function t(){if(window.scrollY>320){b.classList.add('is-visible');}else{b.classList.remove('is-visible');}}window.addEventListener('scroll',t,{passive:true});t();b.addEventListener('click',function(e){e.preventDefault();window.scrollTo({top:0,behavior:'smooth'});});})();</script>
 
     <script>
-    /* video facade: http(s) → in-page iframe / file:// → 새 탭 (YT error 153 회피) */
+    /* video facade: click → inline embed on http(s), new-tab on local file:// (avoids YT error 153)
+       + 페이지 로드 시 자동 재생 (음소거, http(s) 환경만) */
     document.querySelectorAll('.video-facade').forEach(function (fc) {
         function play() {
             var id = fc.dataset.vid;
@@ -508,6 +508,9 @@
     });
     </script>
     <!-- Vercel Web Analytics -->
+    <script>
+      window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    </script>
     <script defer src="/_vercel/insights/script.js"></script>
 </body>
-</html           
+</html>
